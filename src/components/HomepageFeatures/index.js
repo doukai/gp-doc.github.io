@@ -26,7 +26,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_containers.svg').default,
     description: (
       <>
-        Monolithic or Microservice 随心所欲
+        Monolithic or Microservice 无缝切换
       </>
     ),
   },

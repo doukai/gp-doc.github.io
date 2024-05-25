@@ -166,24 +166,56 @@ import io.graphoenix.spi.annotation.Package;
 定义订单和货物
 
 ```graphql title="order-package/src/main/resources/graphql/order.gql"
-"订单"
-type Order {
-  "ID"
-  id: ID
-  "订单编码"
-  number: String!
-  "购买货物"
-  goods: [Good!]
+"用户"
+type User {
+  "用户ID"
+  id: ID!
+  "用户名"
+  name: String!
+  "电子邮箱"
+  email: String
+  "联系方式"
+  phoneNumbers: [String!]
+  "用户类型"
+  userType: UserType!
+  "订单"
+  orders: [Order!]
 }
 
-"货物信息"
-type Good {
-  "ID"
-  id: ID
-  "货物名称"
+"用户类型"
+enum UserType {
+  "普通用户"
+  REGULAR
+  "会员"
+  VIP
+}
+
+"产品"
+type Product {
+  "产品ID"
+  id: ID!
+  "产品名称"
   name: String!
   "定价"
   price: Float!
+}
+
+"订单"
+type Order {
+  "订单ID"
+  id: ID!
+  "购买用户"
+  user: User!
+  "产品列表"
+  items: [OrderItem!]!
+}
+
+"订单项"
+type OrderItem {
+  "产品"
+  product: Product!
+  "购买数量"
+  quantity: Int!
 }
 ```
 

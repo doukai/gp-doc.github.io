@@ -12,5 +12,3 @@ sidebar_position: 1
 6. 多范式数据库支持：SQL/KV/Cypher...
 
 灵感来自[Hasura GraphQL Engine](https://hasura.io/)
-
-Logo来自[The constellation Phoenix](https://earthsky.org/constellations/phoenix-southern-birds/)
