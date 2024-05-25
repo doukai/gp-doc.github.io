@@ -8,7 +8,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_graphql.svg').default,
     description: (
       <>
-        开箱即用的GraphQL接口, 适配多协议, 多范式.
+        开箱即用的GraphQL 多协议 多范式
       </>
     ),
   },
@@ -17,7 +17,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_reactor.svg').default,
     description: (
       <>
-        全栈响应式, 无阻塞, 高性能.
+        全栈响应式 无阻塞 高性能
       </>
     ),
   },
@@ -26,7 +26,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_containers.svg').default,
     description: (
       <>
-        Monolithic or Microservice, 无缝切换.
+        Monolithic or Microservice 随心所欲
       </>
     ),
   },

@@ -4,7 +4,7 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
-import {themes as prismThemes} from 'prism-react-renderer';
+import { themes as prismThemes } from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -42,16 +42,10 @@ const config = {
         docs: {
           sidebarPath: './sidebars.js',
           // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -64,7 +58,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/logo.png',
       navbar: {
         title: 'Graphoenix',
         logo: {
@@ -78,7 +72,7 @@ const config = {
             position: 'left',
             label: '文档',
           },
-          {to: '/blog', label: '博客', position: 'left'},
+          { to: '/blog', label: '博客', position: 'left' },
           {
             href: 'https://github.com/doukai/graphoenix-ce',
             label: 'GitHub',
@@ -96,6 +90,10 @@ const config = {
                 label: '教程',
                 to: '/docs/intro',
               },
+              {
+                label: 'GraphQL',
+                href: 'https://graphql.cn/',
+              },
             ],
           },
           {
@@ -105,10 +103,6 @@ const config = {
                 label: '脚手架',
                 href: 'https://gp-init.github.io/',
               },
-              {
-                label: '前端脚手架',
-                href: 'https://gp-init.github.io/svelte/',
-              }
             ],
           },
           {

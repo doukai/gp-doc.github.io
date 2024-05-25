@@ -4,12 +4,12 @@ sidebar_position: 1
 
 # 快速开始
 
-我们基于一个订单系统的开发,逐步展示平台特性.
+我们基于一个订单系统的开发, 逐步展示平台特性.
 
 1. [GraphQL 类型](https://graphql.org/learn/schema/)的定义
-2. [GraphQL 的查询,变更](https://graphql.org/learn/queries/)和[订阅](https://graphql.org/blog/2015-10-16-subscriptions/)
+2. [GraphQL 的查询, 变更](https://graphql.org/learn/queries/)和[订阅](https://graphql.org/blog/2015-10-16-subscriptions/)
 3. GPA-based (GraphQL Persistence API) repositories
-4. 基于[MicroProfile](https://microprofile.io/)和[Jakarta EE](https://jakarta.ee/specifications/)协议的依赖注入,切面和配置
+4. 基于[MicroProfile](https://microprofile.io/)和[Jakarta EE](https://jakarta.ee/specifications/)协议的依赖注入, 切面和配置
 5. 异步(Async)和同步(Await)
 6. 基于[Gossip](https://icyfenix.cn/distribution/consensus/gossip.html)协议的分布式和[gRPC](https://grpc.io/)通讯
 7. 基于[JWT](https://jwt.io/)和[Casbin](https://casbin.org/)定制的鉴权与授权
@@ -21,7 +21,9 @@ sidebar_position: 1
 - [MariaDB >= 10.6.0](https://mariadb.com/kb/en/mariadb-1060-release-notes/) 或 [MySQL >= 8.0](https://dev.mysql.com/downloads/mysql/8.0.html/)
 - [RabbitMQ >= 3.0](https://www.rabbitmq.com/docs/download/) (可选)
 
-推荐使用Docker构建开发环境
+<details>
+<summary>推荐使用Docker构建开发环境</summary>
+
 ```yaml title="docker-compose.yml"
 version: "3.8"
 
@@ -37,7 +39,7 @@ services:
       MYSQL_DATABASE: order
       MYSQL_USER: your-username
       MYSQL_PASSWORD: your-password
-      MYSQL_HOST : '%'
+      MYSQL_HOST: "%"
     networks:
       - order-net
 
@@ -54,13 +56,15 @@ networks:
   order-net:
 ```
 
+</details>
+
 ## 初始化项目
+
+我们首先创建一个名为**order**的项目, 包名为**demo.gp.order**
 
 推荐使用官方脚手架快速初始化项目 **[Graphoenix Server Initializer](https://gp-init.github.io)**.
 
-<iframe src="https://gp-init.github.io" width="450px" height="650px" frameborder="0" scrolling="no"> </iframe>
-
-Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html)进行构建,未来会推出 Maven 版本:
+Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html)进行构建, 未来会推出 Maven 版本:
 
 项目结构:
 
@@ -69,7 +73,7 @@ Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html
     |-- build.gradle
     |-- gradle.properties
     |-- settings.gradle
-    |-- order-app                             启动器,引入订单和其他包
+    |-- order-app                             启动器, 引入订单和其他包
     |   |-- build.gradle
     |   |-- src
     |       |-- main
@@ -100,7 +104,7 @@ Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html
                         |-- other.gql         定义其他相关类型
 ```
 
-如上所示,app 项目引入 order 和 other 两个包,如同货轮(app)和集装箱(order,other),可根据需求灵活的组合成单体架构或拆分为分布式架构.
+如上所示, app 项目引入 order 和 other 两个包, 如同货轮(app)和集装箱(order, other), 可根据需求灵活的组合成单体架构或拆分为分布式架构.
 
 ### 配置包
 
@@ -110,18 +114,26 @@ Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html
 buildscript {
     repositories {
         gradlePluginPortal()
+        // highlight-start
         jcenter()
+        // highlight-end
     }
     dependencies {
+        // highlight-start
         classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
+        // highlight-end
     }
 }
 
+// highlight-start
 apply plugin: 'io.graphoenix'
+// highlight-end
 
 repositories {
     mavenCentral()
-    jcenter() //Graphoenix的反编译器jd-core发布在jcenter,未来反编译器将替换为IDEA使用的fernflower,之后不再依赖
+    // highlight-start
+    jcenter() //Graphoenix的反编译器jd-core发布在jcenter, 未来反编译器将替换为IDEA使用的fernflower, 之后不再依赖
+    // highlight-end
 }
 
 dependencies {
@@ -138,7 +150,18 @@ dependencies {
 }
 ```
 
-2. 定义 GraphQL Schema,关于 GraphQL 的基础知识,可以参考[GraphQL 官方教程](https://graphql.org/learn/)
+2. 定义包名类
+
+```java title="order-package/src/main/java/demo/gp/order/package-info.java"
+// highlight-start
+@Package    // 添加@Package注解, 表示package-info.java所在路径为包名
+// highlight-end
+package demo.gp.order;
+
+import io.graphoenix.spi.annotation.Package;
+```
+
+3. 定义 GraphQL Schema, 关于 GraphQL 的基础知识, 可以参考[GraphQL 官方教程](https://graphql.org/learn/)
 
 定义订单和货物
 
@@ -164,17 +187,20 @@ type Good {
 }
 ```
 
-3. 生成 Java Bean
+4. 生成 Java Bean
 
 ```bash
 ./gradlew :order-package:generateGraphQLSource
 ```
 
-或使用 IDEA
+<details>
+<summary>使用 IDEA 执行</summary>
 
 ![generateGraphQLSource](./img/generateGraphQLSource.png "generateGraphQLSource")
 
-插件将根据 graphql 文件生成 Java bean,可使用这些 Java bean 进行业务逻辑编写和 GPA 接口定义.
+</details>
+
+插件将根据 graphql 文件生成 Java bean, 使用这些 Java bean 进行业务逻辑编写和 GPA 接口定义.
 
 ```
 |-- order-package                             订单包
@@ -197,7 +223,9 @@ type Good {
 ```gradle title="order-app/build.gradle"
 repositories {
     mavenCentral()
-    jcenter() //Graphoenix的反编译器jd-core发布在jcenter,未来反编译器将替换为IDEA使用的fernflower,之后不再依赖
+    // highlight-start
+    jcenter()
+    // highlight-end
 }
 
 dependencies {
@@ -208,7 +236,7 @@ dependencies {
     implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT' //http服务器
     implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT' //r2dbc数据库连接
     implementation 'io.graphoenix:graphoenix-introspection:0.0.1-SNAPSHOT' //内省
-    implementation 'io.graphoenix:graphoenix-admin:0.0.1-SNAPSHOT' //开发者工具,提供GraphiQL和GraphQL Voyager
+    implementation 'io.graphoenix:graphoenix-admin:0.0.1-SNAPSHOT' //开发者工具, 提供GraphiQL和GraphQL Voyager
 
     implementation 'org.mariadb:r2dbc-mariadb:1.1.4' //mariadb驱动
     //implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.81.Final', classifier: 'osx-aarch_64' //如果使用苹果m1芯片需要引用
@@ -234,7 +262,9 @@ import io.graphoenix.spi.annotation.Application;
 
 import static io.graphoenix.core.bootstrap.App.APP;
 
+// highlight-start
 @Application    // 添加@Application注解标记为启动类
+// highlight-end
 public class App {
 
     public static void main(String[] args) {
@@ -247,11 +277,11 @@ public class App {
 
 ```hocon title="order-app/src/main/resources/graphql/application.conf"
 graphql {
-  buildIntrospection = true                           //生成内省文档
+  buildIntrospection = true //生成内省文档
 }
 package {
   packageName = "demo.gp.order"                       //与包名相同
-  localPackageNames = ["io.graphoenix.introspection"] //本地包配置,此处引入内省包
+  localPackageNames = ["io.graphoenix.introspection"] //本地包配置, 此处引入内省包
 }
 r2dbc {
   driver = "mariadb"  //此处使用mariadb驱动
