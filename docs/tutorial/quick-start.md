@@ -132,18 +132,18 @@ apply plugin: 'io.graphoenix'
 repositories {
     mavenCentral()
     // highlight-start
-    jcenter() //Graphoenix的反编译器jd-core发布在jcenter, 未来反编译器将替换为IDEA使用的fernflower, 之后不再依赖
+    jcenter() // Graphoenix的反编译器jd-core发布在jcenter, 未来反编译器将替换为IDEA使用的fernflower, 之后不再依赖
     // highlight-end
 }
 
 dependencies {
     // highlight-start
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT' //核心
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'  //依赖注入
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'  //配置
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT' // 核心
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'  // 依赖注入
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'  // 配置
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT' //核心编译器
-    //implementation依赖全部加入到annotationProcessor
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT' // 核心编译器
+    // implementation依赖全部加入到annotationProcessor
     annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
     annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
     // highlight-end
@@ -163,7 +163,7 @@ import io.graphoenix.spi.annotation.Package;
 
 3. 定义 GraphQL Schema, 关于 GraphQL 的基础知识, 可以参考[GraphQL 官方教程](https://graphql.org/learn/)
 
-定义订单和货物
+设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)和一个购买者, 每个订单项对应一个产品和购买数量.
 
 ```graphql title="order-package/src/main/resources/graphql/order.gql"
 "用户"
@@ -212,6 +212,8 @@ type Order {
 
 "订单项"
 type OrderItem {
+  "订单项ID"
+  id: ID!
   "产品"
   product: Product!
   "购买数量"
@@ -219,7 +221,7 @@ type OrderItem {
 }
 ```
 
-4. 生成 Java Bean
+4. 使用Gradle插件生成 Java Bean
 
 ```bash
 ./gradlew :order-package:generateGraphQLSource
@@ -244,8 +246,9 @@ type OrderItem {
                     |-- dto
                         |-- annotation        GPA注解
                         |-- directive         指令注解
-                        |-- inputObjectType   Input实体
-                        |-- objectType        Object实体
+                        |-- enumType          枚举类型
+                        |-- inputObjectType   Input类型
+                        |-- objectType        Object类型
 ```
 
 ### 配置启动器
@@ -262,19 +265,19 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT' //核心
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'  //依赖注入
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'  //配置
-    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT' //http服务器
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT' //r2dbc数据库连接
-    implementation 'io.graphoenix:graphoenix-introspection:0.0.1-SNAPSHOT' //内省
-    implementation 'io.graphoenix:graphoenix-admin:0.0.1-SNAPSHOT' //开发者工具, 提供GraphiQL和GraphQL Voyager
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT' // 核心
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'  // 依赖注入
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'  // 配置
+    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT' // http服务器
+    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT' // r2dbc数据库连接
+    implementation 'io.graphoenix:graphoenix-introspection:0.0.1-SNAPSHOT' // 内省
+    implementation 'io.graphoenix:graphoenix-admin:0.0.1-SNAPSHOT' // 开发者工具, 提供GraphiQL和GraphQL Voyager
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4' //mariadb驱动
-    //implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.81.Final', classifier: 'osx-aarch_64' //如果使用苹果m1芯片需要引用
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4' // mariadb驱动
+    // implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.81.Final', classifier: 'osx-aarch_64' // 使用苹果OSX需要引用
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT' //核心编译器
-    //implementation依赖全部加入到annotationProcessor
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT' // 核心编译器
+    // implementation依赖全部加入到annotationProcessor
     annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
     annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
     annotationProcessor 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
@@ -309,17 +312,17 @@ public class App {
 
 ```hocon title="order-app/src/main/resources/graphql/application.conf"
 graphql {
-  buildIntrospection = true //生成内省文档
+  buildIntrospection = true // 生成内省文档
 }
 package {
-  packageName = "demo.gp.order"                       //与包名相同
-  localPackageNames = ["io.graphoenix.introspection"] //本地包配置, 此处引入内省包
+  packageName = "demo.gp.order"                       // 与包名相同
+  localPackageNames = ["io.graphoenix.introspection"] // 本地包配置, 此处引入内省包
 }
 r2dbc {
-  driver = "mariadb"  //此处使用mariadb驱动
-  database = "order"  //数据库
-  user = "root"       //数据库用户
-  password = "root"   //数据库密码
+  driver = "mariadb"  // 此处使用mariadb驱动
+  database = "order"  // 数据库
+  user = "root"       // 数据库用户
+  password = "root"   // 数据库密码
 }
 ```
 
