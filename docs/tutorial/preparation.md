@@ -13,7 +13,7 @@ sidebar_position: 2
 ![Altair](https://altairgraphql.dev/assets/img/app-shot.png "Altair")
 
 ### 预备知识
-如果还没有基本的GrapQL知识, 可以先去[GraphQL 官网](https://graphql.org/)([中文站](https://graphql.cn/))了解基础概念.
+如果还没有基本的GraphQL知识, 可以先去[GraphQL 官网](https://graphql.org/)([中文站](https://graphql.cn/))了解基础概念.
 
 [GraphQL 生态](https://www.howtographql.com/)
 
