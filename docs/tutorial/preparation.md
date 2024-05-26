@@ -20,7 +20,7 @@ sidebar_position: 2
 [Awesome list of GraphQL](https://github.com/chentsulin/awesome-graphql/)
 
 ### 示例数据
-最后我们使用[变更](/docs/guide/mutation)来初始化一些示例数据, 变更的详细内容会在后面的示例里更详细的说明.
+最后我们使用[变更](/docs/guide/mutation)来初始化一些示例数据, 变更的内容会在后面的示例里更详细的说明.
 ```graphql
 mutation {
   userList(list: [
