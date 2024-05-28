@@ -15,7 +15,7 @@ sidebar_position: 1
 7. 基于[JWT](https://jwt.io/)和[Casbin](https://casbin.org/)定制的鉴权与授权
 8. 基于[Svelte](https://svelte.dev/)和[Tailwind CSS](https://tailwindcss.com/)定制的 UI 界面
 
-### 系统要求
+## 系统要求
 
 - [JDK >= 11.0](https://www.oracle.com/in/java/technologies/javase/jdk11-archive-downloads.html/)
 - [MariaDB >= 10.6.0](https://mariadb.com/kb/en/mariadb-1060-release-notes/) 或 [MySQL >= 8.0](https://dev.mysql.com/downloads/mysql/8.0.html/)
@@ -132,7 +132,7 @@ apply plugin: 'io.graphoenix'
 repositories {
     mavenCentral()
     // highlight-start
-    jcenter() // Graphoenix的反编译器jd-core发布在jcenter, 未来反编译器将替换为IDEA使用的fernflower, 之后不再依赖
+    jcenter() // Graphoenix的反编译器jd-core依赖jcenter, 后续将会替换
     // highlight-end
 }
 
@@ -328,7 +328,7 @@ r2dbc {
 
 ## 启动
 
-Start or Debug App.main
+Run or Debug App.main
 
 GraphQL endpoint: http://localhost:8080/graphql
 
