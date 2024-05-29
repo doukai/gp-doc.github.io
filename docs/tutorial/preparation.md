@@ -94,3 +94,78 @@ mutation {
 复制以上内容到客户端执行即可
 ![example data](./img/mutationExampleData.png "example data")
 
+也可在项目启动后在数据库中导入数据
+```sql
+INSERT INTO `order`.`user` (name,email,phone_numbers,user_type,is_deprecated,version,realm_id,create_user_id,create_time,update_user_id,update_time,create_group_id,`__typename`) VALUES
+	 ('Alice','alice@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Bob','bob@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Charlie','charlie@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Diana','diana@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Edward','edward@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Fiona','fiona@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('George','george@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Hannah','hannah@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Ian','ian@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Jane','jane@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User');
+
+INSERT INTO `order`.`user` (name,email,phone_numbers,user_type,is_deprecated,version,realm_id,create_user_id,create_time,update_user_id,update_time,create_group_id,`__typename`) VALUES
+	 ('Kyle','kyle@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Laura','laura@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Mike','mike@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Nina','nina@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Oliver','oliver@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Paula','paula@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Quentin','quentin@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Rachel','rachel@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Steve','steve@example.com',NULL,'VIP',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User'),
+	 ('Tina','tina@example.com',NULL,'REGULAR',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'User');
+
+INSERT INTO `order`.product (name,price,is_deprecated,version,realm_id,create_user_id,create_time,update_user_id,update_time,create_group_id,`__typename`) VALUES
+	 ('Laptop',999.99,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Product'),
+	 ('Phone',499.99,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Product'),
+	 ('Tablet',299.99,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Product'),
+	 ('Monitor',199.99,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Product'),
+	 ('Keyboard',49.99,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Product');
+
+INSERT INTO `order`.`order` (is_deprecated,version,realm_id,create_user_id,create_time,update_user_id,update_time,create_group_id,`__typename`) VALUES
+	 (0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Order'),
+	 (0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Order'),
+	 (0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Order'),
+	 (0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Order');
+
+INSERT INTO `order`.order_item (quantity,is_deprecated,version,realm_id,create_user_id,create_time,update_user_id,update_time,create_group_id,`__typename`) VALUES
+	 (1,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItem'),
+	 (2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItem'),
+	 (1,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItem'),
+	 (2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItem'),
+	 (3,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItem'),
+	 (1,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItem'),
+	 (1,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItem'),
+	 (1,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItem');
+
+INSERT INTO `order`.order_order_item_relation (order_ref,order_item_ref,is_deprecated,version,realm_id,create_user_id,create_time,update_user_id,update_time,create_group_id,`__typename`) VALUES
+	 ('1','1',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderOrderItemRelation'),
+	 ('1','2',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderOrderItemRelation'),
+	 ('2','3',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderOrderItemRelation'),
+	 ('3','4',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderOrderItemRelation'),
+	 ('3','5',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderOrderItemRelation'),
+	 ('4','6',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderOrderItemRelation'),
+	 ('4','7',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderOrderItemRelation'),
+	 ('4','8',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderOrderItemRelation');
+
+INSERT INTO `order`.order_user_relation (user_ref,order_ref,is_deprecated,version,realm_id,create_user_id,create_time,update_user_id,update_time,create_group_id,`__typename`) VALUES
+	 ('1','1',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderUserRelation'),
+	 ('2','2',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderUserRelation'),
+	 ('3','3',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderUserRelation'),
+	 ('4','4',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderUserRelation');
+
+INSERT INTO `order`.order_item_product_relation (order_item_ref,product_ref,is_deprecated,version,realm_id,create_user_id,create_time,update_user_id,update_time,create_group_id,`__typename`) VALUES
+	 ('1','1',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItemProductRelation'),
+	 ('2','3',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItemProductRelation'),
+	 ('3','2',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItemProductRelation'),
+	 ('4','4',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItemProductRelation'),
+	 ('5','5',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItemProductRelation'),
+	 ('6','1',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItemProductRelation'),
+	 ('7','2',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItemProductRelation'),
+	 ('8','3',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'OrderItemProductRelation');
+```

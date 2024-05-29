@@ -78,11 +78,15 @@ query {
 }
 ```
 
-### 3. 查询所有会员用户
+### 3. 查询所有会员用户和价格大于200的产品
 ```graphql
 query {
-  userList(userType: {opr: EQ val: VIP}) {
+  vip: userList(userType: {opr: EQ val: VIP}) {
     name
+  }
+  greaterThan200: productList(price: {opr: GT val: 200}) {
+    name
+    price
   }
 }
 ```
@@ -90,7 +94,7 @@ query {
 ```json
 {
   "data": {
-    "userList": [
+    "vip": [
       {
         "name": "Alice"
       },
@@ -121,25 +125,8 @@ query {
       {
         "name": "Steve"
       }
-    ]
-  }
-}
-```
-
-### 4. 查询价格大于200的产品列表
-```graphql
-query {
-  productList(price: {opr: GT val: 200}) {
-    name
-    price
-  }
-}
-```
-
-```json
-{
-  "data": {
-    "productList": [
+    ],
+    "greaterThan200": [
       {
         "name": "Laptop",
         "price": 999.99
@@ -157,7 +144,7 @@ query {
 }
 ```
 
-### 5. 查询产品列表, 价格由高到低
+### 4. 查询产品列表, 价格由高到低
 ```graphql
 query {
   productList(orderBy: {price: DESC}) {
@@ -196,7 +183,7 @@ query {
 }
 ```
 
-### 6. 查询价格在300以内, 价格最高的产品
+### 5. 查询价格在300以内, 价格最高的产品
 ```graphql
 query {
   product(price: {opr: LTE val:300}) {
@@ -217,7 +204,7 @@ query {
 }
 ```
 
-### 7. 分组查询普通用户和会员用户的数量
+### 6. 分组查询普通用户和会员用户的数量
 ```graphql
 query {
   userList(groupBy: ["userType"]) {
@@ -244,6 +231,114 @@ query {
 }
 ```
 
+### 7. 查询Alice的订单
+```graphql
+query {
+  user(name: {opr: EQ val: "Alice"}) {
+    name
+    orders {
+      items {
+        product {
+          name
+        }
+        quantity
+      }
+    }
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "user": {
+      "name": "Alice",
+      "orders": [
+        {
+          "items": [
+            {
+              "product": {
+                "name": "Laptop"
+              },
+              "quantity": 1
+            },
+            {
+              "product": {
+                "name": "Tablet"
+              },
+              "quantity": 2
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+
+### 8. 查询购买了Phone的用户列表
+```graphql
+query {
+  userList(orders: {items: {product: {name: {opr: EQ val: "Phone"}}}}) {
+    name
+    orders {
+      items {
+        product {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "userList": [
+      {
+        "name": "Bob",
+        "orders": [
+          {
+            "items": [
+              {
+                "product": {
+                  "name": "Phone"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Diana",
+        "orders": [
+          {
+            "items": [
+              {
+                "product": {
+                  "name": "Laptop"
+                }
+              },
+              {
+                "product": {
+                  "name": "Phone"
+                }
+              },
+              {
+                "product": {
+                  "name": "Tablet"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 ## 分页查询
 
 Graphoenix支持[普通分页和游标分页](https://graphql.org/learn/pagination/)([中文](https://graphql.cn/learn/pagination/)), 支持[GraphQL Cursor Connections规范](https://relay.dev/graphql/connections.htm)
@@ -380,6 +475,13 @@ query {
 
 [游标分页简介](https://github.com/x1ah/Blog/issues/15)
 
+```json
+{ id: "10", name: "Jane", email: "jane@example.com", userType: REGULAR },
+{ id: "11", name: "Kyle", email: "kyle@example.com", userType: VIP },
+```
+
+查询Jane之后的5条, 游标字段默认为ID字段, 也可使用@cursor指定游标字段, 此处取Jane的id: 10
+
 ```graphql
 query {
   userConnection(after: 10 first: 5) {
@@ -387,6 +489,7 @@ query {
       hasNextPage
     }
     edges {
+      cursor
       node {
         name
         email
@@ -408,6 +511,7 @@ query {
       },
       "edges": [
         {
+          "cursor": "11",
           "node": {
             "name": "Kyle",
             "email": "kyle@example.com",
@@ -415,6 +519,7 @@ query {
           }
         },
         {
+          "cursor": "12",
           "node": {
             "name": "Laura",
             "email": "laura@example.com",
@@ -422,6 +527,7 @@ query {
           }
         },
         {
+          "cursor": "13",
           "node": {
             "name": "Mike",
             "email": "mike@example.com",
@@ -429,6 +535,7 @@ query {
           }
         },
         {
+          "cursor": "14",
           "node": {
             "name": "Nina",
             "email": "nina@example.com",
@@ -436,6 +543,7 @@ query {
           }
         },
         {
+          "cursor": "15",
           "node": {
             "name": "Oliver",
             "email": "oliver@example.com",
@@ -456,6 +564,7 @@ query {
       hasNextPage
     }
     edges {
+      cursor
       node {
         name
         email
@@ -465,6 +574,8 @@ query {
   }
 }
 ```
+
+Tina为最后一个用户, hasNextPage变为false
 
 ```json
 {
@@ -477,6 +588,7 @@ query {
       },
       "edges": [
         {
+          "cursor": "16",
           "node": {
             "name": "Paula",
             "email": "paula@example.com",
@@ -484,6 +596,7 @@ query {
           }
         },
         {
+          "cursor": "17",
           "node": {
             "name": "Quentin",
             "email": "quentin@example.com",
@@ -491,6 +604,7 @@ query {
           }
         },
         {
+          "cursor": "18",
           "node": {
             "name": "Rachel",
             "email": "rachel@example.com",
@@ -498,6 +612,7 @@ query {
           }
         },
         {
+          "cursor": "19",
           "node": {
             "name": "Steve",
             "email": "steve@example.com",
@@ -505,6 +620,7 @@ query {
           }
         },
         {
+          "cursor": "20",
           "node": {
             "name": "Tina",
             "email": "tina@example.com",

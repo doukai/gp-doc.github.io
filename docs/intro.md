@@ -12,3 +12,5 @@ sidebar_position: 1
 6. 多范式数据库支持：SQL/KV/Cypher...
 
 灵感来自[Hasura GraphQL Engine](https://hasura.io/)
+
+![The constellation Phoenix](@site/static/img/Phoenix-Constellation.jpg "The constellation Phoenix")

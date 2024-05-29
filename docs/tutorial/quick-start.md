@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 快速开始
 
-我们基于一个订单系统的开发, 逐步展示平台特性.
+我们模拟一个订单系统的开发, 逐步展示技术特性.
 
 1. [GraphQL 类型](https://graphql.org/learn/schema/)的定义
 2. [GraphQL 的查询, 变更](https://graphql.org/learn/queries/)和[订阅](https://graphql.org/blog/2015-10-16-subscriptions/)
@@ -104,7 +104,7 @@ Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html
                         |-- other.gql         定义其他相关类型
 ```
 
-如上所示, app 项目引入 order 和 other 两个包, 如同货轮(app)和集装箱(order, other), 可根据需求灵活的组合成单体架构或拆分为分布式架构.
+如上所示, app 项目引入 order 和 other 两个包, 如同货轮(app)和集装箱(order, other), 可根据需求灵活的组合成单体架构或拆分为微服务.
 
 ### 配置包
 
@@ -163,7 +163,7 @@ import io.graphoenix.spi.annotation.Package;
 
 3. 定义 GraphQL Schema, 关于 GraphQL 的基础知识, 可以参考[GraphQL 官方教程](https://graphql.org/learn/)
 
-设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)和一个购买者, 每个订单项对应一个产品和购买数量.
+设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)和一个购买者(User), 每个订单项对应一个产品(Product)和购买数量.
 
 ```graphql title="order-package/src/main/resources/graphql/order.gql"
 "用户"
