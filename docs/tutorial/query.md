@@ -12,7 +12,7 @@ sidebar_position: 3
 
 ### 1. 查询前5个用户
 ```graphql
-query {
+{
   userList(first: 5) {
     name
     email
@@ -57,8 +57,8 @@ query {
 
 ### 2. 查询名为Bob的用户
 ```graphql
-query {
-  user(name: {opr: EQ val: "Bob"}) {
+{
+  user(name: {opr: EQ, val: "Bob"}) {
     name
     email
     userType
@@ -80,11 +80,11 @@ query {
 
 ### 3. 查询所有会员用户和价格大于200的产品
 ```graphql
-query {
-  vip: userList(userType: {opr: EQ val: VIP}) {
+{
+  vip: userList(userType: {opr: EQ, val: VIP}) {
     name
   }
-  greaterThan200: productList(price: {opr: GT val: 200}) {
+  greaterThan200: productList(price: {opr: GT, val: 200}) {
     name
     price
   }
@@ -146,7 +146,7 @@ query {
 
 ### 4. 查询产品列表, 价格由高到低
 ```graphql
-query {
+{
   productList(orderBy: {price: DESC}) {
     name
     price
@@ -185,8 +185,8 @@ query {
 
 ### 5. 查询价格在300以内, 价格最高的产品
 ```graphql
-query {
-  product(price: {opr: LTE val:300}) {
+{
+  product(price: {opr: LTE, val: 300}) {
     name
     priceMax
   }
@@ -206,7 +206,7 @@ query {
 
 ### 6. 分组查询普通用户和会员用户的数量
 ```graphql
-query {
+{
   userList(groupBy: ["userType"]) {
     userType
     idCount
@@ -233,8 +233,8 @@ query {
 
 ### 7. 查询Alice的订单
 ```graphql
-query {
-  user(name: {opr: EQ val: "Alice"}) {
+{
+  user(name: {opr: EQ, val: "Alice"}) {
     name
     orders {
       items {
@@ -279,8 +279,8 @@ query {
 
 ### 8. 查询购买了Phone的用户列表
 ```graphql
-query {
-  userList(orders: {items: {product: {name: {opr: EQ val: "Phone"}}}}) {
+{
+  userList(orders: {items: {product: {name: {opr: EQ, val: "Phone"}}}}) {
     name
     orders {
       items {
@@ -347,7 +347,7 @@ Graphoenix支持[普通分页和游标分页](https://graphql.org/learn/paginati
 
 ### 1. 查询用户第1页, 每页5条
 ```graphql
-query {
+{
   userConnection(first: 5) {
     totalCount
     edges {
@@ -410,8 +410,8 @@ query {
 
 ### 2. 查询用户第2页, 每页5条
 ```graphql
-query {
-  userConnection(offset: 5 first: 5) {
+{
+  userConnection(offset: 5, first: 5) {
     totalCount
     edges {
       node {
@@ -483,8 +483,8 @@ query {
 查询Jane之后的5条, 游标字段默认为ID字段, 也可使用@cursor指定游标字段, 此处取Jane的id: 10
 
 ```graphql
-query {
-  userConnection(after: 10 first: 5) {
+{
+  userConnection(after: 10, first: 5) {
     pageInfo {
       hasNextPage
     }
@@ -558,8 +558,8 @@ query {
 
 ### 4. 查询用户第4页, 每页5条, 游标分页
 ```graphql
-query {
-  userConnection(after: 15 first: 5) {
+{
+  userConnection(after: 15, first: 5) {
     pageInfo {
       hasNextPage
     }
