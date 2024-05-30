@@ -127,6 +127,9 @@ buildscript {
 
 // highlight-start
 apply plugin: 'io.graphoenix'
+classes.dependsOn {
+    generateGraphQLSource
+}
 // highlight-end
 
 repositories {
@@ -221,7 +224,7 @@ type OrderItem {
 }
 ```
 
-4. 使用Gradle插件生成 Java Bean
+4. 使用 Gradle 插件生成 Java Bean
 
 ```bash
 ./gradlew :order-package:generateGraphQLSource
