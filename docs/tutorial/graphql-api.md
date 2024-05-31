@@ -8,11 +8,7 @@ sidebar_position: 5
 
 GraphQL Api 基于[Microprofile GraphQL 协议](https://github.com/eclipse/microprofile-graphql)实现
 
-使用@GraphQLApi 注解标记 CDI Bean
-
-## 查询接口
-
-### 1. 定义一个简单接口, 传入 userName, 返回欢迎和系统时间
+新建 SystemApi.java 来构建 api
 
 ```txt
 |-- order-package                             订单包
@@ -33,6 +29,10 @@ GraphQL Api 基于[Microprofile GraphQL 协议](https://github.com/eclipse/micro
                         |-- objectType        Object类型
 ```
 
+## 查询接口
+
+### 1. 定义一个简单接口, 传入 userName, 返回欢迎和系统时间
+
 定义 hello 接口, 使用@Query 注解标记接口方法
 
 ```java
@@ -45,7 +45,7 @@ import org.eclipse.microprofile.graphql.Query;
 import java.time.LocalDateTime;
 
 // highlight-start
-@GraphQLApi
+@GraphQLApi // 使用@GraphQLApi 注解标记接口所在 CDI Bean
 // highlight-end
 @ApplicationScoped
 public class SystemApi {
@@ -75,11 +75,48 @@ public class SystemApi {
 }
 ```
 
+### 2. 定义一个异步接口, 传入 userName, 异步返回欢迎和系统时间
+
+```java
+// highlight-start
+@GraphQLApi
+// highlight-end
+@ApplicationScoped
+public class SystemApi {
+
+    // ...省略其他接口
+
+// highlight-start
+    @Query
+    public Mono<String> helloAsync(String userName) {
+        return Mono.just(LocalDateTime.now())
+                .map(now -> "Hello " + userName + ", The time is now " + now);
+    }
+// highlight-end
+}
+```
+
+查询 helloAsync 接口
+
+```graphql
+{
+  helloAsync(userName: "Gosling")
+}
+```
+
+```json
+{
+  "data": {
+    "helloAsync": "Hello Gosling, The time is now 2024-05-31T16:18:39.851451"
+  }
+}
+```
+
 ## 变更接口
 
 ### 1. 模拟一个用户注册接口
 
-使用@Input 注解定义输入对象
+本次我们使用对象结构来定义接口输入参数和返回结果, 首先使用@Input 注解定义输入对象
 
 ```java
 package demo.gp.order.api;
@@ -169,7 +206,11 @@ public class SystemApi {
 ```graphql
 mutation {
   register(
-    registerInput: {name: "Gosling", email: "gosling@java.com", birthday: "1955-05-19"}
+    registerInput: {
+      name: "Gosling"
+      email: "gosling@java.com"
+      birthday: "1955-05-19"
+    }
   ) {
     account
     password
@@ -189,3 +230,44 @@ mutation {
   }
 }
 ```
+
+### 2. 定义一个异步变更接口, 返回 Flux
+
+```java
+// highlight-start
+@GraphQLApi
+// highlight-end
+@ApplicationScoped
+public class SystemApi {
+
+    // ...省略其他接口
+
+// highlight-start
+    @Mutation
+    public Flux<String> countingSheep(int count) {
+        return Flux.range(0, count)
+                .map(index -> index + 1 + " sheep");
+    }
+// highlight-end
+}
+```
+
+查询 countingSheep 接口
+
+```graphql
+mutation {
+  countingSheep(count: 3)
+}
+```
+
+Flux 的值会聚合成数组后返回
+
+```json
+{
+  "data": {
+    "countingSheep": ["1 sheep", "2 sheep", "3 sheep"]
+  }
+}
+```
+
+## 接口字段

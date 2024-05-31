@@ -7,11 +7,8 @@ sidebar_position: 1
 **Graphoenix**是基于[GraphQL](https://graphql.org/)和[Reactor](https://projectreactor.io/)的 Java 全栈开发平台.
 
 1. 开箱即用的 GraphQL 接口
-2. 轻量级, 不依赖于 Spring, Mybatis 等基础框架
-3. 编码异步化, 编译时增强, 运行时无反射
-4. 单体与分布式可切换的渐进式架构
-5. 多协议通讯支持：Http/gRPC/Rsocket...
-6. 多范式数据库支持：SQL/KV/Cypher...
+2. 轻量级, 响应式的Java框架
+3. 单体与微服务, 可切换的渐进式架构
 
 _灵感来自[Hasura GraphQL Engine](https://hasura.io/)_
 

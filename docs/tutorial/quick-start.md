@@ -6,14 +6,13 @@ sidebar_position: 1
 
 我们模拟一个订单系统的开发, 逐步展示技术特性.
 
-1. [GraphQL 类型](https://graphql.org/learn/schema/)的定义
-2. [GraphQL 的查询, 变更](https://graphql.org/learn/queries/)和[订阅](https://graphql.org/blog/2015-10-16-subscriptions/)
-3. GPA-based (GraphQL Persistence API) repositories
-4. 基于[MicroProfile](https://microprofile.io/)和[Jakarta EE](https://jakarta.ee/specifications/)协议的依赖注入, 切面和配置
-5. 异步(Async)和同步(Await)
-6. 基于[Gossip](https://icyfenix.cn/distribution/consensus/gossip.html)协议的分布式和[gRPC](https://grpc.io/)通讯
-7. 基于[JWT](https://jwt.io/)和[Casbin](https://casbin.org/)定制的鉴权与授权
-8. 基于[Svelte](https://svelte.dev/)和[Tailwind CSS](https://tailwindcss.com/)定制的 UI 界面
+## 预备知识
+
+如果还没有基本的 GraphQL 知识, 可以先去[GraphQL 官网](https://graphql.org/)([中文站](https://graphql.cn/))了解基础概念.
+
+[GraphQL 生态](https://www.howtographql.com/)
+
+[Awesome list of GraphQL](https://github.com/chentsulin/awesome-graphql/)
 
 ## 系统要求
 
