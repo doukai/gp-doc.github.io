@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 快速开始
 
-我们模拟一个订单系统的开发, 逐步展示技术特性.
+我们模拟一个订单系统的开发, 逐步展示功能和特性.
 
 ## 预备知识
 
@@ -163,9 +163,9 @@ package demo.gp.order;
 import io.graphoenix.spi.annotation.Package;
 ```
 
-3. 定义 GraphQL Schema, 关于 GraphQL 的基础知识, 可以参考[GraphQL 官方教程](https://graphql.org/learn/)
+3. 定义 GraphQL Schema
 
-设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)和一个购买者(User), 每个订单项对应一个产品(Product)和购买数量.
+设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)和一个购买者(User), 每个订单项对应一个产品(Product)和该产品的购买数量.
 
 ```graphql title="order-package/src/main/resources/graphql/order.gql"
 "用户"

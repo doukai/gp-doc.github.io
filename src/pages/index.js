@@ -6,7 +6,6 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
-import LogoSvg from '@site/static/img/logo.svg';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -14,7 +13,7 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className="hero__title">
-          <span className='text_gradient'>{siteConfig.title}</span><LogoSvg />
+          <span className='text_gradient'>{siteConfig.title}</span>
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
