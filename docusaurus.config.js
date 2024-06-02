@@ -9,7 +9,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Graphoenix',
-  tagline: '出色的Java, 如今更出色',
+  tagline: '响应式GraphQL引擎',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here

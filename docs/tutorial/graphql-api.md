@@ -8,7 +8,7 @@ sidebar_position: 5
 
 GraphQL Api 基于[Microprofile GraphQL 协议](https://github.com/eclipse/microprofile-graphql)实现
 
-新建 SystemApi.java 来构建 api
+新建 SystemApi.java 来构建 api 示例
 
 ```txt
 |-- order-package                             订单包
@@ -78,9 +78,7 @@ public class SystemApi {
 ### 2. 定义一个异步接口, 传入 userName, 异步返回欢迎和系统时间
 
 ```java
-// highlight-start
 @GraphQLApi
-// highlight-end
 @ApplicationScoped
 public class SystemApi {
 
@@ -234,9 +232,7 @@ mutation {
 ### 2. 定义一个异步变更接口, 返回 Flux
 
 ```java
-// highlight-start
 @GraphQLApi
-// highlight-end
 @ApplicationScoped
 public class SystemApi {
 
@@ -270,9 +266,220 @@ Flux 的元素会聚合成数组后返回
 }
 ```
 
-## 接口字段
+## 字段接口
 
-在有些场景下, 需要在数据库返回结果后进行计算, 如数学计算和调用规则引擎等, 我们以用户订单为例, 计算每一个订单的价格合计
+在有些场景下, 需要在数据库返回后对结果进行加工, 并产生新的字段, 如数学计算和调用规则引擎等
 
-使用@Source注解在接口参数中标记对象参数, 此参数类型的是带有@Type注解的对象Bean
+### 1. 计算每一个订单的价格合计
 
+使用@Source注解在接口参数中标记带有@Type注解的Bean
+
+```java
+@GraphQLApi
+@ApplicationScoped
+public class SystemApi {
+
+    // ...省略其他接口
+
+// highlight-start
+    public Float total(@Source Order order) {
+        if (order.getItems() != null) {
+            return order.getItems().stream()
+                    .filter(orderItem -> orderItem.getProduct() != null && orderItem.getProduct().getPrice() != null)
+                    .map(orderItem -> orderItem.getProduct().getPrice() * orderItem.getQuantity())
+                    .reduce(Float::sum)
+                    .orElse(null);
+        }
+        return null;
+    }
+// highlight-end
+}
+```
+
+此时Order对象会生成一个新的名为total的字段
+
+```graphql
+type Order implements Meta {
+  "订单ID"
+  id: ID!
+  "购买用户"
+  user: User!
+  "产品列表"
+  items: [OrderItem!]!
+  // highlight-start
+  total: Float
+  // highlight-end
+}
+```
+
+查询用户Diana的订单
+
+```graphql
+{
+  user(name: {opr: EQ, val: "Diana"}) {
+    name
+    orders {
+      items {
+        product {
+          name
+          price
+        }
+        quantity
+      }
+      // highlight-start
+      total
+      // highlight-end
+    }
+  }
+}
+```
+
+订单会在api接口中计算后返回结果
+
+```json
+{
+  "data": {
+    "user": {
+      "name": "Diana",
+      "orders": [
+        {
+          "items": [
+            {
+              "product": {
+                "name": "Laptop",
+                "price": 999.99
+              },
+              "quantity": 1
+            },
+            {
+              "product": {
+                "name": "Phone",
+                "price": 499.99
+              },
+              "quantity": 1
+            },
+            {
+              "product": {
+                "name": "Tablet",
+                "price": 299.99
+              },
+              "quantity": 1
+            }
+          ],
+          // highlight-start
+          "total": 1799.97
+          // highlight-end
+        }
+      ]
+    }
+  }
+}
+```
+
+## 参数接口
+
+查询或变更的参数有时需要在后台校验或修改
+
+### 1. 在后台增加条件, 隐藏用户Mike
+
+使用@Source注解在接口参数中标记带有@Input注解的Bean, 接口的返回值将会覆盖原始参数
+
+```java
+@GraphQLApi
+@ApplicationScoped
+public class SystemApi {
+
+    // ...省略其他接口
+
+// highlight-start
+    public UserListQueryArguments hideMike(@Source UserListQueryArguments userListQueryArguments) {
+        if (userListQueryArguments == null) {
+            userListQueryArguments = new UserListQueryArguments();
+        }
+        StringExpression stringExpression = new StringExpression();
+        stringExpression.setOpr(Operator.NEQ);
+        stringExpression.setVal("Mike");
+        userListQueryArguments.setName(stringExpression);
+        return userListQueryArguments;
+    }
+// highlight-end
+}
+```
+
+查询用户列表
+
+```graphql
+{
+  userList {
+    name
+  }
+}
+```
+
+用户列表中没有Mike
+
+```json
+{
+  "data": {
+    "userList": [
+      {
+        "name": "Alice"
+      },
+      {
+        "name": "Bob"
+      },
+      {
+        "name": "Charlie"
+      },
+      {
+        "name": "Diana"
+      },
+      {
+        "name": "Edward"
+      },
+      {
+        "name": "Fiona"
+      },
+      {
+        "name": "George"
+      },
+      {
+        "name": "Hannah"
+      },
+      {
+        "name": "Ian"
+      },
+      {
+        "name": "Jane"
+      },
+      {
+        "name": "Kyle"
+      },
+      {
+        "name": "Laura"
+      },
+      {
+        "name": "Nina"
+      },
+      {
+        "name": "Oliver"
+      },
+      {
+        "name": "Paula"
+      },
+      {
+        "name": "Quentin"
+      },
+      {
+        "name": "Rachel"
+      },
+      {
+        "name": "Steve"
+      },
+      {
+        "name": "Tina"
+      }
+    ]
+  }
+}
+```
