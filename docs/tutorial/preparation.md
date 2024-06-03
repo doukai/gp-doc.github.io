@@ -4,19 +4,19 @@ sidebar_position: 2
 
 # 准备工作
 
-在正式开始之前, 我们先花一点时间准备客户端工具和生成示例数据.
+在正式开始之前, 我们先花一点时间准备客户端工具和生成示例数据
 
 ## 工具
 
 可以直接访问内置的客户端工具: http://localhost:8906/
 ![graphiQL](./img/graphiQL.png "graphiQL")
 
-也推荐使用全平台的 GraphQL 客户端: https://altairgraphql.dev/
+也推荐使用全平台的 Altair GraphQL Client: https://altairgraphql.dev/
 ![Altair](https://altairgraphql.dev/assets/img/app-shot.png "Altair")
 
 ## 示例数据
 
-最后我们使用[变更](/docs/guide/mutation)来初始化一些示例数据, 变更的内容会在后面的示例里更详细的说明.
+最后我们使用[变更](/docs/guide/mutation)来初始化一些示例数据, 变更的内容会在后面的示例里更详细的说明
 
 ```graphql
 mutation {

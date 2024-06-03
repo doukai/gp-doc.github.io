@@ -4,11 +4,11 @@ sidebar_position: 1
 
 # 快速开始
 
-我们模拟一个订单系统的开发, 逐步展示功能和特性.
+我们模拟一个订单系统的开发, 逐步展示功能和特性
 
 ## 预备知识
 
-如果还没有基本的 GraphQL 知识, 可以先去[GraphQL 官网](https://graphql.org/)([中文站](https://graphql.cn/))了解基础概念.
+如果还没有基本的 GraphQL 知识, 可以先去[GraphQL 官网](https://graphql.org/)([中文站](https://graphql.cn/))了解基础概念
 
 [GraphQL 生态](https://www.howtographql.com/)
 
@@ -63,7 +63,7 @@ networks:
 
 推荐使用官方脚手架快速初始化项目 **[Graphoenix Server Initializer](https://gp-init.github.io)**.
 
-Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html)进行构建, 未来会推出 Maven 版本:
+Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html)进行构建, 未来会推出 Maven 版本
 
 项目结构:
 
@@ -103,11 +103,11 @@ Graphoenix 使用[Gradle](https://docs.gradle.org/6.9.4/userguide/userguide.html
                         |-- other.gql         定义其他相关类型
 ```
 
-如上所示, app 项目引入 order 和 other 两个包, 如同货轮(app)和集装箱(order, other), 可根据需求灵活的组合成单体架构或拆分为微服务.
+如上所示, app 项目引入 order 和 other 两个包, 如同货轮(app)和集装箱(order, other), 可根据需求灵活的组合成单体架构或拆分为微服务
 
 ### 配置包
 
-1. 引入依赖与 Gradle 插件
+#### 1. 引入依赖与 Gradle 插件
 
 ```gradle title="order-package/build.gradle"
 buildscript {
@@ -152,7 +152,7 @@ dependencies {
 }
 ```
 
-2. 定义包名类
+#### 2. 定义包名类
 
 ```java title="order-package/src/main/java/demo/gp/order/package-info.java"
 // highlight-start
@@ -163,9 +163,9 @@ package demo.gp.order;
 import io.graphoenix.spi.annotation.Package;
 ```
 
-3. 定义 GraphQL Schema
+#### 3. 定义 GraphQL Schema
 
-设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)和一个购买者(User), 每个订单项对应一个产品(Product)和该产品的购买数量.
+设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)和一个购买者(User), 每个订单项对应一个产品(Product)和该产品的购买数量
 
 ```graphql title="order-package/src/main/resources/graphql/order.gql"
 "用户"
@@ -223,7 +223,7 @@ type OrderItem {
 }
 ```
 
-4. 使用 Gradle 插件生成 Java Bean
+#### 4. 使用 Gradle 插件生成 Java Bean
 
 ```bash
 ./gradlew :order-package:generateGraphQLSource
@@ -236,7 +236,7 @@ type OrderItem {
 
 </details>
 
-插件将根据 graphql 文件生成 Java bean, 使用这些 Java bean 进行业务逻辑编写和 GPA 接口定义.
+插件将根据 graphql 文件生成 Java bean, 使用这些 Java bean 进行业务逻辑编写和 GPA 接口定义
 
 ```
 |-- order-package                             订单包
@@ -255,7 +255,7 @@ type OrderItem {
 
 ### 配置启动器
 
-1. 引入依赖
+#### 1. 引入依赖
 
 ```gradle title="order-app/build.gradle"
 repositories {
@@ -290,7 +290,7 @@ dependencies {
 }
 ```
 
-2. 创建启动类
+#### 2. 创建启动类
 
 ```java title="order-app/src/main/java/demo/gp/order/App.java"
 package demo.gp.order;
@@ -310,7 +310,7 @@ public class App {
 }
 ```
 
-3. 配置服务与数据库
+#### 3. 配置服务与数据库
 
 ```hocon title="order-app/src/main/resources/graphql/application.conf"
 graphql {

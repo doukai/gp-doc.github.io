@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # 查询(query)
 
-快速浏览查询示例.
+快速浏览查询示例
 
 ## 基本查询
 

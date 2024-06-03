@@ -2,9 +2,9 @@
 sidebar_position: 5
 ---
 
-# GPI(GraphQL Api)
+# GPI(GraphQL API)
 
-定义 GraphQL 编程接口.
+定义 GraphQL 编程接口
 
 GraphQL Api 基于[Microprofile GraphQL 协议](https://github.com/eclipse/microprofile-graphql)实现
 
@@ -378,7 +378,7 @@ type Order implements Meta {
 
 ## 参数接口
 
-查询或变更的参数有时需要在后台校验或修改
+在有些场景下, 需要在数据库查询和变更前对查询条件或提交内容进行加工, 如校验, 鉴权或修改等
 
 ### 1. 在后台增加条件, 隐藏用户Mike
 

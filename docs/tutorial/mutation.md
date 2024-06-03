@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # 变更(mutation)
 
-快速浏览变更示例.
+快速浏览变更示例
 
 变更包含新增(Insert)和更新(Update)两种操作, 在 GraphQL 的基础之上, 我们规定:
 
