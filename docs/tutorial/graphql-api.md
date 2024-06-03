@@ -6,7 +6,7 @@ sidebar_position: 5
 
 定义 GraphQL 编程接口
 
-GraphQL Api 基于[Microprofile GraphQL 协议](https://github.com/eclipse/microprofile-graphql)实现
+GraphQL API 基于[Microprofile GraphQL 协议](https://github.com/eclipse/microprofile-graphql)实现
 
 新建 SystemApi.java 来构建 api 示例
 
@@ -172,6 +172,7 @@ public class SystemApi {
 
     // ...省略其他方法
 
+    // highlight-start
     @Mutation
     public RegisterResult register(RegisterInput registerInput) {
         String account = registerInput.getEmail().substring(0, registerInput.getEmail().indexOf("@"));
@@ -179,23 +180,12 @@ public class SystemApi {
 
         RegisterResult registerResult = new RegisterResult();
         registerResult.setAccount(account);
-        registerResult.setPassword(genPassword());
+        registerResult.setPassword(UUID.randomUUID().toString());
         registerResult.setAge(age);
 
         return registerResult;
     }
-
-    private String genPassword() {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-
-        return random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-    }
+    // highlight-end
 }
 ```
 

@@ -68,10 +68,10 @@ import java.util.List;
 public interface UserRepository {
 
     // highlight-start
-    // 查询所有userType=VIP的User
+    // 查询所有用户类型=VIP的User
     @Query(userList = @UserListQueryArguments(userType = @UserTypeExpression1(opr = Operator.EQ, val = UserType.VIP)))
     // highlight-end
-    List<User> queryVIPUserList();
+    Mono<List<User>> queryVIPUserList();
 }
 ```
 
@@ -110,4 +110,71 @@ public class UserRepositoryTest {
 
 ```log
 INFO: Test Successful for test queryVIPUserListTest():
+```
+
+### 2. 根据变量查询用户
+
+以 **$** 开头的参数可以指定方法参数名, 作为接口变量
+
+```java
+package demo.gp.order.repository;
+
+// highlight-start
+import demo.gp.order.dto.annotation.Query;
+// highlight-end
+import demo.gp.order.dto.annotation.UserListQueryArguments;
+import demo.gp.order.dto.annotation.UserTypeExpression1;
+import demo.gp.order.dto.enumType.UserType;
+import demo.gp.order.dto.objectType.User;
+import io.graphoenix.core.dto.enumType.Operator;
+import io.graphoenix.spi.annotation.GraphQLOperation;
+
+import java.util.List;
+
+@GraphQLOperation
+public interface UserRepository {
+
+    // highlight-start
+    // 查询所有用户类型=userType参数的User
+    @Query(userList = @UserListQueryArguments(userType = @UserTypeExpression1(opr = Operator.EQ, $val = "userType")))
+    // highlight-end
+    Mono<List<User>> queryVIPUserListByUserType(UserType userType);
+}
+```
+
+测试每一个 User 的 userType
+
+```java
+package demo.gp.order.test;
+
+import demo.gp.order.dto.enumType.UserType;
+import demo.gp.order.dto.objectType.User;
+import demo.gp.order.repository.UserRepository;
+import io.nozdormu.spi.context.BeanContext;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(TestResultLoggerExtension.class)
+public class UserRepositoryTest {
+
+    private final UserRepository userRepository = BeanContext.get(UserRepository.class);
+
+    @Test
+    void queryVIPUserListByUserTypeTest() {
+        List<User> userLit = userRepository.queryVIPUserListByUserType(UserType.REGULAR).block();
+        Assertions.assertAll(
+                userLit.stream().map((item) -> () -> assertEquals(item.getUserType(), UserType.REGULAR))
+        );
+    }
+}
+```
+
+输出结果
+
+```log
+INFO: Test Successful for test queryVIPUserListByUserTypeTest():
 ```
