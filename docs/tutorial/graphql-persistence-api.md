@@ -4,9 +4,9 @@ sidebar_position: 6
 
 # GPA(GraphQL Persistence API)
 
-定义 GraphQL 持久化接口.
+定义 GraphQL 持久化接口
 
-GraphQL Persistence API 类似于 JPA(Java Persistence API), 比 JPA 更简洁直观
+GraphQL Persistence API 类似于 JPA(Java Persistence API), 比 JPA 更简洁
 
 新建 UserRepository.java 来构建 persistence api 示例
 
@@ -342,14 +342,16 @@ INFO: Test Successful for test queryPriceMaxLessThanTest():
 
 ### 1. 新增用户 Yara
 
+使用@Mutation 注解标记接口方法, 请注意, 此处的@Mutation 注解是在之前生成的的[GPA 注解](/docs/tutorial/quick-start#4-使用-gradle-插件生成-java-bean), **并非 org.eclipse.microprofile.graphql.Mutation**
+
 ```java
 @GraphQLOperation
 public interface UserRepository {
 
     // highlight-start
     @Mutation(user = @UserMutationArguments($input = "userInput"))
-    @SelectionSet("{ id name email userType }")
     // highlight-end
+    @SelectionSet("{ id name email userType }")
     Mono<User> mutationUser(UserInput userInput);
 }
 ```
@@ -381,4 +383,75 @@ public class UserRepositoryTest {
 
 ```log
 INFO: Test Successful for test mutationUserTest():
+```
+
+### 2. 更新用户
+
+```java
+@GraphQLOperation
+public interface UserRepository {
+
+    // highlight-start
+    @Mutation(user = @UserMutationArguments($userType = "userType", where = @UserExpression1(name = @StringExpression2(opr = Operator.EQ, $val = "name"))))
+    // highlight-end
+    @SelectionSet("{ id name userType }")
+    Mono<User> updateUserTypeByName(UserType userType, String name);
+}
+```
+
+```java
+@ExtendWith(TestResultLoggerExtension.class)
+public class UserRepositoryTest {
+
+    private final UserRepository userRepository = BeanContext.get(UserRepository.class);
+
+    @Test
+    void updateUserTypeByNameTest() {
+        User user = userRepository.updateUserTypeByName(UserType.REGULAR, "Yara").block();
+        assertAll(
+                () -> assertEquals(user.getName(), "Yara"),
+                () -> assertEquals(user.getUserType(), UserType.REGULAR)
+        );
+    }
+}
+```
+
+输出结果
+
+```log
+INFO: Test Successful for test updateUserTypeByNameTest():
+```
+
+### 3. 删除用户
+
+```java
+@GraphQLOperation
+public interface UserRepository {
+
+    // highlight-start
+    @Mutation(user = @UserMutationArguments(isDeprecated = true, where = @UserExpression1(name = @StringExpression2(opr = Operator.EQ, $val = "name"))))
+    // highlight-end
+    @SelectionSet("{ id }")
+    Mono<User> removeUserByName(String name);
+}
+```
+
+```java
+@ExtendWith(TestResultLoggerExtension.class)
+public class UserRepositoryTest {
+
+    private final UserRepository userRepository = BeanContext.get(UserRepository.class);
+
+    @Test
+    void removeUserByNameTest() {
+        User user = userRepository.removeUserByName("Yara").block();
+        assertNull(user);
+    }
+}
+```
+
+输出结果
+
+```log
+INFO: Test Successful for test removeUserByNameTest():
 ```

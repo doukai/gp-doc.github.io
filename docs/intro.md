@@ -11,5 +11,3 @@ sidebar_position: 1
 3. 单体与微服务, 可切换的渐进式架构
 
 _灵感来自[Hasura GraphQL Engine](https://hasura.io/)_
-
-![The constellation Phoenix](@site/static/img/Phoenix-Constellation.jpg "关于Logo")

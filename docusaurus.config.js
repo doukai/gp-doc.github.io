@@ -53,7 +53,10 @@ const config = {
       }),
     ],
   ],
-
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -126,7 +129,10 @@ const config = {
         darkTheme: prismThemes.dracula,
         additionalLanguages: ['java', 'gradle', 'graphql', 'bash', 'yaml', 'json'],
       },
-    }),
+      mermaid: {
+        theme: { light: 'neutral', dark: 'forest' },
+      },
+    })
 };
 
 export default config;
