@@ -40,29 +40,72 @@ flowchart LR
 
 Graphoenix 皆在在项目的各个阶段和各个环节提供规范化, 插件化, 可伸缩的解决方案, 充分利用 GraphQL 协议, 打造透明高效的开发流程, 释放 x10 倍的开发效率
 
-1. 我们发现, 前端和后端把大量的时间浪费在了接口的定义和对接, 前端总是希望得到开箱即用的数据, 而后端则希望格式化的返回数据, Graphonix充分利用GraphQL协议的特性充当中间人, 后端无需关心前端组件的定制化需求, 前端也无需对后端的数据东拼西凑
+### 按需所取
+
+我们发现, 前端和后端把大量的时间浪费在了接口的定义和对接, 前端总是希望得到开箱即用的数据, 而后端则希望模式化的返回数据, Graphonix充分利用GraphQL协议的特性充当中间人, 自动适配数据库, 构建参数和实例化服务, 实时响应前端请求
 
 ```mermaid
 flowchart LR
-    a["用户需求"] --> uml[[领域建模]] -- 定义对象与关系 --> schema((GraphQL定义))
-    graphql((GraphQL服务)) -- 按需返回 --> web[[组件封装]]
+    a["用户需求"] --> uml[[后端建模]] -- 定义对象与关系 --> schema((GraphQL定义))
+    graphql((GraphQL服务)) -- 按需返回 --> web[[前端组件]]
     web -. 按需查询 .-> graphql((GraphQL服务))
     subgraph Graphoenix
         schema -- 构建参数和服务 --> graphql
     end
 ```
 
-2. 对于CURD, Graphoenix实现了对于SQL的转译引擎, 跟去GraphQL请求动态转译为SQL, 通过响应式的r2dbc连接与数据库交互, 轻量透明高性能, 同时得益于GraphQL协议对于关系的描述, Graphoenix自动为对象托管关系映射
+### SQL引擎
+
+对于CURD, Graphoenix实现了对于SQL的转译引擎, 根据GraphQL请求动态转译为SQL, 通过响应式的r2dbc连接与数据库交互, 轻量透明高性能
+
 ```mermaid
 flowchart LR
-    uml[[领域建模]] -- 定义对象与关系 --> schema((GraphQL定义))
-    graphql((GraphQL服务)) -- 按需返回 --> web[[组件封装]]
-    web -. 按需查询 .-> graphql((GraphQL服务))
-    subgraph Graphoenix
-        schema -- 构建参数和服务 --> graphql
-    end
+    schema((GraphQL定义)) -- DDL --> db[(Database)]
+    db[(Database)] -- Rows --> graphql((GraphQL服务))
+    graphql -- DML --> db
+    graphql((GraphQL服务)) -- JSON --> request((GraphQL请求))
+    request -- Operation --> graphql
 ```
 
+### 关系构建
+
+得益于GraphQL对于图关系的描述能力, Graphoenix可以自动构建和托管对象关系
+
+```mermaid
+flowchart LR
+    A((A)) --> gp((Graphoenix))
+    B((B)) --> gp((Graphoenix))
+    C((C)) --> gp((Graphoenix))
+    gp((Graphoenix)) -- 生成 --> AB((AB))
+    gp((Graphoenix)) -- 生成 --> AC((AC))
+    gp((Graphoenix)) -- 生成 --> BC((BC))
+    A -.-> AB
+    B -.-> AB
+    A -.-> AC
+    C -.-> AC
+    B -.-> BC
+    C -.-> BC
+```
+
+### 代码生成
+
+1. 对于后端, 插件可以根据GraphQL定义生成Java Bean, 支持编程方式补充和拓展系统服务
+2. 对于前端, 代码生成器对每个对象生成通用的Table, Form, Select等UI组件, 自动对接后端接口
+
+```mermaid
+flowchart LR
+    schema((GraphQL定义)) --> graphql((GraphQL服务)) --> introspection((内省服务))
+    schema -- 生成代码 --> java[[Bean.java]]
+    code -- 更新 --> schema
+    introspection --> codegen{{代码生成器}}
+    ui <-. 请求 .-> graphql
+    subgraph 后端
+        java -- 引用 --> code[[业务代码.java]]
+    end
+    subgraph 前端
+        codegen --> ui[[组件.svelte]]
+    end
+```
 
 ```mermaid
 flowchart LR
