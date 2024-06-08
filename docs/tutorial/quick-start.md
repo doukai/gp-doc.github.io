@@ -4,15 +4,7 @@ sidebar_position: 1
 
 # 快速开始
 
-我们模拟一个订单系统的开发, 逐步展示功能和特性
-
-## 预备知识
-
-如果还没有基本的 GraphQL 知识, 可以先去[GraphQL 官网](https://graphql.org/)([中文站](https://graphql.cn/))了解基础概念
-
-[GraphQL 生态](https://www.howtographql.com/)
-
-[Awesome list of GraphQL](https://github.com/chentsulin/awesome-graphql/)
+初始化项目, 定义类型, 启动服务
 
 ## 系统要求
 
@@ -27,8 +19,8 @@ sidebar_position: 1
 version: "3.8"
 
 services:
-  order-mariadb:
-    container_name: order-mariadb
+  gp-mariadb:
+    container_name: gp-mariadb
     image: mariadb:10.6
     restart: unless-stopped
     ports:
@@ -40,19 +32,19 @@ services:
       MYSQL_PASSWORD: your-password
       MYSQL_HOST: "%"
     networks:
-      - order-net
+      - gp-net
 
-  order-rabbitmq:
-    container_name: order-rabbitmq
+  gp-rabbitmq:
+    container_name: gp-rabbitmq
     image: rabbitmq:3
     restart: unless-stopped
     ports:
       - "5672:5672"
     networks:
-      - order-net
+      - gp-net
 
 networks:
-  order-net:
+  gp-net:
 ```
 
 </details>

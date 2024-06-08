@@ -4,7 +4,15 @@ sidebar_position: 2
 
 # 准备工作
 
-在正式开始之前, 我们先花一点时间准备客户端工具和生成示例数据
+在正式开始之前, 我们先花一点时间了解基础知识, 准备客户端工具和生成示例数据
+
+## 预备知识
+
+如果还没有基本的 GraphQL 知识, 可以先去[GraphQL 官网](https://graphql.org/)([中文站](https://graphql.cn/))了解基础概念
+
+[GraphQL 生态](https://www.howtographql.com/)
+
+[Awesome list of GraphQL](https://github.com/chentsulin/awesome-graphql/)
 
 ## 工具
 
