@@ -89,12 +89,12 @@ flowchart LR
 
 ### 代码生成
 
-1. 对于后端, 插件可以根据GraphQL定义生成Java Bean, 支持编程方式补充和拓展系统服务
-2. 对于前端, 代码生成器对每个对象生成通用的Table, Form, Select等UI组件, 自动对接后端接口
+1. 对于后端, Graphoenix插件根据GraphQL定义生成Java Bean, 支持编程方式补充和拓展系统服务
+2. 对于前端, Graphoenix代码生成器对每个对象生成通用的Table, Form, Select等UI组件, 自动对接后端接口
 
 ```mermaid
 flowchart LR
-    schema((GraphQL定义)) --> graphql((GraphQL服务)) --> introspection((内省服务))
+    schema((GraphQL定义)) -- 构建参数和服务 --> graphql((GraphQL服务)) --> introspection((内省服务))
     schema -- 生成代码 --> java[[Bean.java]]
     code -- 更新 --> schema
     introspection --> codegen{{代码生成器}}
@@ -109,17 +109,60 @@ flowchart LR
 
 ### 统一校验
 
-Graphoenix编译器根据类型定义, 自动生成[JSON Schema](https://json-schema.org/), 前后端统一校验
+相同的校验逻辑需要在前后端重复两次, 效率低下且极易产生差异, Graphoenix编译器根据类型定义, 自动生成[JSON Schema](https://json-schema.org/), 前后端统一校验
 
 ```mermaid
 flowchart LR
     subgraph Graphoenix
         schema[[GraphQL定义]] -- 转译 --> jsonSchema[[json-schema.json]] --> http[[http端口]]
     end
-    http <-. 请求校验规则 .-> js & java
+    http <-. 请求(缓存)校验规则 .-> js
+    jsonSchema <-. 加载校验规则 .-> java
     form[[前端表单]] <-- 校验 --> js[validate.js]
     js -- 提交 --> func[[后端接口]] <-- 校验 --> java[validate.java]
 ```
+
+### 模块化
+
+Graphoenix在GraphQL协议的基础上引入模块化概念, 最大限度复用业务模型, 系统选择合适的模块引用, 像乐高积木一样快速构建产品
+
+```mermaid
+flowchart LR
+    user("example.gp.user
+    用户模块")
+    file("example.gp.file
+    文件模块")
+    pay("example.gp.pay
+    支付模块")
+    oa("example.gp.oa
+    OA模块")
+    oa("example.gp.oa
+    OA模块")
+    financial("example.gp.financial
+    财务模块")
+    crm("example.gp.crm
+    客户管理模块")
+    user-app{{"http://user.gp.com
+    用户系统"}}
+    file-app{{"http://file.gp.com
+    文件系统"}}
+    oa-app{{"http://oa.gp.com
+    OA系统"}}
+    erp-app{{"http://erp.gp.com
+    ERP系统"}}
+    financial-app{{"http://financial.gp.com
+    财务系统"}}
+    user -.-> user-app
+    user -.-> file -.-> file-app
+    user & file -.-> oa -.-> oa-app
+    user & file & financial & crm -.-> erp-app
+    user & pay -.-> financial
+    financial -.-> financial-app
+```
+
+### 可伸缩
+
+Graphoenix在GraphQL协议的基础上引入模块化概念, 最大限度复用业务模型, 系统选择合适的模块引用, 像乐高积木一样快速构建产品
 
 ```mermaid
 flowchart LR
