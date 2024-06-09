@@ -103,8 +103,22 @@ flowchart LR
         java -- 引用 --> code[[业务代码.java]]
     end
     subgraph 前端
-        codegen --> ui[[组件.svelte]]
+        codegen --> ui[[组件.js]]
     end
+```
+
+### 统一校验
+
+Graphoenix编译器根据类型定义, 自动生成[JSON Schema](https://json-schema.org/), 前后端统一校验
+
+```mermaid
+flowchart LR
+    subgraph Graphoenix
+        schema[[GraphQL定义]] -- 转译 --> jsonSchema[[json-schema.json]] --> http[[http端口]]
+    end
+    http <-. 请求校验规则 .-> js & java
+    form[[前端表单]] <-- 校验 --> js[validate.js]
+    js -- 提交 --> func[[后端接口]] <-- 校验 --> java[validate.java]
 ```
 
 ```mermaid
