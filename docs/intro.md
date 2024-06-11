@@ -17,27 +17,27 @@ GraphQL 既是一种用于 API 的查询语言也是一个满足你数据查询�
 ```mermaid
 flowchart LR
 subgraph 描述你的数据
-    schema[["type Product {
+    schema["type Product {
     &emsp;id: ID!
     &emsp;name: String!
     &emsp;price: Float!
-    }"]]
+    }"]
 end
 subgraph 请求你所要的数据
-    query[["query {
+    query["query {
     &emsp;product {
     &emsp;&emsp;name
     &emsp;&emsp;price
     &emsp;}
-    }"]]
+    }"]
 end
 subgraph 得到可预测的结果
-    response[["{
+    response["{
     &emsp;&quot;product&quot;: {
     &emsp;&emsp;&quot;name&quot;: &quot;Laptop&quot;
     &emsp;&emsp;&quot;price&quot;: 999.99
     &emsp;}
-    }"]]
+    }"]
 end
 描述你的数据 ==> 请求你所要的数据 ==> 得到可预测的结果
 style schema text-align:left
@@ -51,17 +51,17 @@ style response text-align:left
 
 ```mermaid
 flowchart LR
-    uml[[后端建模]] --> schema
+    uml[后端建模] --> schema
     request --> query -- 请求 --> http
     http -- 响应 --> response --> request
     subgraph Graphoenix
-        schema[["// types.graphql
+        schema["// types.graphql
         type Product {
         &emsp;id: ID!
         &emsp;name: String!
         &emsp;price: Float!
-        }"]]
-        graphql[["// schema.graphql
+        }"]
+        graphql["// schema.graphql
         schema {
         &emsp;query: Query
         &emsp;mutation: Mutation
@@ -71,30 +71,30 @@ flowchart LR
         &emsp;product: product
         &emsp;productList: [product]
         &emsp;productConnection: productConnection
-        }"]]
-        http[["http://sample.gp.com/graphql"]]
-        doc[[接口文档]]
-        iq[[GraphiQL]]
+        }"]
+        http["http://sample.gp.com/graphql"]
+        doc[接口文档]
+        iq[GraphiQL]
         schema -- 构建Schema --> graphql -- 构建服务 --> http
         graphql -- 生成 --> doc
         graphql -- 构建 --> iq
     end
     subgraph 前端
         request[前端请求]
-        query[["// query.graphql
+        query["// query.graphql
         query {
         &emsp;product {
         &emsp;&emsp;name
         &emsp;&emsp;price
         &emsp;}
-        }"]]
-        response[["// response.json
+        }"]
+        response["// response.json
         {
         &emsp;&quot;product&quot;: {
         &emsp;&emsp;&quot;name&quot;: &quot;Laptop&quot;
         &emsp;&emsp;&quot;price&quot;: 999.99
         &emsp;}
-        }"]]
+        }"]
     end
     style schema text-align:left
     style graphql text-align:left
@@ -108,31 +108,31 @@ SQL 已经成为了业务层和持久化层通讯的事实标准, 使用 Mybaits
 
 ```mermaid
 flowchart LR
-    uml[[后端建模]] --> schema[["// types.graphql
+    uml[后端建模] --> schema["// types.graphql
     type Product {
     &emsp;id: ID!
     &emsp;name: String!
     &emsp;price: Float!
-    }"]] -- 转译 --> ddl[["// types.sql
+    }"] -- 转译 --> ddl["// types.sql
     CREATE TABLE IF NOT EXISTS `product` (
     &emsp;`id` INT PRIMARY KEY NOT NULL,
     &emsp;`name` VARCHAR (255) NOT NUL
     &emsp;`price` FLOAT (11,2) NOT NULL
-    )"]] --> db[(Database)]
-    request[前端请求] --> query[["// query.graphql
+    )"] --> db[(Database)]
+    request[前端请求] --> query["// query.graphql
     query {
     &emsp;product {
     &emsp;&emsp;name
     &emsp;&emsp;price
     &emsp;}
-    }"]] -- 转译 --> dml[["// query.sql
+    }"] -- 转译 --> dml["// query.sql
     SELECT JSON_EXTRACT(
     &emsp;JSON_OBJECT(
     &emsp;&emsp;'name', product_1.`name`,
     &emsp;&emsp;'price', product_1.`price`
     &emsp;) ,
     '$')
-    FROM `product` AS product_1"]] --> db
+    FROM `product` AS product_1"] --> db
     style schema text-align:left
     style ddl text-align:left
     style dml text-align:left
@@ -162,41 +162,43 @@ flowchart LR
 ### 代码生成
 
 1. 对于后端, Graphoenix 插件根据 GraphQL 定义生成 Java Bean, 支持以编程方式拓展系统服务
-2. 对于前端, Graphoenix 代码生成器对每个定义的类型生成通用的 Table, Form, Select 等 UI 组件, 自动对接后端接口
+2. 对于前端, Graphoenix 代码生成器对每个定义的类型生成通用的 Table, Form, Select 等 UI 组件
 
 ```mermaid
 flowchart LR
-    schema[["// types.graphql
-    type Product {
-    &emsp;id: ID!
-    &emsp;name: String!
-    &emsp;price: Float!
-    &emsp;+ category: String
-    }"]] -- 构建Schema --> graphql((GraphQL服务))
-    schema -- 生成代码 --> java[["// Product.java
-    public class Product {
-    &emsp;@Id;
-    &emsp;@NonNull;
-    &emsp;private String id;
-    &emsp;@NonNull;
-    &emsp;private String name;
-    &emsp;@NonNull;
-    &emsp;private Float price;
-    }"]]
+    subgraph Graphoenix
+        schema["// types.graphql
+        type Product {
+        &emsp;id: ID!
+        &emsp;name: String!
+        &emsp;price: Float!
+        &emsp;+ category: String
+        }"] 
+    end
+    schema -- 生成代码 --> java & ui
     code -- 更新 --> schema
-    graphql --> codegen{{代码生成器}}
-    ui <-. 请求 .-> graphql
     subgraph 后端
-        java -- 引用 --> code[["// ProductApi.java
-    @GraphQLApi
-    public class ProductApi {
-    &emsp;public String category(@Source Product product) {
-    &emsp;&emsp;return product.getName().equals(&quot;Laptop&quot;) ? &quot;Digital&quot; : &quot;Other&quot;;
-    &emsp;};
-    }"]]
+        java["// Product.java
+        public class Product {
+        &emsp;@Id;
+        &emsp;@NonNull;
+        &emsp;private String id;
+        &emsp;@NonNull;
+        &emsp;private String name;
+        &emsp;@NonNull;
+        &emsp;private Float price;
+        }"]
+        code["// ProductApi.java
+        @GraphQLApi
+        public class ProductApi {
+        &emsp;public String category(@Source Product product) {
+        &emsp;&emsp;return product.getName().equals(&quot;Laptop&quot;) ? &quot;Digital&quot; : &quot;Other&quot;;
+        &emsp;};
+        }"]
+        java -- 引用 --> code
     end
     subgraph 前端
-        codegen --> ui[["&lt;ProductForm name=&quot;Laptop&quot; price=&quot;999.99&quot; &frasl;&gt;"]]
+        ui["&lt;ProductForm name=&quot;Laptop&quot; price=&quot;999.99&quot; &frasl;&gt;"]
     end
     style schema text-align:left
     style java text-align:left
@@ -209,21 +211,21 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    code[["// ProductRepository.java
+    code["// ProductRepository.java
     @GraphQLOperation
     public interface ProductRepository {
     &emsp;@Query(name = @StringExpression(opr = Operator.EQ, $val = &quot;name&quot;))
     &emsp;Product queryProductByName(String name);
-    }"]]
-    query[["// query.graphql
+    }"]
+    query["// query.graphql
     query queryProductByName($name: String) {
     &emsp;product(name: {opr: EQ, val: $name}) {
     &emsp;&emsp;id
     &emsp;&emsp;name
     &emsp;&emsp;price
     &emsp;}
-    }"]]
-    dml[["// query.sql
+    }"]
+    dml["// query.sql
     SELECT JSON_EXTRACT(
     &emsp;JSON_OBJECT(
     &emsp;&emsp;'id', product_1.`id`,
@@ -232,7 +234,7 @@ flowchart LR
     &emsp;) ,
     '$')
     FROM `product` AS product_1
-    WHERE product_1.name = :name"]]
+    WHERE product_1.name = :name"]
     code -- 转译 --> query -- 关系型数据库生成SQL --> dml
     style code text-align:left
     style query text-align:left
@@ -246,29 +248,33 @@ flowchart LR
 ```mermaid
 flowchart LR
     subgraph Graphoenix
-        func[[后端接口]]
+        schema["// types.graphql
+        type Product {
+        &emsp;id: ID!
+        &emsp;name: String!
+        &emsp;price: Float!
+        }"] 
+        jsonSchema["// json-schema.json
+        {
+        &emsp;&quot;$id&quot;: &quot;#ProductInput&quot;,
+        &emsp;&quot;type&quot;: &quot;object&quot;,
+        &emsp;&quot;properties&quot;: {
+        &emsp;&emsp;&quot;id&quot;: { &quot;type&quot;: &quot;string&quot; }
+        &emsp;&emsp;&quot;name&quot;: { &quot;type&quot;: &quot;string&quot; }
+        &emsp;&emsp;&quot;price&quot;: { &quot;type&quot;: &quot;number&quot; }
+        &emsp;}
+        &emsp;&quot;required&quot;: [ &quot;id&quot;, &quot;name&quot;, &quot;price&quot; ]
+        }"]
+        func[后端接口]
+        http[http端口]
         java[validate.java]
-        schema[["// types.graphql
-            type Product {
-            &emsp;id: ID!
-            &emsp;name: String!
-            &emsp;price: Float!
-            }"]] -- 转译 --> jsonSchema[["// json-schema.json
-            {
-            &emsp;&quot;$id&quot;: &quot;#ProductInput&quot;,
-            &emsp;&quot;type&quot;: &quot;object&quot;,
-            &emsp;&quot;properties&quot;: {
-            &emsp;&emsp;&quot;id&quot;: { &quot;type&quot;: &quot;string&quot; }
-            &emsp;&emsp;&quot;name&quot;: { &quot;type&quot;: &quot;string&quot; }
-            &emsp;&emsp;&quot;price&quot;: { &quot;type&quot;: &quot;number&quot; }
-            &emsp;}
-            &emsp;&quot;required&quot;: [ &quot;id&quot;, &quot;name&quot;, &quot;price&quot; ]
-            }"]] --> http[[http端口]]
+        schema -- 转译 --> jsonSchema
+        jsonSchema -. 加载校验规则 .-> java
+        jsonSchema --> http
     end
     subgraph 前端
-        http <-. 请求(缓存)校验规则 .-> js
-        jsonSchema <-. 加载校验规则 .-> java
-        form[[前端表单]] <-- 校验 --> js[validate.js]
+        http -. 请求(缓存)校验规则 .-> js
+        form[前端表单] <-- 校验 --> js[validate.js]
         js -- 提交 --> func <-- 校验 --> java
     end
     style schema text-align:left
@@ -390,13 +396,13 @@ flowchart LR
     http -- 推送(SSE) --> response --> request
     subgraph Graphoenix
         mq[(Message Queue)]
-        schema[["// types.graphql
+        schema["// types.graphql
         type Product {
         &emsp;id: ID!
         &emsp;name: String!
         &emsp;price: Float!
-        }"]]
-        graphql[["// schema.graphql
+        }"]
+        graphql["// schema.graphql
         schema {
         &emsp;query: Query
         &emsp;mutation: Mutation
@@ -406,34 +412,34 @@ flowchart LR
         &emsp;product: product
         &emsp;productList: [product]
         &emsp;productConnection: productConnection
-        }"]]
-        http[["http://sample.gp.com/graphql"]]
+        }"]
+        http["http://sample.gp.com/graphql"]
         schema -- 构建Schema --> graphql -- 构建服务 --> http
         http -- 提交 --> merge{{数据检测}} -- 记录数据变动 --> mq
         mq -- 推送(MQ) --> http
     end
     subgraph 前端
         request[前端请求]
-        mutation[["// mutation.graphql
+        mutation["// mutation.graphql
         mutation {
         &emsp;product(price: &quot;1000.00&quot;, where: {name: &quot;Laptop&quot}) {
         &emsp;&emsp;id
         &emsp;}
-        }"]]
-        subscription[["// subscription.graphql
+        }"]
+        subscription["// subscription.graphql
         subscription {
         &emsp;product {
         &emsp;&emsp;name
         &emsp;&emsp;price
         &emsp;}
-        }"]]
-        response[["// response.json
+        }"]
+        response["// response.json
         {
         &emsp;&quot;product&quot;: {
         &emsp;&emsp;&quot;name&quot;: &quot;Laptop&quot;
         &emsp;&emsp;&quot;price&quot;: 1000.00
         &emsp;}
-        }"]]
+        }"]
     end
     style schema text-align:left
     style graphql text-align:left
@@ -448,25 +454,25 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    uml[[后端建模]]
+    uml[后端建模]
     grpc((gRPC服务))
     subgraph Graphoenix
-        schema[["// types.graphql
+        schema["// types.graphql
             type Product {
             &emsp;id: ID!
             &emsp;name: String!
             &emsp;price: Float!
-            }"]] -- 转译 --> protobuf[["// types.proto
+            }"] -- 转译 --> protobuf["// types.proto
             message Product {
             &emsp;optional string id = 1;
             &emsp;optional string name = 2;
             &emsp;optional float price = 3
-            }"]] -- 构建 --> service[["// service.proto
+            }"] -- 构建 --> service["// service.proto
             service QueryService {
             &emsp;rpc Product (Request) returns (Response);
             &emsp;rpc ProductList (Request) returns (Response);
             &emsp;rpc ProductConnection (Request) returns (Response);
-            }"]]
+            }"]
         style schema text-align:left
         style protobuf text-align:left
         style service text-align:left
@@ -483,19 +489,21 @@ flowchart LR
 
 Apollo GraphQL 是 GraphQL 生态最为强大的实现, 包含了 Server, Client, Federation 三部分
 
-Apollo Server 更像是基于 JS 的数据路由器和聚合器, 通过实现 resolvers 函数来实现 GraphQL 数据获取, 但数据库持久层需要开发者自己实现
+Apollo Server 更像是基于 JS 的数据路由器和聚合器, 通过实现 resolver 来实现 GraphQL 数据获取, 但数据库持久层需要开发者自己实现
 
 Apollo Federation 与 Graphoenix Modules 都是对微服务的支持, 但 Apollo Federation 更像是一个中心节点的超级路由器, 而 Graphoenix Modules 是去中心化的集群
 
 ### 对比[Relay](https://relay.dev/)
 
-Relay 是 Facebook 官方出品的针对 React 框架的 GraphQL 客户端, 他更符合 React 的设计哲学, 适合封装 React 组件时作为 GraphQL 通讯模块
+Relay 是 Facebook 官方出品的针对 React 框架的 GraphQL 客户端, 他更符合 React 的设计哲学, 把GraphQL查询完美的融入到React组件
 
-Graphoenix 对于 UI 组件的支持更直接, 基于代码生成器直接生成每个类型对应的 Table, Form, Select 等组件, 开箱即用, 组件基于 Svelte 构建, 后续会增加 Vue, React 等版本
+Graphoenix 基于代码生成器直接生成UI组件, 为每个类型生成 Table, Form, Select 等组件, 开箱即用, 组件基于 Svelte 构建, 后续会增加 Vue, React 等版本
 
 ### 对比[GraphQL Java](https://relay.dev/)和[Spring for GraphQL](https://docs.spring.io/spring-graphql/reference/index.html)
 
-GraphQL Java 是 GraphQL 在 Java 平台的官方实现, Spring for GraphQL 是基于 GraphQL Java 的二次封装, 两者分别基于 DataFetcher 和 Controller 获取数据, 最后聚合成 GraphQL 服务, 但与 Apollo GraphQL 一样, 框架本身只做数据路由和聚合, 对于参数的构建和持久层的定义依然需要开发者自己承担
+GraphQL Java 是 GraphQL 在 Java 平台的官方实现, Spring for GraphQL 是基于 GraphQL Java 的二次封装, 两者分别基于 DataFetcher 和 Controller 获取数据, 最后聚合成 GraphQL 服务
+
+但与 Apollo GraphQL 一样, 框架本身只做数据路由和聚合, 对于参数的构建和持久层的定义依然需要开发者自己承担
 
 Graphoenix 同样是 Java 平台的 GraphQL 实现, 比起 GraphQL Java 不仅提供数据路由功能, 也实现了对于底层数据库持久层的封装, 并且自动构建筛选, 聚合, 排序和分页等参数, 开箱即用
 
@@ -509,6 +517,8 @@ Graphoenix 选择了以 GraphQL 定义来生成 Java Bean, 提供与 JPA 相同�
 
 ### 对比[Hasura GraphQL Engine](https://hasura.io/)
 
-GraphQL Engine 是 Hasura 对于 GraphQL 的实现, 使用 Haskell 开发, 提供了从接口到数据库的全栈封装. Graphoenix 最初的灵感就来自于 GraphQL Engine, 只需定义类型便可得到开箱即用的 GraphQL 接口, 无需额外的编程工作, 也无需关心底层的数据库. GraphQL Engine 对于开发者来说是极佳 GraphQL 体验, 但它也存在着一些问题, 比如 GraphQL Engine 更像是一个无代码平台, 他对于编程扩展的能力非常有限, 它本身又是基于 Haskell 构建, 导致二次开发及其困难. GraphQL Engine 是 Hasura 的产品, 依赖于 Hasura 平台, 有一定的平台绑定风险
+GraphQL Engine 是 Hasura 对于 GraphQL 的实现, 使用 Haskell 开发, 提供了从接口到数据库的全栈封装. Graphoenix 最初的灵感就来自于 GraphQL Engine, 只需定义类型便可得到开箱即用的 GraphQL 接口, 无需额外的编程工作, 也无需关心底层的数据库. GraphQL Engine 对于开发者来说是极佳 GraphQL 体验
+
+但它也存在着一些问题, 比如 GraphQL Engine 更像是一个无代码平台, 他对于编程扩展的能力非常有限, 它本身又是基于 Haskell 构建, 导致二次开发及其困难. GraphQL Engine 是 Hasura 的产品, 依赖于 Hasura 平台, 有一定的平台绑定风险
 
 基于上述的问题, Graphoenix 皆在实现一个拓展能力更强, 能够融入 Java 生态的 GraphQL Engine, 给开发者和使用者提供最佳的体验
