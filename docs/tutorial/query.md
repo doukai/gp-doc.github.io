@@ -8,11 +8,42 @@ sidebar_position: 3
 
 ## 基本查询
 
-查询单个: 类型名 => camelCase (例: User => user)
+### **查询接口说明**
 
-查询列表: 类型名 => camelCase + List (例: User => userList)
+| 字段名     | 类型     | 参数                                  | 说明     | 示例 (Type=User) |
+| ---------- | -------- | ------------------------------------- | -------- | ---------------- |
+| (type)     | (Type)   | [(Type)QueryArguments](#参数说明)     | 查询单条 | user             |
+| (type)List | [(Type)] | [(Type)ListQueryArguments](#参数说明) | 查询列表 | userList         |
 
-### 1. 查询前 5 个用户
+### 查询单条
+
+查询名为 Bob 的用户
+
+```graphql
+{
+  user(name: { opr: EQ, val: "Bob" }) {
+    name
+    email
+    userType
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "user": {
+      "name": "Bob",
+      "email": "bob@example.com",
+      "userType": "REGULAR"
+    }
+  }
+}
+```
+
+### 查询列表
+
+查询前 5 个用户
 
 ```graphql
 {
@@ -58,31 +89,9 @@ sidebar_position: 3
 }
 ```
 
-### 2. 查询名为 Bob 的用户
+### 条件查询
 
-```graphql
-{
-  user(name: { opr: EQ, val: "Bob" }) {
-    name
-    email
-    userType
-  }
-}
-```
-
-```json
-{
-  "data": {
-    "user": {
-      "name": "Bob",
-      "email": "bob@example.com",
-      "userType": "REGULAR"
-    }
-  }
-}
-```
-
-### 3. 查询所有会员用户和价格大于 200 的产品
+查询所有会员用户和价格大于 200 的产品
 
 ```graphql
 {
@@ -149,97 +158,9 @@ sidebar_position: 3
 }
 ```
 
-### 4. 查询产品列表, 价格由高到低
+### 关联查询
 
-```graphql
-{
-  productList(orderBy: { price: DESC }) {
-    name
-    price
-  }
-}
-```
-
-```json
-{
-  "data": {
-    "productList": [
-      {
-        "name": "Laptop",
-        "price": 999.99
-      },
-      {
-        "name": "Phone",
-        "price": 499.99
-      },
-      {
-        "name": "Tablet",
-        "price": 299.99
-      },
-      {
-        "name": "Monitor",
-        "price": 199.99
-      },
-      {
-        "name": "Keyboard",
-        "price": 49.99
-      }
-    ]
-  }
-}
-```
-
-### 5. 查询价格在 300 以内, 价格最高的产品
-
-```graphql
-{
-  product(price: { opr: LTE, val: 300 }) {
-    name
-    priceMax
-  }
-}
-```
-
-```json
-{
-  "data": {
-    "product": {
-      "name": "Tablet",
-      "priceMax": 299.99
-    }
-  }
-}
-```
-
-### 6. 分组查询普通用户和会员用户的数量
-
-```graphql
-{
-  userList(groupBy: ["userType"]) {
-    userType
-    idCount
-  }
-}
-```
-
-```json
-{
-  "data": {
-    "userList": [
-      {
-        "userType": "VIP",
-        "idCount": 10
-      },
-      {
-        "userType": "REGULAR",
-        "idCount": 10
-      }
-    ]
-  }
-}
-```
-
-### 7. 查询 Alice 的订单
+1. 查询 Alice 的订单
 
 ```graphql
 {
@@ -285,7 +206,7 @@ sidebar_position: 3
 }
 ```
 
-### 8. 查询购买了 Phone 的用户列表
+2. 查询购买了 Phone 的用户列表
 
 ```graphql
 {
@@ -351,13 +272,159 @@ sidebar_position: 3
 }
 ```
 
+### 排序
+
+查询产品列表, 价格由高到低
+
+```graphql
+{
+  productList(orderBy: { price: DESC }) {
+    name
+    price
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "productList": [
+      {
+        "name": "Laptop",
+        "price": 999.99
+      },
+      {
+        "name": "Phone",
+        "price": 499.99
+      },
+      {
+        "name": "Tablet",
+        "price": 299.99
+      },
+      {
+        "name": "Monitor",
+        "price": 199.99
+      },
+      {
+        "name": "Keyboard",
+        "price": 49.99
+      }
+    ]
+  }
+}
+```
+
+### 统计
+
+1. 查询价格在 300 以内, 价格最高的产品
+
+```graphql
+{
+  product(price: { opr: LTE, val: 300 }) {
+    name
+    priceMax
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "product": {
+      "name": "Tablet",
+      "priceMax": 299.99
+    }
+  }
+}
+```
+
+2. 分组查询普通用户和会员用户的数量
+
+```graphql
+{
+  userList(groupBy: ["userType"]) {
+    userType
+    idCount
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "userList": [
+      {
+        "userType": "VIP",
+        "idCount": 10
+      },
+      {
+        "userType": "REGULAR",
+        "idCount": 10
+      }
+    ]
+  }
+}
+```
+
+### **统计字段**
+
+Graphoenix 会为所有的 Scalar 类型的字段生成统计字段
+
+| 参数名       | 类型     | 说明   | SQL 示例                          |
+| ------------ | -------- | ------ | --------------------------------- |
+| (field)Count | Int      | 条数   | SELECT **COUNT(** id **)** FROM t |
+| (field)Max   | (Scalar) | 最大值 | SELECT **MAX(** id **)** FROM t   |
+| (field)Min   | (Scalar) | 最小值 | SELECT **MIN(** id **)** FROM t   |
+| (field)Sum   | (Scalar) | 合计   | SELECT **SUM(** id **)** FROM t   |
+| (field)Avg   | (Scalar) | 平均值 | SELECT **AVG(** id **)** FROM t   |
+
+---
+
 ## 分页查询
 
 Graphoenix 支持[普通分页和游标分页](https://graphql.org/learn/pagination/)([中文](https://graphql.cn/learn/pagination/)), 支持[GraphQL Cursor Connections 规范](https://relay.dev/graphql/connections.htm)
 
-分页查询: 类型名 => camelCase + Connection (例: User => userConnection)
+### **分页接口说明**
 
-### 1. 查询用户第 1 页, 每页 5 条
+| 字段名           | 类型   | 参数                                        | 说明     | 示例 (Type=User) |
+| ---------------- | ------ | ------------------------------------------- | -------- | ---------------- |
+| (type)Connection | (Type) | [(Type)ConnectionQueryArguments](#参数说明) | 查询单条 | userConnection   |
+
+### **分页类型说明**
+
+所有的分页接口都会返回 Connection 类型的数据, 该类型包含条数, 分页(游标)信息和边缘, 边缘中包含所查询的对象(node)和游标, 兼容普通分页和游标分页两种方式
+
+#### (Object)Connection 说明
+
+Graphoenix 会自动为所有 Object 类型生成对应的[Connection](https://relay.dev/graphql/connections.htm#sec-Connection-Types)对象
+
+| 字段       | 类型                               | 说明           |
+| ---------- | ---------------------------------- | -------------- |
+| totalCount | Int                                | 总条数         |
+| pageInfo   | [PageInfo](#pageinfo-说明)         | 分页(游标)信息 |
+| edges      | [[(Object)Edge]](#objectedge-说明) | 查询边缘       |
+
+#### PageInfo 说明
+
+| 字段            | 类型    | 说明           |
+| --------------- | ------- | -------------- |
+| hasNextPage     | Boolean | 是否存在下一页 |
+| hasPreviousPage | Boolean | 是否存在上一页 |
+| startCursor     | String  | 开始游标       |
+| endCursor       | String  | 结束游标       |
+
+#### (Object)Edge 说明
+
+Graphoenix 会自动为所有 Object 类型生成对应的[Edge](https://relay.dev/graphql/connections.htm#sec-Edge-Types)对象
+
+| 字段   | 类型   | 说明     |
+| ------ | ------ | -------- |
+| cursor | String | 游标字段 |
+| node   | Object | 查询节点 |
+
+### 基本分页
+
+1. 查询用户第 1 页, 每页 5 条
 
 ```graphql
 {
@@ -421,7 +488,7 @@ Graphoenix 支持[普通分页和游标分页](https://graphql.org/learn/paginat
 }
 ```
 
-### 2. 查询用户第 2 页, 每页 5 条
+2. 查询用户第 2 页, 每页 5 条
 
 ```graphql
 {
@@ -485,9 +552,11 @@ Graphoenix 支持[普通分页和游标分页](https://graphql.org/learn/paginat
 }
 ```
 
-### 3. 查询用户第 3 页, 每页 5 条, 游标分页
+### 游标分页
 
 [游标分页简介](https://github.com/x1ah/Blog/issues/15)
+
+1. 查询用户第 3 页, 每页 5 条, 游标分页
 
 ```json
 { id: "10", name: "Jane", email: "jane@example.com", userType: REGULAR },
@@ -570,7 +639,7 @@ Graphoenix 支持[普通分页和游标分页](https://graphql.org/learn/paginat
 }
 ```
 
-### 4. 查询用户第 4 页, 每页 5 条, 游标分页
+2. 查询用户第 4 页, 每页 5 条, 游标分页
 
 ```graphql
 {
@@ -647,3 +716,76 @@ Tina 为最后一个用户, hasNextPage 变为 false
   }
 }
 ```
+
+---
+
+## **参数说明**
+
+| 参数名  | 类型                                                             | 默认值 | 说明                                   | SQL 示例 (x=10 y=5)                                     |
+| ------- | ---------------------------------------------------------------- | ------ | -------------------------------------- | ------------------------------------------------------- |
+| (field) | [(Scalar/Enum/Object)Expression](#scalarenumexpression-参数说明) | 无     | 条件字段                               | SELECT id FROM t WHERE **t.field** = 'xyz'              |
+| first   | Int                                                              | 无     | 获取前 x 条                            | SELECT id FROM t LIMIT 10                               |
+| last    | Int                                                              | 无     | 获取后 x 条                            | SELECT id FROM t ORDER BY id DESC LIMIT 10              |
+| offset  | Int                                                              | 无     | 跳过 y 条                              | SELECT id FROM t LIMIT 5, 10                            |
+| cond    | [Conditional](#conditional-说明)                                 | AND    | 参数内条件的组合关系                   | WHERE t.field = 'xyz' **AND** t.field \<\> 'abc'        |
+| not     | Boolean                                                          | false  | 条件取非                               | WHERE **NOT** (t.field = 'xyz' AND t.field \<\> 'abc')  |
+| exs     | [[(Object)Expression]](#objectexpression-参数说明)               | 无     | 同一字段多次作为查询条件时可使用此参数 | WHERE **(** t.field = 'xyz'AND t.field \<\> 'abc' **)** |
+| orderBy | [[(Object)OrderBy]](#objectorderby-参数说明)                     | 无     | 排序字段                               | SELECT id FROM t **ORDER BY** t.field                   |
+| groupBy | [String]                                                         | 无     | 分组字段                               | SELECT id FROM t **GROUP BY** t.field                   |
+
+#### (Scalar/Enum)Expression 参数说明
+
+| 参数名   | 类型                       | 默认值 | 说明                   | SQL 示例                             |
+| -------- | -------------------------- | ------ | ---------------------- | ------------------------------------ |
+| opr      | [Operator](#operator-说明) | EQ     | 匹配符号               | WHERE t.field **=** 'xyz'            |
+| val      | (Scalar/Enum)              | 无     | 匹配值                 | WHERE t.field = **'xyz'**            |
+| arr      | [(Scalar/Enum)]            | 无     | 匹配列表               | WHERE t.field IN **('x', 'y', 'z')** |
+| skipNull | Boolean                    | false  | 如果值为 NULL 忽略参数 |                                      |
+
+#### (Object)Expression 参数说明
+
+| 参数名  | 类型                                                             | 默认值 | 说明                                   | SQL 示例                                                |
+| ------- | ---------------------------------------------------------------- | ------ | -------------------------------------- | ------------------------------------------------------- |
+| (field) | [(Scalar/Enum/Object)Expression](#scalarenumexpression-参数说明) | 无     | 条件字段                               | SELECT id FROM t WHERE **t.field** = 'xyz'              |
+| cond    | [Conditional](#conditional-说明)                                 | AND    | 参数内条件的组合关系                   | WHERE t.field = 'xyz' **AND** t.field \<\> 'abc'        |
+| not     | Boolean                                                          | false  | 条件取非                               | WHERE **NOT** (t.field = 'xyz' AND t.field \<\> 'abc')  |
+| exs     | [[(Object)Expression]](#objectexpression-参数说明)               | 无     | 同一字段多次作为查询条件时可使用此参数 | WHERE **(** t.field = 'xyz'AND t.field \<\> 'abc' **)** |
+
+#### Operator 说明
+
+| 参数名 | 说明                                    | SQL 示例                                                                  |
+| ------ | --------------------------------------- | ------------------------------------------------------------------------- |
+| EQ     | 等于                                    | WHERE t.field **=** 'xyz'                                                 |
+| NEQ    | 不等于                                  | WHERE t.field **\<\>** 'xyz'                                              |
+| LK     | 匹配(需要%)                             | WHERE t.field **LIKE** '%xyz%'                                            |
+| NLK    | 不匹配(需要%)                           | WHERE t.field **NOT LIKE** '%xyz%'                                        |
+| GT     | 大于                                    | WHERE t.field **\>** 'xyz'                                                |
+| GTE    | 大于等于                                | WHERE t.field **\>=** 'xyz'                                               |
+| LT     | 小于                                    | WHERE t.field **\<** 'xyz'                                                |
+| LTE    | 小于等于                                | WHERE t.field **\<=** 'xyz'                                               |
+| NIL    | 为 NULL                                 | WHERE t.field **IS NULL**                                                 |
+| NNIL   | 不为 NULL                               | WHERE t.field **IS NOT NULL**                                             |
+| IN     | 属于                                    | WHERE t.field **IN** ('x', 'y', 'z')                                      |
+| NIN    | 不属于                                  | WHERE t.field **NOT IN** ('x', 'y', 'z')                                  |
+| BT     | 在...区间(数组的每两个元素为一个区间)   | WHERE **t.field \> 1 AND t.field \< 3 AND t.field \> 5 AND t.field \< 7** |
+| NBT    | 不在...区间(数组的每两个元素为一个区间) | WHERE **t.field \< 1 AND t.field \> 3 AND t.field \< 5 AND t.field \> 7** |
+
+#### Conditional 说明
+
+| 参数名 | 说明 | SQL 示例                                         |
+| ------ | ---- | ------------------------------------------------ |
+| AND    | 并   | WHERE t.field = 'xyz' **AND** t.field \<\> 'abc' |
+| OR     | 或   | WHERE t.field = 'xyz' **OR** t.field \<\> 'abc'  |
+
+#### (Object)OrderBy 参数说明
+
+| 参数名  | 类型               | 默认值 | 说明     | SQL 示例                              |
+| ------- | ------------------ | ------ | -------- | ------------------------------------- |
+| (field) | [Sort](#sort-说明) | 无     | 排序方式 | SELECT id FROM t **ORDER BY** t.field |
+
+#### Sort 说明
+
+| 参数名 | 说明 | SQL 示例                      |
+| ------ | ---- | ----------------------------- |
+| ASC    | 升序 | **ORDER BY** t.field **ASC**  |
+| DESC   | 降序 | **ORDER BY** t.field **DESC** |

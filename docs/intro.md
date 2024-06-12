@@ -10,7 +10,7 @@ sidebar_position: 1
 
 Graphoenix 是对 GraphQL 协议的实现, 也是对 GraphQL 协议的拓展和增强, 皆在项目的各个阶段和各个环节提供规范化, 插件化, 可伸缩的架构方案, 充分利用 GraphQL 协议, 打造透明高效的开发流程, 释放 x10 倍的开发效率
 
-### [什么是 GraphQL?](https://graphql.org/)
+### _[什么是 GraphQL?](https://graphql.org/)_
 
 GraphQL 既是一种用于 API 的查询语言也是一个满足你数据查询的运行时. GraphQL 对你的 API 中的数据提供了一套易于理解的完整描述, 使得客户端能够准确地获得它需要的数据，而且没有任何冗余, 也让 API 更容易地随着时间推移而演进, 还能用于构建强大的开发者工具
 
@@ -47,13 +47,17 @@ style response text-align:left
 
 ### 按需所取
 
-回顾我们的开发历程, 用户需求是永远的变量, 需求的变化会引起连锁反应, 最终导致前端和后端在"改 UI"与"改接口"之间反复拉扯, 前端总是希望得到开箱即用的数据, 而后端则希望模式化的返回数据, Graphonix 充分利用 GraphQL 协议的特性充当对接人, 按照后端的业务建模构建 GraphQL 服务, 实时响应前端的定制化请求
+用户需求是永远的变量, 需求的变化会引起连锁反应, 最终导致前端和后端在"改 UI"与"改接口"之间反复拉扯, 前端总是希望得到开箱即用的数据, 而后端则希望模式化的返回数据. Graphonix 充分利用 GraphQL 协议的特性充当对接人, 按照后端的业务建模构建 GraphQL 服务, 实时响应前端的定制化请求
 
 ```mermaid
 flowchart LR
     uml[后端建模] --> schema
-    request --> query -- 请求 --> http
-    http -- 响应 --> response --> request
+    request --> query
+    query -- 请求 --> http
+    query -. 测试请求 .-> iq
+    iq -. 测试结果 .-> response
+    http -- 响应 --> response
+    response --> request
     subgraph Graphoenix
         schema["// types.graphql
         type Product {
@@ -73,11 +77,10 @@ flowchart LR
         &emsp;productConnection: productConnection
         }"]
         http["http://sample.gp.com/graphql"]
-        doc[接口文档]
         iq[GraphiQL]
-        schema -- 构建Schema --> graphql -- 构建服务 --> http
-        graphql -- 生成 --> doc
-        graphql -- 构建 --> iq
+        schema -- 构建Schema --> graphql
+        graphql -. 构建测试界面 .-> iq
+        graphql -- 构建服务 --> http
     end
     subgraph 前端
         request[前端请求]
@@ -104,7 +107,7 @@ flowchart LR
 
 ### SQL 转译
 
-SQL 已经成为了业务层和持久化层通讯的事实标准, 使用 Mybaits 非常考验开发人员的 SQL 水平, 业务逻辑过多的隐藏在 SQL 中使得可维护性下降, 也无法利用 IDE 和编译器的检测能力, Graphoenix 实现了对于 SQL 的实时转译引擎, 根据 GraphQL 请求动态转译为 SQL, 通过响应式的 r2dbc 与数据库连接, 轻量透明高性能, 无需开发者编写 SQL
+SQL 已经成为了业务层和持久化层交互的事实标准, 使用 jdbc 或 Mybaits 非常考验开发人员的 SQL 水平, 业务逻辑过多的隐藏在 SQL 中使得可维护性下降, 也无法利用 IDE 和编译器的检测能力. Graphoenix 实现了对于 SQL 的实时转译引擎, 根据 GraphQL 请求动态转译为 SQL, 通过响应式的 r2dbc 与数据库连接, 轻量透明高性能, 无需开发者编写 SQL
 
 ```mermaid
 flowchart LR
@@ -141,7 +144,7 @@ flowchart LR
 
 ### 关系构建
 
-使用 Mybatis 代码生成器或是 Mybatis Plus 等工具解决了基础 CURD, 但系统构建依然要在关系映射上生产大量的 JOIN 或关系封装, 同时在服务拆分时理清复杂的对象关系更是困难, 对象之间的关系难以剥离, 它们可能隐藏在代码中也可能隐藏在 SQL 中. 得益于 GraphQL 对于图关系的描述能力, Graphoenix 自动构建和托管对象关系, 完全把关系逻辑从业务代码中剥离
+以 Mybatis Plus 和 MyBatis Generator 为代表的增强工具封装了基础的 CURD, 但系统构建依然要在关系映射上生产大量的 JOIN 或关系封装, 大量隐藏在 SQL 和代码中的对象关系又会进一步导致服务拆分变得困难. 得益于 GraphQL 对于图关系的描述能力, Graphoenix 自动构建和托管对象关系, 完全把关系逻辑从业务代码中剥离
 
 ```mermaid
 flowchart LR
@@ -162,7 +165,7 @@ flowchart LR
 ### 代码生成
 
 1. 对于后端, Graphoenix 插件根据 GraphQL 定义生成 Java Bean, 支持以编程方式拓展系统服务
-2. 对于前端, Graphoenix 代码生成器对每个定义的类型生成通用的 Table, Form, Select 等 UI 组件
+2. 对于前端, Graphoenix 代码生成器对每个定义的类型生成通用的 \<Table /\>, \<Form /\>, \<Select /\> 等 UI 组件
 
 ```mermaid
 flowchart LR
@@ -173,7 +176,7 @@ flowchart LR
         &emsp;name: String!
         &emsp;price: Float!
         &emsp;+ category: String
-        }"] 
+        }"]
     end
     schema -- 生成代码 --> java & ui
     code -- 更新 --> schema
@@ -207,7 +210,7 @@ flowchart LR
 
 ### 持久化接口
 
-以 JPA 为代表的 ORM 技术需要对框架本身有充分的了解, 使用不当极易发生性能问题和缓存问题, Graphoenix 在编译阶段通过 Annotation processing 技术实现类似 JPA 的持久化接口, 编译器首先把接口转译为 GraphQL, 最后针对不同的数据库实现接口. 使接口定义更简单, 调用过程更透明
+以 JPA 为代表的 ORM 技术需要对框架本身有充分的了解, 使用不当极易发生性能问题和缓存问题. Graphoenix 在编译阶段通过 Annotation processing 技术实现类似 JPA 的持久化接口, 编译器会根据不同的数据库和平台构建相对应的实现.
 
 ```mermaid
 flowchart LR
@@ -243,7 +246,7 @@ flowchart LR
 
 ### 统一校验
 
-相同的校验逻辑需要在前后端重复两次, 效率低下且极易产生差异, Graphoenix 编译器根据类型定义, 自动生成[JSON Schema](https://json-schema.org/), 前后端统一校验
+相同的校验逻辑需要在前后端重复两次, 效率低下且极易产生差异. Graphoenix 编译器根据类型定义, 自动生成[JSON Schema](https://json-schema.org/), 前后端统一校验
 
 ```mermaid
 flowchart LR
@@ -253,7 +256,7 @@ flowchart LR
         &emsp;id: ID!
         &emsp;name: String!
         &emsp;price: Float!
-        }"] 
+        }"]
         jsonSchema["// json-schema.json
         {
         &emsp;&quot;$id&quot;: &quot;#ProductInput&quot;,
@@ -321,7 +324,7 @@ flowchart LR
 
 ### 可伸缩
 
-Graphoenix 架构可在项目的不同阶段随意伸缩, 可随着项目的扩张拆分为微服务, 也可随着项目的收缩合并为单体, Graphoenix 根据不同架构自动调整底层技术
+Graphoenix 架构可在项目的不同阶段按实际需求随意伸缩, 随着项目的扩张拆分为微服务, 也可随着项目的收缩合并为单体
 
 ```mermaid
 flowchart LR
@@ -391,9 +394,9 @@ Graphoenix 提供开箱即用, 端到端的订阅服务, 后台实时高效的�
 
 ```mermaid
 flowchart LR
-    request --> mutation -- 提交 --> http
-    request --> subscription -- 订阅 --> http
-    http -- 推送(SSE) --> response --> request
+    request1 -.-> subscription -. 订阅 .-> http
+    http -. 推送(SSE) .-> response .-> request1
+    request2 --> mutation -- 提交 --> http
     subgraph Graphoenix
         mq[(Message Queue)]
         schema["// types.graphql
@@ -415,11 +418,12 @@ flowchart LR
         }"]
         http["http://sample.gp.com/graphql"]
         schema -- 构建Schema --> graphql -- 构建服务 --> http
-        http -- 提交 --> merge{{数据检测}} -- 记录数据变动 --> mq
-        mq -- 推送(MQ) --> http
+        http -- 记录变更 --> mq
+        mq -- 推送(MQ) --> merge{{变更检测}} -. 推送更新 .-> http
     end
     subgraph 前端
-        request[前端请求]
+        request1[订阅请求]
+        request2[变更请求]
         mutation["// mutation.graphql
         mutation {
         &emsp;product(price: &quot;1000.00&quot;, where: {name: &quot;Laptop&quot}) {
@@ -495,30 +499,24 @@ Apollo Federation 与 Graphoenix Modules 都是对微服务的支持, 但 Apollo
 
 ### 对比[Relay](https://relay.dev/)
 
-Relay 是 Facebook 官方出品的针对 React 框架的 GraphQL 客户端, 他更符合 React 的设计哲学, 把GraphQL查询完美的融入到React组件
+Relay 是 Facebook 官方出品的针对 React 框架的 GraphQL 客户端, 他更符合 React 的设计哲学, 可以充分利用 GraphQL 的特性来封装 React 组件
 
-Graphoenix 基于代码生成器直接生成UI组件, 为每个类型生成 Table, Form, Select 等组件, 开箱即用, 组件基于 Svelte 构建, 后续会增加 Vue, React 等版本
+Graphoenix 基于代码生成器直接生成 UI 组件, 为每个类型生成 \<Table /\>, \<Form /\>, \<Select /\> 等组件, 开箱即用, 组件基于 [Svelte](https://svelte.dev/) 构建, 后续会增加 Vue, React 等版本
 
 ### 对比[GraphQL Java](https://relay.dev/)和[Spring for GraphQL](https://docs.spring.io/spring-graphql/reference/index.html)
 
-GraphQL Java 是 GraphQL 在 Java 平台的官方实现, Spring for GraphQL 是基于 GraphQL Java 的二次封装, 两者分别基于 DataFetcher 和 Controller 获取数据, 最后聚合成 GraphQL 服务
-
-但与 Apollo GraphQL 一样, 框架本身只做数据路由和聚合, 对于参数的构建和持久层的定义依然需要开发者自己承担
+GraphQL Java 是 GraphQL 在 Java 平台的官方实现, Spring for GraphQL 是基于 GraphQL Java 的二次封装, 两者分别基于 DataFetcher 和 Controller 获取数据, 最后聚合成 GraphQL 服务. 但与 Apollo GraphQL 一样, 框架本身只做数据路由和聚合, 对于参数的构建和持久层的定义依然需要开发者自己承担
 
 Graphoenix 同样是 Java 平台的 GraphQL 实现, 比起 GraphQL Java 不仅提供数据路由功能, 也实现了对于底层数据库持久层的封装, 并且自动构建筛选, 聚合, 排序和分页等参数, 开箱即用
 
 ### 对比[Elide](https://elide.io/)
 
-Elide 是 GraphQL 在 Java 平台的另一个实现, 他与 JPA 十分相似, 以 JPA 的模式去定义 GraphQL, 通过 Data Models 来生成 GraphQL Schema, 通过@OneToMany 和@ManyToMany 等注解定义 Models 之间的关系
+Elide 是 GraphQL 在 Java 平台的另一个实现, 他与 JPA 十分相似, 以 JPA 的模式去定义 GraphQL, 通过 Data Models 来生成 GraphQL Schema, 通过@OneToMany 和@ManyToMany 等注解定义 Models 之间的关系. 但 JPA 的缺点 Elide 同样存在, 深层的封装需要开发者充分学习了解才能驾驭. 基于 Java Bean 注解的方式定义 GraphQL 也不够简洁直观
 
-但 JPA 的缺点 Elide 同样存在, 深层的封装需要开发者充分学习了解才能驾驭. 基于 Java Bean 注解的方式定义 GraphQL 也不够简洁直观
-
-Graphoenix 选择了以 GraphQL 定义来生成 Java Bean, 提供与 JPA 相同的持久化接口的定义能力. GraphQL 文件简洁明了, 能够更清晰的体现不同类型之间的关系. 同时无需繁琐的关系注解, 类型关系由系统自动托管, 极大限度的减少开发者的心智负担
+Graphoenix 选择了以 GraphQL 定义来生成 Java Bean, 提供与 JPA 相同的持久化接口的定义能力. GraphQL 文件简洁明了, 能够更清晰的体现不同类型之间的关系. 同时无需繁琐的关系注解, 类型关系由系统自动托管, 减少开发者的心智负担
 
 ### 对比[Hasura GraphQL Engine](https://hasura.io/)
 
-GraphQL Engine 是 Hasura 对于 GraphQL 的实现, 使用 Haskell 开发, 提供了从接口到数据库的全栈封装. Graphoenix 最初的灵感就来自于 GraphQL Engine, 只需定义类型便可得到开箱即用的 GraphQL 接口, 无需额外的编程工作, 也无需关心底层的数据库. GraphQL Engine 对于开发者来说是极佳 GraphQL 体验
-
-但它也存在着一些问题, 比如 GraphQL Engine 更像是一个无代码平台, 他对于编程扩展的能力非常有限, 它本身又是基于 Haskell 构建, 导致二次开发及其困难. GraphQL Engine 是 Hasura 的产品, 依赖于 Hasura 平台, 有一定的平台绑定风险
+GraphQL Engine 是 Hasura 对于 GraphQL 的实现, 使用 Haskell 开发, 提供了从接口到数据库的全栈封装. Graphoenix 最初的灵感就来自于 GraphQL Engine, 只需定义类型便可得到开箱即用的 GraphQL 接口, 无需额外的编程工作, 也无需关心底层的数据库. GraphQL Engine 对于开发者来说是极佳 GraphQL 体验. 但它也存在着一些问题, 比如 GraphQL Engine 更像是一个无代码平台, 他对于编程扩展的能力非常有限, 它本身又是基于 Haskell 构建, 导致二次开发及其困难. GraphQL Engine 是 Hasura 的产品, 依赖于 Hasura 平台, 有一定的平台绑定风险
 
 基于上述的问题, Graphoenix 皆在实现一个拓展能力更强, 能够融入 Java 生态的 GraphQL Engine, 给开发者和使用者提供最佳的体验

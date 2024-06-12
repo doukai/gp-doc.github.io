@@ -47,13 +47,19 @@ networks:
   gp-net:
 ```
 
+启动容器
+
+```bash
+docker-compose up -d
+```
+
 </details>
 
 ## 初始化项目
 
 我们首先创建一个名为**order**的项目, 包名为**demo.gp.order**
 
-使用官方脚手架快速初始化项目 **[Graphoenix Server Initializer](https://gp-init.github.io)**.
+使用官方脚手架快速初始化项目 **[Graphoenix Server Initializer](https://gp-init.github.io?name=order&packageName=demo.gp.order)**.
 
 <details>
 <summary>项目结构</summary>
@@ -63,7 +69,7 @@ networks:
     |-- build.gradle
     |-- gradle.properties
     |-- settings.gradle
-    |-- order-app                             启动器, 引入订单和其他包
+    |-- order-app                             启动模块, 引入订单和其他模块
     |   |-- build.gradle
     |   |-- src
     |       |-- main
@@ -72,7 +78,7 @@ networks:
     |           |       |-- App.java          启动类
     |           |-- resources
     |               |-- application.conf      配置文件
-    |-- order-package                         订单包
+    |-- order-package                         订单模块
     |   |-- build.gradle
     |   |-- src
     |       |-- main
@@ -82,7 +88,7 @@ networks:
     |           |-- resources
     |               |-- graphql
     |                   |-- order.gql         定义订单相关类型
-    |-- other-package                         可根据需求可以加入其他包
+    |-- other-package                         可根据需求可以加入其他模块
         |-- build.gradle
         |-- src
             |-- main
@@ -176,7 +182,9 @@ r2dbc {
 
 ## 启动
 
-Run/Debug order-app/src/main/java/demo/gp/order/App.java
+_Run/Debug_ order-app/src/main/java/demo/gp/order/App.java
+
+![start](./img/start.png "start")
 
 GraphQL endpoint: http://localhost:8080/graphql
 
