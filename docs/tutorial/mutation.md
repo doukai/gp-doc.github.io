@@ -17,13 +17,13 @@ sidebar_position: 4
 
 #### **变更逻辑**
 
-变更包含新增和更新两种操作, 根据ID字段区分, 逻辑如下
+变更包含新增和更新两种操作, 根据 ID 字段区分, 逻辑如下
 
-| 变更参数是否存在ID字段 | 数据库是否存在ID字段 | 数据库操作 | ID字段操作   |
-| ---------------------- | -------------------- | ---------- | ------------ |
-| 是                     | 是                   | 更新       | --           |
-| 是                     | 否                   | 新增       | 数据库保存ID |
-| 否                     | --                   | 新增       | 数据库生成ID |
+| 变更参数是否存在 ID 字段 | 数据库是否存在 ID 字段 | 数据库操作 | ID 字段操作   |
+| ------------------------ | ---------------------- | ---------- | ------------- |
+| 是                       | 是                     | 更新       | --            |
+| 是                       | 否                     | 新增       | 数据库保存 ID |
+| 否                       | --                     | 新增       | 数据库生成 ID |
 
 ### 变更单条
 
@@ -127,7 +127,7 @@ Victor 的 id 由数据库生成, Wendy 的 id 是变更时指定
 
 ### 关联变更
 
-新增用户 Xander, 同时订单中新增的产品 Mouse
+新增用户 Xander, 同时在订单中新增产品 Mouse
 
 ```graphql
 mutation {
@@ -190,7 +190,7 @@ mutation {
 }
 ```
 
-已新增产品 Mouse
+新增产品 Mouse
 
 ```json
 {
@@ -233,9 +233,13 @@ mutation {
 }
 ```
 
+---
+
 ## 更新
 
-### 1. 通过 ID 类型字段更新 Uma 的用户类型
+### 使用 ID 字段更新
+
+通过 ID 类型字段更新 Uma 的用户类型
 
 ```graphql
 mutation {
@@ -261,9 +265,11 @@ mutation {
 }
 ```
 
-### 2. 通过 where 字段更新 Uma 的用户类型
+### 使用 where 参数更新
 
-有些时候 Object 中存在非空字段, 例如 User 的 name 字段, 需要在更新时额外输入, 此时可以使用 where 字段进行更新
+有些时候 Object 中存在非空字段, 例如 User 的 name 字段, 需要在更新时额外输入, 此时可以使用 [where](#变更参数) 字段进行更新
+
+通过 where 字段更新 Uma 的用户类型
 
 ```graphql
 mutation {
@@ -289,11 +295,13 @@ mutation {
 }
 ```
 
+---
+
 ## 删除
 
-### 1. 删除用户 Wendy
+使用 `isDeprecated: true` 表示要删除对象
 
-使用`isDeprecated: true`表示要删除对象
+删除用户 Wendy
 
 ```graphql
 mutation {
@@ -312,9 +320,11 @@ mutation {
 }
 ```
 
+---
+
 ## 合并对象数组
 
-对于对象数组[Object], 除了全量变更之外, 有时需要添加或移除元素, 此时需要使用@merge 指令进行元素合并
+对于对象数组[Object], 除了全量变更之外, 有时需要添加或移除元素, 此时需要使用 `@merge` 指令进行元素合并
 
 首先查询 Diana 的订单
 
@@ -376,9 +386,11 @@ mutation {
 }
 ```
 
-### 1. Diana 的订单增加 2 个 Keyboard
+### 增加
 
-使用`where: {id: {opr: EQ, val: "4"}}`来选择 Diana 的订单, 使用`where: {id: {opr: EQ, val: "5"}}`来选择 Keyboard
+Diana 的订单增加 2 个 Keyboard
+
+使用 `where: {id: {opr: EQ, val: "4"}}` 来选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "5"}}` 来选择 Keyboard
 
 where 除了作为更新条件之外, 还可用于通过 ID 字段选择对象
 
@@ -442,9 +454,11 @@ mutation {
 }
 ```
 
-### 2. 移除 Diana 的订单中的 Tablet
+### 移除
 
-使用`where: {id: {opr: EQ, val: "4"}}`来选择 Diana 的订单, 使用`where: {id: {opr: EQ, val: "8"}}`来选择 Tablet 所在的订单项, 使用`isDeprecated: true`标记要移除的元素
+移除 Diana 的订单中的 Tablet
+
+使用 `where: {id: {opr: EQ, val: "4"}}` 来选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "8"}}` 来选择 Tablet 所在的订单项, 使用 `isDeprecated: true` 标记要移除的元素
 
 ```graphql
 mutation {
@@ -496,3 +510,23 @@ mutation {
   }
 }
 ```
+
+---
+
+## **变更参数**
+
+| 参数名       | 类型                                                              | 默认值 | 说明                                                        | SQL 示例 (x=10 y=5)                                                                                                                          |
+| ------------ | ----------------------------------------------------------------- | ------ | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| (field)      | Scalar/Enum/[(Object)Input](#objectinput-参数)                    | 无     | 变更字段                                                    | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field )                 |
+| input        | [(Object)Input](#objectinput-参数)                                | 无     | 变更对象(把所有字段封装在对象内变更, 常用于 `$变量` 的使用) | 同上                                                                                                                                         |
+| list         | [[(Object)Input](#objectinput-参数)]                              | 无     | 变更对象列表                                                | INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; |
+| where        | [(Object)Expression](/docs/tutorial/query/#objectexpression-参数) | 无     | 更新条件                                                    | UPDATE t SET field = 'z' WHERE id = 'x'                                                                                                      |
+| isDeprecated | Boolean                                                           | false  | 删除标记( `@merge` 指令存在时表示从数组中移除)              |                                                                                                                                              |
+
+#### (Object)Input 参数
+
+| 参数名       | 类型                                                              | 默认值 | 说明                                           | SQL 示例                                                                                                                     |
+| ------------ | ----------------------------------------------------------------- | ------ | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| (field)      | Scalar/Enum/[(Object)Input](#objectinput-参数)                    | 无     | 变更字段                                       | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field ) |
+| where        | [(Object)Expression](/docs/tutorial/query/#objectexpression-参数) | 无     | 更新条件                                       | UPDATE t SET field = 'z' WHERE id = 'x'                                                                                      |
+| isDeprecated | Boolean                                                           | false  | 删除标记( `@merge` 指令存在时表示从数组中移除) |                                                                                                                              |

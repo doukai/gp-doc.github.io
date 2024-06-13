@@ -320,8 +320,8 @@ sidebar_position: 3
 
 Graphoenix 会为所有的 Scalar 类型的字段生成统计字段
 
-| 参数名       | 类型     | 说明   | SQL 示例                          |
-| ------------ | -------- | ------ | --------------------------------- |
+| 参数名       | 类型     | 说明   | SQL 示例                             |
+| ------------ | -------- | ------ | ------------------------------------ |
 | (field)Count | Int      | 条数   | SELECT **COUNT(** field **)** FROM t |
 | (field)Max   | (Scalar) | 最大值 | SELECT **MAX(** field **)** FROM t   |
 | (field)Min   | (Scalar) | 最小值 | SELECT **MIN(** field **)** FROM t   |
@@ -386,21 +386,21 @@ Graphoenix 支持[普通分页和游标分页](https://graphql.org/learn/paginat
 
 ### **分页接口**
 
-| 接口名           | 类型   | 参数                                        | 说明     | 示例 (Type=User) |
-| ---------------- | ------ | ------------------------------------------- | -------- | ---------------- |
+| 接口名           | 类型             | 参数                                        | 说明     | 示例 (Type=User) |
+| ---------------- | ---------------- | ------------------------------------------- | -------- | ---------------- |
 | (type)Connection | (Type)Connection | [(Type)ConnectionQueryArguments](#查询参数) | 查询单条 | userConnection   |
 
 ### **分页类型**
 
-所有的分页接口都会返回 Connection 类型的数据, 该类型包含条数, 分页(游标)信息和边缘, 边缘中包含所查询的对象(node)和游标, 兼容普通分页和游标分页两种方式
+所有的分页接口都会返回 [Connection](https://relay.dev/graphql/connections.htm#sec-Connection-Types) 类型的数据, 该类型包含条数, 分页(游标)信息和边缘, 边缘中包含所查询的对象(node)和游标, 兼容普通分页和游标分页两种返回结果
 
 #### (Object)Connection
 
 Graphoenix 会自动为所有 Object 类型生成对应的[Connection](https://relay.dev/graphql/connections.htm#sec-Connection-Types)对象
 
-| 字段       | 类型                               | 说明           |
-| ---------- | ---------------------------------- | -------------- |
-| totalCount | Int                                | 总条数         |
+| 字段       | 类型                          | 说明           |
+| ---------- | ----------------------------- | -------------- |
+| totalCount | Int                           | 总条数         |
 | pageInfo   | [PageInfo](#pageinfo)         | 分页(游标)信息 |
 | edges      | [[(Object)Edge]](#objectedge) | 查询边缘       |
 
@@ -721,34 +721,34 @@ Tina 为最后一个用户, hasNextPage 变为 false
 
 ## **查询参数**
 
-| 参数名  | 类型                                                             | 默认值 | 说明                                   | SQL 示例 (x=10 y=5)                                     |
-| ------- | ---------------------------------------------------------------- | ------ | -------------------------------------- | ------------------------------------------------------- |
-| (field) | [(Scalar/Enum/Object)Expression](#scalarenumexpression-参数) | 无     | 条件字段                               | SELECT id FROM t WHERE **t.field** = 'xyz'              |
-| first   | Int                                                              | 无     | 获取前 x 条                            | SELECT id FROM t LIMIT 10                               |
-| last    | Int                                                              | 无     | 获取后 x 条                            | SELECT id FROM t ORDER BY id DESC LIMIT 10              |
-| offset  | Int                                                              | 无     | 跳过 y 条                              | SELECT id FROM t LIMIT 5, 10                            |
-| cond    | [Conditional](#conditional)                                 | AND    | 参数内条件的组合关系                   | WHERE t.field = 'xyz' **AND** t.field \<\> 'abc'        |
-| not     | Boolean                                                          | false  | 条件取非                               | WHERE **NOT** (t.field = 'xyz' AND t.field \<\> 'abc')  |
+| 参数名  | 类型                                                         | 默认值 | 说明                                   | SQL 示例 (x=10 y=5)                                      |
+| ------- | ------------------------------------------------------------ | ------ | -------------------------------------- | -------------------------------------------------------- |
+| (field) | [(Scalar/Enum/Object)Expression](#scalarenumexpression-参数) | 无     | 条件字段                               | SELECT id FROM t WHERE **t.field** = 'xyz'               |
+| first   | Int                                                          | 无     | 获取前 x 条                            | SELECT id FROM t LIMIT 10                                |
+| last    | Int                                                          | 无     | 获取后 x 条                            | SELECT id FROM t ORDER BY id DESC LIMIT 10               |
+| offset  | Int                                                          | 无     | 跳过 y 条                              | SELECT id FROM t LIMIT 5, 10                             |
+| cond    | [Conditional](#conditional)                                  | AND    | 参数内条件的组合关系                   | WHERE t.field = 'xyz' **AND** t.field \<\> 'abc'         |
+| not     | Boolean                                                      | false  | 条件取非                               | WHERE **NOT** (t.field = 'xyz' AND t.field \<\> 'abc')   |
 | exs     | [[(Object)Expression]](#objectexpression-参数)               | 无     | 同一字段多次作为查询条件时可使用此参数 | WHERE **(** t.field = 'xyz' AND t.field \<\> 'abc' **)** |
-| orderBy | [[(Object)OrderBy]](#objectorderby-参数)                     | 无     | 排序字段                               | SELECT id FROM t **ORDER BY** t.field                   |
-| groupBy | [String]                                                         | 无     | 分组字段                               | SELECT id FROM t **GROUP BY** t.field                   |
+| orderBy | [[(Object)OrderBy]](#objectorderby-参数)                     | 无     | 排序字段                               | SELECT id FROM t **ORDER BY** t.field                    |
+| groupBy | [String]                                                     | 无     | 分组字段                               | SELECT id FROM t **GROUP BY** t.field                    |
 
 #### (Scalar/Enum)Expression 参数
 
-| 参数名   | 类型                       | 默认值 | 说明                   | SQL 示例                             |
-| -------- | -------------------------- | ------ | ---------------------- | ------------------------------------ |
+| 参数名   | 类型                  | 默认值 | 说明                   | SQL 示例                             |
+| -------- | --------------------- | ------ | ---------------------- | ------------------------------------ |
 | opr      | [Operator](#operator) | EQ     | 匹配符号               | WHERE t.field **=** 'xyz'            |
-| val      | (Scalar/Enum)              | 无     | 匹配值                 | WHERE t.field = **'xyz'**            |
-| arr      | [(Scalar/Enum)]            | 无     | 匹配列表               | WHERE t.field IN **('x', 'y', 'z')** |
-| skipNull | Boolean                    | false  | 如果值为 NULL 忽略参数 |                                      |
+| val      | (Scalar/Enum)         | 无     | 匹配值                 | WHERE t.field = **'xyz'**            |
+| arr      | [(Scalar/Enum)]       | 无     | 匹配列表               | WHERE t.field IN **('x', 'y', 'z')** |
+| skipNull | Boolean               | false  | 如果值为 NULL 忽略参数 |                                      |
 
 #### (Object)Expression 参数
 
-| 参数名  | 类型                                                             | 默认值 | 说明                                   | SQL 示例                                                |
-| ------- | ---------------------------------------------------------------- | ------ | -------------------------------------- | ------------------------------------------------------- |
-| (field) | [(Scalar/Enum/Object)Expression](#scalarenumexpression-参数) | 无     | 条件字段                               | SELECT id FROM t WHERE **t.field** = 'xyz'              |
-| cond    | [Conditional](#conditional)                                 | AND    | 参数内条件的组合关系                   | WHERE t.field = 'xyz' **AND** t.field \<\> 'abc'        |
-| not     | Boolean                                                          | false  | 条件取非                               | WHERE **NOT** (t.field = 'xyz' AND t.field \<\> 'abc')  |
+| 参数名  | 类型                                                         | 默认值 | 说明                                   | SQL 示例                                                 |
+| ------- | ------------------------------------------------------------ | ------ | -------------------------------------- | -------------------------------------------------------- |
+| (field) | [(Scalar/Enum/Object)Expression](#scalarenumexpression-参数) | 无     | 条件字段                               | SELECT id FROM t WHERE **t.field** = 'xyz'               |
+| cond    | [Conditional](#conditional)                                  | AND    | 参数内条件的组合关系                   | WHERE t.field = 'xyz' **AND** t.field \<\> 'abc'         |
+| not     | Boolean                                                      | false  | 条件取非                               | WHERE **NOT** (t.field = 'xyz' AND t.field \<\> 'abc')   |
 | exs     | [[(Object)Expression]](#objectexpression-参数)               | 无     | 同一字段多次作为查询条件时可使用此参数 | WHERE **(** t.field = 'xyz' AND t.field \<\> 'abc' **)** |
 
 #### Operator
@@ -779,8 +779,8 @@ Tina 为最后一个用户, hasNextPage 变为 false
 
 #### (Object)OrderBy 参数
 
-| 参数名  | 类型               | 默认值 | 说明     | SQL 示例                              |
-| ------- | ------------------ | ------ | -------- | ------------------------------------- |
+| 参数名  | 类型          | 默认值 | 说明     | SQL 示例                              |
+| ------- | ------------- | ------ | -------- | ------------------------------------- |
 | (field) | [Sort](#sort) | 无     | 排序方式 | SELECT id FROM t **ORDER BY** t.field |
 
 #### Sort
