@@ -72,9 +72,9 @@ flowchart LR
         &emsp;subscription: Subscription
         }
         type Query {
-        &emsp;product: product
-        &emsp;productList: [product]
-        &emsp;productConnection: productConnection
+        &emsp;product: Product
+        &emsp;productList: [Product]
+        &emsp;productConnection: ProductConnection
         }"]
         http["http://sample.gp.com/graphql"]
         iq[GraphiQL]
@@ -140,6 +140,43 @@ flowchart LR
     style ddl text-align:left
     style dml text-align:left
     style query text-align:left
+```
+
+### 接口和参数构建
+
+GraphQL协议本身只定义类型和类型之间的关系, Graphoenix在GraphQL类型定义的基础上自动构建查询, 变更和订阅接口, 同时构建好全部所需的参数
+
+```mermaid
+flowchart LR
+    schema["// types.graphql
+    type Product {
+    &emsp;id: ID!
+    &emsp;name: String!
+    &emsp;price: Float!
+    }"]
+    graphql["// schema.graphql
+    schema {
+    &emsp;query: Query
+    &emsp;mutation: Mutation
+    &emsp;subscription: Subscription
+    }
+    type Query {
+    &emsp;product(name: StringExpression, price: FloatExpression, groupBy: [String] ...): Product
+    &emsp;productList(name: StringExpression, price: FloatExpression, orderBy: ProductOrderBy, groupBy: [String], offset: Int, first: Int ...): [Product]
+    &emsp;productConnection(name: StringExpression, price: FloatExpression, orderBy: ProductOrderBy, groupBy: [String], offset: Int, first: Int ...): ProductConnection
+    }
+    type Mutation {
+    &emsp;product(name: String, price: Float, where: ProductExpression ...): Product
+    &emsp;productList(name: String, price: Float, list: [ProductInput], where: ProductExpression ...): [Product]
+    }
+    type Subscription {
+    &emsp;product(name: StringExpression, price: FloatExpression, groupBy: [String] ...): Product
+    &emsp;productList(name: StringExpression, price: FloatExpression, orderBy: ProductOrderBy, groupBy: [String], offset: Int, first: Int ...): [Product]
+    &emsp;productConnection(name: StringExpression, price: FloatExpression, orderBy: ProductOrderBy, groupBy: [String], offset: Int, first: Int ...): ProductConnection
+    }"]
+    schema -- 自动构建 --> graphql
+    style schema text-align:left
+    style graphql text-align:left
 ```
 
 ### 关系构建
@@ -412,9 +449,9 @@ flowchart LR
         &emsp;subscription: Subscription
         }
         type Subscription {
-        &emsp;product: product
-        &emsp;productList: [product]
-        &emsp;productConnection: productConnection
+        &emsp;product: Product
+        &emsp;productList: [Product]
+        &emsp;productConnection: ProductConnection
         }"]
         http["http://sample.gp.com/graphql"]
         schema -- 构建Schema --> graphql -- 构建服务 --> http
@@ -508,12 +545,6 @@ Graphoenix 基于代码生成器直接生成 UI 组件, 为每个类型生成 \<
 GraphQL Java 是 GraphQL 在 Java 平台的官方实现, Spring for GraphQL 是基于 GraphQL Java 的二次封装, 两者分别基于 DataFetcher 和 Controller 获取数据, 最后聚合成 GraphQL 服务. 但与 Apollo GraphQL 一样, 框架本身只做数据路由和聚合, 对于参数的构建和持久层的定义依然需要开发者自己承担
 
 Graphoenix 同样是 Java 平台的 GraphQL 实现, 比起 GraphQL Java 不仅提供数据路由功能, 也实现了对于底层数据库持久层的封装, 并且自动构建筛选, 聚合, 排序和分页等参数, 开箱即用
-
-### 对比[Elide](https://elide.io/)
-
-Elide 是 GraphQL 在 Java 平台的另一个实现, 他与 JPA 十分相似, 以 JPA 的模式去定义 GraphQL, 通过 Data Models 来生成 GraphQL Schema, 通过@OneToMany 和@ManyToMany 等注解定义 Models 之间的关系. 但 JPA 的缺点 Elide 同样存在, 深层的封装需要开发者充分学习了解才能驾驭. 基于 Java Bean 注解的方式定义 GraphQL 也不够简洁直观
-
-Graphoenix 选择了以 GraphQL 定义来生成 Java Bean, 提供与 JPA 相同的持久化接口的定义能力. GraphQL 文件简洁明了, 能够更清晰的体现不同类型之间的关系. 同时无需繁琐的关系注解, 类型关系由系统自动托管, 减少开发者的心智负担
 
 ### 对比[Hasura GraphQL Engine](https://hasura.io/)
 

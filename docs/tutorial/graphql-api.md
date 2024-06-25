@@ -6,9 +6,64 @@ sidebar_position: 5
 
 定义 GraphQL 编程接口
 
-GraphQL API 基于[Microprofile GraphQL 协议](https://github.com/eclipse/microprofile-graphql)实现
+GraphQL API 基于[Microprofile GraphQL 协议](https://github.com/eclipse/microprofile-graphql)实现, 接口使用注解和GraphQL Entities进行定义, 如果你使用过Spring MVC或是Spring Boot, GPI与Controller有一定的相似性. GPI接口以编程的方式拓展GraphQL
 
-新建 SystemApi.java 来构建 api 示例
+
+## 生成GraphQL Entities
+使用Grphoenix的Gradle插件可以根据GraphQL定义生成对应的Entities, 接口使用生成的Entities定义接口方法的参数和返回值
+
+### 1. 引入依赖与 Gradle 插件
+
+```gradle title="order-package/build.gradle"
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        // highlight-start
+        jcenter()
+        // highlight-end
+    }
+    dependencies {
+        // highlight-start
+        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
+        // highlight-end
+    }
+}
+
+// highlight-start
+apply plugin: 'io.graphoenix'
+// highlight-end
+```
+
+### 2. 使用 Gradle 插件生成 Java Bean
+
+```bash
+./gradlew :order-package:generateGraphQLSource
+```
+
+插件会在对应目录生成枚举, 输入类型和对象类型
+
+```txt
+|-- order-package                             订单包
+    |-- build.gradle
+    |-- src
+        |-- main
+            |-- java
+                |-- demo.gp.order
+                    // highlight-start
+                    |-- dto
+                        |-- annotation        GPA注解
+                        |-- directive         指令注解
+                        |-- enumType          枚举类型
+                        |-- inputObjectType   Input类型
+                        |-- objectType        Object类型
+                    // highlight-end
+```
+
+## GraphQL 定义
+
+使用 `@GraphQLApi` 注解来定义接口类
+
+1. 新建 SystemApi.java 来构建 api 示例
 
 ```txt
 |-- order-package                             订单包
@@ -29,9 +84,37 @@ GraphQL API 基于[Microprofile GraphQL 协议](https://github.com/eclipse/micro
                         |-- objectType        Object类型
 ```
 
+2. 定义接口类
+
+```java
+package demo.gp.order.api;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.graphql.GraphQLApi;
+
+// highlight-start
+@GraphQLApi // 使用@GraphQLApi 注解标记接口所在 CDI Bean
+// highlight-end
+@ApplicationScoped
+public class SystemApi {
+  // 定义接口...
+}
+```
+
 ## 查询接口
 
-### 1. 定义一个简单接口, 传入 userName, 返回欢迎和系统时间
+使用 `@Query` 注解来定义接口方法
+
+### 查询类型
+
+
+ | 方法返回类型 | GraphQL类型 | 说明                       | 示例 (Type=User)                                                                                                                        |
+ | ------------ | ----------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+ | Type         | Type        | 同步查询                   | // java <br /> User queryUser(String name) \{ return ... \} <br /> // graphql <br /> queryUser(name: String): User                      |
+ | Mono\<Type\> | Type        | 异步查询                   | // java <br /> Mono\<User\> queryUser(String name) \{ return ... \} <br /> // graphql <br />  queryUser(name: String): User             |
+ | Flux\<Type\> | \[Type\]    | 异步查询, 聚合为数组后返回 | // java <br /> Flux\<User\> queryUserList(String name) \{ return ... \} <br /> // graphql <br />  queryUserList(name: String): \[User\] |
+
+1. 定义一个简单接口, 传入 userName, 返回欢迎和系统时间
 
 定义 hello 接口, 使用@Query 注解标记接口方法
 
@@ -44,9 +127,7 @@ import org.eclipse.microprofile.graphql.Query;
 
 import java.time.LocalDateTime;
 
-// highlight-start
-@GraphQLApi // 使用@GraphQLApi 注解标记接口所在 CDI Bean
-// highlight-end
+@GraphQLApi
 @ApplicationScoped
 public class SystemApi {
 

@@ -221,6 +221,25 @@ type OrderItem {
 ./gradlew :order-package:generateGraphQLSource
 ```
 
+```txt
+|-- order-package                             订单包
+    |-- build.gradle
+    |-- src
+        |-- main
+            |-- java
+                |-- demo.gp.order
+                    // highlight-start
+                    |-- api
+                        |-- SystemApi.java    系统API
+                    // highlight-end
+                    |-- dto
+                        |-- annotation        GPA注解
+                        |-- directive         指令注解
+                        |-- enumType          枚举类型
+                        |-- inputObjectType   Input类型
+                        |-- objectType        Object类型
+```
+
 <details>
 <summary>使用 IDEA 执行</summary>
 
