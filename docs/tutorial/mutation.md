@@ -27,7 +27,7 @@ sidebar_position: 4
 
 ### 变更单条
 
-新增用户 Uma
+例: 新增用户 Uma
 
 ```graphql
 mutation {
@@ -66,7 +66,7 @@ mutation {
 
 ### 变更列表
 
-新增用户 Victor 和 Wendy
+例: 新增用户 Victor 和 Wendy
 
 ```graphql
 mutation {
@@ -127,7 +127,7 @@ Victor 的 id 由数据库生成, Wendy 的 id 是变更时指定
 
 ### 关联变更
 
-新增用户 Xander, 同时在订单中新增产品 Mouse
+例: 新增用户 Xander, 同时在订单中新增产品 Mouse
 
 ```graphql
 mutation {
@@ -190,7 +190,7 @@ mutation {
 }
 ```
 
-新增产品 Mouse
+例: 新增产品 Mouse
 
 ```json
 {
@@ -239,7 +239,7 @@ mutation {
 
 ### 使用 ID 字段更新
 
-通过 ID 类型字段更新 Uma 的用户类型
+例: 通过 ID 类型字段更新 Uma 的用户类型
 
 ```graphql
 mutation {
@@ -269,7 +269,7 @@ mutation {
 
 有些时候 Object 中存在非空字段, 例如 User 的 name 字段, 需要在更新时额外输入, 此时可以使用 [where](#变更参数) 字段进行更新
 
-通过 where 字段更新 Uma 的用户类型
+例: 通过 where 字段更新 Uma 的用户类型
 
 ```graphql
 mutation {
@@ -301,7 +301,7 @@ mutation {
 
 使用 `isDeprecated: true` 表示要删除对象
 
-删除用户 Wendy
+例: 删除用户 Wendy
 
 ```graphql
 mutation {
@@ -326,7 +326,7 @@ mutation {
 
 对于对象数组[Object], 除了全量变更之外, 有时需要添加或移除元素, 此时需要使用 `@merge` 指令进行元素合并
 
-首先查询 Diana 的订单
+例: 查询 Diana 的订单
 
 ```graphql
 {
@@ -388,7 +388,7 @@ mutation {
 
 ### 增加
 
-Diana 的订单增加 2 个 Keyboard
+例: Diana 的订单增加 2 个 Keyboard
 
 使用 `where: {id: {opr: EQ, val: "4"}}` 来选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "5"}}` 来选择 Keyboard
 
@@ -456,7 +456,7 @@ mutation {
 
 ### 移除
 
-移除 Diana 的订单中的 Tablet
+例: 移除 Diana 的订单中的 Tablet
 
 使用 `where: {id: {opr: EQ, val: "4"}}` 来选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "8"}}` 来选择 Tablet 所在的订单项, 使用 `isDeprecated: true` 标记要移除的元素
 

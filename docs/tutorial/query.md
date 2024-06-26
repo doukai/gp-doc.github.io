@@ -17,7 +17,7 @@ sidebar_position: 3
 
 ### 查询单条
 
-查询名为 Bob 的用户
+例: 查询名为 Bob 的用户
 
 ```graphql
 {
@@ -43,7 +43,7 @@ sidebar_position: 3
 
 ### 查询列表
 
-查询前 5 个用户
+例: 查询前 5 个用户
 
 ```graphql
 {
@@ -91,7 +91,7 @@ sidebar_position: 3
 
 ### 条件查询
 
-查询所有会员用户和价格大于 200 的产品
+例: 查询所有会员用户和价格大于 200 的产品
 
 ```graphql
 {
@@ -160,7 +160,7 @@ sidebar_position: 3
 
 ### 关联查询
 
-1. 查询 Alice 的订单
+1. 例: 查询 Alice 的订单
 
 ```graphql
 {
@@ -206,7 +206,7 @@ sidebar_position: 3
 }
 ```
 
-2. 查询购买了 Phone 的用户列表
+2. 例: 查询购买了 Phone 的用户列表
 
 ```graphql
 {
@@ -274,7 +274,7 @@ sidebar_position: 3
 
 ### 排序
 
-查询产品列表, 价格由高到低
+例: 查询产品列表, 价格由高到低
 
 ```graphql
 {
@@ -328,7 +328,7 @@ Graphoenix 会为所有的 Scalar 类型的字段生成统计字段
 | (field)Sum   | (Scalar) | 合计   | SELECT **SUM(** field **)** FROM t   |
 | (field)Avg   | (Scalar) | 平均值 | SELECT **AVG(** field **)** FROM t   |
 
-1. 查询价格在 300 以内, 价格最高的产品
+1. 例: 查询价格在 300 以内, 价格最高的产品
 
 ```graphql
 {
@@ -350,7 +350,7 @@ Graphoenix 会为所有的 Scalar 类型的字段生成统计字段
 }
 ```
 
-2. 分组查询普通用户和会员用户的数量
+2. 例: 分组查询普通用户和会员用户的数量
 
 ```graphql
 {
