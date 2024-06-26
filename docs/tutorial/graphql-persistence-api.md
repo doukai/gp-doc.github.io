@@ -6,9 +6,50 @@ sidebar_position: 6
 
 定义 GraphQL 持久化接口
 
-GraphQL Persistence API 类似于 JPA(Java Persistence API), 比 JPA 更简洁
+GraphQL Persistence API 基于Java接口和注解定义, 将接口方法映射为GraphQL查询或变更, 提供代码级的数据访问及操作能力, Graphoenix编译器会针对不同数据库和存储方案提供不同的实现. 如果你使用过 JPA(Java Persistence API), GPA与 Repository 有一定的相似性
 
-新建 UserRepository.java 来构建 persistence api 示例
+```mermaid
+flowchart LR
+    code["// ProductRepository.java
+    @GraphQLOperation
+    public interface ProductRepository {
+    &emsp;@Query(name = @StringExpression(opr = Operator.EQ, $val = &quot;name&quot;))
+    &emsp;Product queryProductByName(String name);
+    }"]
+    query["// query.graphql
+    query queryProductByName($name: String) {
+    &emsp;product(name: {opr: EQ, val: $name}) {
+    &emsp;&emsp;id
+    &emsp;&emsp;name
+    &emsp;&emsp;price
+    &emsp;}
+    }"]
+    dml["// query.sql
+    SELECT JSON_EXTRACT(
+    &emsp;JSON_OBJECT(
+    &emsp;&emsp;'id', product_1.`id`,
+    &emsp;&emsp;'name', product_1.`name`,
+    &emsp;&emsp;'price', product_1.`price`
+    &emsp;) ,
+    '$')
+    FROM `product` AS product_1
+    WHERE product_1.name = :name"]
+    mongodb["database
+    &emsp;.getCollection(&quot;product&quot;)
+    &emsp;.find(eq(&quot;name&quot;, name))"]
+    code -- 转译 --> query
+    query -- MySQL --> dml
+    query -- MongoDB --> mongodb
+    style code text-align:left
+    style query text-align:left
+    style dml text-align:left
+    style mongodb text-align:left
+```
+
+## 生成 GPA 注解
+
+[使用Gradle插件生成定义GPA接口需要的注解和Java Entitis](/docs/tutorial/graphql-api#生成-graphql-entities), 插件会根据GraphQL定义生成 `@Query` 和 `@Mutation` 注解, 注解中包含所有GraphQL接口定义, **请注意此处的 `@Query` 和 `@Mutation` 注解并不是 `org.eclipse.microprofile.graphql` 包下的 `@Query` 和 `@Mutation`**
+
 
 ```txt
 |-- order-package                             订单包
@@ -20,30 +61,64 @@ GraphQL Persistence API 类似于 JPA(Java Persistence API), 比 JPA 更简洁
         |           |-- api
         |               |-- SystemApi.java    系统API
         |           |-- dto
+        |           |-- repository
+                    // highlight-start
         |           |   |-- annotation        GPA注解
+                    // highlight-end
         |           |   |-- directive         指令注解
         |           |   |-- enumType          枚举类型
         |           |   |-- inputObjectType   Input类型
         |           |   |-- objectType        Object类型
+```
+
+## 定义 GPA 接口
+
+1. 新建 GPA 接口
+
+```txt
+|-- order-package                             订单包
+    |-- build.gradle
+    |-- src
+        |-- main
+        |   |-- java
+        |       |-- demo.gp.order
+        |           |-- dto
+        |           |   |-- annotation              GPA注解
+        |           |   |-- directive               指令注解
+        |           |   |-- enumType                枚举类型
+        |           |   |-- inputObjectType         Input类型
+        |           |   |-- objectType              Object类型
                     // highlight-start
         |           |-- repository
-        |               |-- UserRepository.java             用户Repository
-        |               |-- ProductRepository.java          产品Repository
+        |               |-- UserRepository.java     用户Repository
                     // highlight-end
-        |-- main
-            |-- java
-                |-- demo.gp.order
-                    // highlight-start
-                    |-- test
-                        |-- TestResultLoggerExtension.java  测试结果日志拓展
-                        |-- UserRepositoryTest.java         用户Repository测试类
-                        |-- ProductRepositoryTest.java      产品Repository测试类
-                    // highlight-end
+```
+
+2. 使用 `@GraphQLOperation` 注解来定义GPA 接口
+
+
+```java
+package demo.gp.order.repository;
+
+// highlight-start
+import demo.gp.order.dto.annotation.Query;
+// highlight-end
+import io.graphoenix.spi.annotation.GraphQLOperation;
+
+// highlight-start
+@GraphQLOperation // 使用@GraphQLOperation 注解标记接口所在 CDI Bean
+// highlight-end
+public interface UserRepository {
+
+    // 定义接口
+}
 ```
 
 ## 查询接口
 
-### 1. 查询所有 VIP 用户
+### 普通查询
+
+1. 查询所有 VIP 用户
 
 定义 queryVIPUserList 方法, 使用@Query 注解标记接口方法, 请注意, 此处的@Query 注解是在之前生成的的[GPA 注解](/docs/tutorial/quick-start#4-使用-gradle-插件生成-java-bean), **并非 org.eclipse.microprofile.graphql.Query**
 

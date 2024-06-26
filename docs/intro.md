@@ -275,10 +275,16 @@ flowchart LR
     '$')
     FROM `product` AS product_1
     WHERE product_1.name = :name"]
-    code -- 转译 --> query -- 关系型数据库生成SQL --> dml
+    mongodb["database
+    &emsp;.getCollection(&quot;product&quot;)
+    &emsp;.find(eq(&quot;name&quot;, name))"]
+    code -- 转译 --> query
+    query -- MySQL --> dml
+    query -- MongoDB --> mongodb
     style code text-align:left
     style query text-align:left
     style dml text-align:left
+    style mongodb text-align:left
 ```
 
 ### 统一校验

@@ -51,10 +51,9 @@ apply plugin: 'io.graphoenix'
                 |-- demo.gp.order
                     // highlight-start
                     |-- dto
-                        |-- annotation        GPA注解
-                        |-- directive         指令注解
                         |-- enumType          枚举类型
                         |-- inputObjectType   Input类型
+                        |-- interfaceType     接口类型
                         |-- objectType        Object类型
                     // highlight-end
 ```
@@ -127,6 +126,7 @@ flowchart LR
                         |-- directive         指令注解
                         |-- enumType          枚举类型
                         |-- inputObjectType   Input类型
+                        |-- interfaceType     接口类型
                         |-- objectType        Object类型
 ```
 
@@ -660,14 +660,14 @@ public class SystemApi {
 
 ### 类注解
 
-| 注解        | 说明                                                            | 示例                                                                                                                                                                                    | GraphQL 类型                                                                                      |
-| ----------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| @GraphQLApi | 定义 GraphQL 接口类, 接口类中可以定义查询, 变更, 字段和参数接口 |                                                                                                                                                                                         |                                                                                                   |
-| @Input      | 定义 GraphQL 输入类型                                           | @Input("StarshipInput")<br/>public class Starship \{<br/>&emsp;private String id;<br/>&emsp;private String name;<br/>&emsp;private float length;<br/>&emsp;// getters/setters...<br/>\} | input StarshipInput \{<br/>&emsp;id: String<br/>&emsp;name: String<br/>&emsp;length: Float<br/>\} |
-| @Type       | 定义 GraphQL 类型                                               | @Type("Starship")<br/>public class Starship \{<br/>&emsp;private String id;<br/>&emsp;private String name;<br/>&emsp;private float length;<br/>&emsp;// getters/setters...<br/>\}       | type Starship \{<br/>&emsp;id: String<br/>&emsp;name: String<br/>&emsp;length: Float<br/>\}       |
-| @Input      | 定义 GraphQL 输入类型                                           | @Input("StarshipInput")<br/>public class Starship \{<br/>&emsp;private String id;<br/>&emsp;private String name;<br/>&emsp;private float length;<br/>&emsp;// getters/setters...<br/>\} | input StarshipInput \{<br/>&emsp;id: String<br/>&emsp;name: String<br/>&emsp;length: Float<br/>\} |
-| @Interface  | 定义 GraphQL 接口类型                                           | @Interface("Aircraft")<br/>public interface IAircraft \{<br/>&emsp;private String getName();<br/>\}                                                                                     | interface Aircraft \{<br/>&emsp;name: String<br/>\}                                               |
-| @Enum       | 定义 GraphQL 枚举类型                                           | @Enum("ClothingSize")<br/>public enum ShirtSize \{<br/>&emsp;S,<br/>&emsp;M,<br/>&emsp;L,<br/>&emsp;XL,<br/>&emsp;XXL<br/>\}                                                            | enum ClothingSize \{<br/>&emsp;S<br/>&emsp;M<br/>&emsp;L<br/>&emsp;XL<br/>&emsp;XXL<br/>\}        |
+| 注解        | 说明                                                                              | 示例                                                                                                                                                                                    | GraphQL 类型                                                                                      |
+| ----------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| @GraphQLApi | 定义 GraphQL 接口类, 接口类中可以定义<br />查询接口, 变更接口, 字段接口和参数接口 |                                                                                                                                                                                         |                                                                                                   |
+| @Input      | 定义 GraphQL 输入类型                                                             | @Input("StarshipInput")<br/>public class Starship \{<br/>&emsp;private String id;<br/>&emsp;private String name;<br/>&emsp;private float length;<br/>&emsp;// getters/setters...<br/>\} | input StarshipInput \{<br/>&emsp;id: String<br/>&emsp;name: String<br/>&emsp;length: Float<br/>\} |
+| @Type       | 定义 GraphQL 类型                                                                 | @Type("Starship")<br/>public class Starship \{<br/>&emsp;private String id;<br/>&emsp;private String name;<br/>&emsp;private float length;<br/>&emsp;// getters/setters...<br/>\}       | type Starship \{<br/>&emsp;id: String<br/>&emsp;name: String<br/>&emsp;length: Float<br/>\}       |
+| @Input      | 定义 GraphQL 输入类型                                                             | @Input("StarshipInput")<br/>public class Starship \{<br/>&emsp;private String id;<br/>&emsp;private String name;<br/>&emsp;private float length;<br/>&emsp;// getters/setters...<br/>\} | input StarshipInput \{<br/>&emsp;id: String<br/>&emsp;name: String<br/>&emsp;length: Float<br/>\} |
+| @Interface  | 定义 GraphQL 接口类型                                                             | @Interface("Aircraft")<br/>public interface IAircraft \{<br/>&emsp;private String getName();<br/>\}                                                                                     | interface Aircraft \{<br/>&emsp;name: String<br/>\}                                               |
+| @Enum       | 定义 GraphQL 枚举类型                                                             | @Enum("ClothingSize")<br/>public enum ShirtSize \{<br/>&emsp;S,<br/>&emsp;M,<br/>&emsp;L,<br/>&emsp;XL,<br/>&emsp;XXL<br/>\}                                                            | enum ClothingSize \{<br/>&emsp;S<br/>&emsp;M<br/>&emsp;L<br/>&emsp;XL<br/>&emsp;XXL<br/>\}        |
 
 ### 字段注解
 
