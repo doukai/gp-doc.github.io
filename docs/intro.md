@@ -47,25 +47,22 @@ style response text-align:left
 
 ### 按需所取
 
-前端总是希望得到开箱即用的数据, 而后端则希望模式化的返回数据. Graphonix 充分利用 GraphQL 协议的特性充当对接人, 按照后端的业务建模构建 GraphQL 服务, 实时响应前端的定制化请求
+前端总是希望得到开箱即用的数据, 而后端则希望模式化的返回数据. Graphonix 充分利用 GraphQL 协议的特性充当对接人, 按照后端的业务建模构建 GraphQL 服务, 实时响应前端的定制化请求, 同时内置可视化的开发工具[GraphiQL](https://github.com/graphql/graphiql)
 
 ```mermaid
 flowchart LR
-    uml[后端建模] --> schema
-    request --> query
-    query -- 请求 --> http
     query -. 测试请求 .-> iq
+    query -- 请求 --> http
     iq -. 测试结果 .-> response
     http -- 响应 --> response
-    response --> request
-    subgraph Graphoenix
-        schema["// types.graphql
+    subgraph 后端
+        types["// types.graphql
         type Product {
         &emsp;id: ID!
         &emsp;name: String!
         &emsp;price: Float!
         }"]
-        graphql["// schema.graphql
+        schema["// schema.graphql
         schema {
         &emsp;query: Query
         &emsp;mutation: Mutation
@@ -78,12 +75,11 @@ flowchart LR
         }"]
         http["http://sample.gp.com/graphql"]
         iq[GraphiQL]
-        schema -- 构建Schema --> graphql
-        graphql -. 构建测试界面 .-> iq
-        graphql -- 构建服务 --> http
+        types -- 构建Schema --> schema
+        schema -. 构建测试工具 .-> iq
+        schema -- 构建服务 --> http
     end
     subgraph 前端
-        request[前端请求]
         query["// query.graphql
         query {
         &emsp;product {
@@ -99,8 +95,8 @@ flowchart LR
         &emsp;}
         }"]
     end
+    style types text-align:left
     style schema text-align:left
-    style graphql text-align:left
     style query text-align:left
     style response text-align:left
 ```
@@ -185,18 +181,49 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A((A)) --> gp((Graphoenix))
-    B((B)) --> gp((Graphoenix))
-    C((C)) --> gp((Graphoenix))
-    gp((Graphoenix)) -- 生成 --> AB((AB))
-    gp((Graphoenix)) -- 生成 --> AC((AC))
-    gp((Graphoenix)) -- 生成 --> BC((BC))
-    A -.- AB
-    B -.- AB
-    A -.- AC
-    C -.- AC
-    B -.- BC
-    C -.- BC
+    gp((Graphoenix))
+    user["type User {
+    &emsp;roles: [Role]
+    &emsp;groups: [Group]
+    }"]
+    role["type Role {
+    &emsp;users: [User]
+    &emsp;groups: [Group]
+    }"]
+    group["type Group {
+    &emsp;users: [User]
+    &emsp;roles: [Role]
+    }"]
+    userRole["type UserRoleRelation {
+    &emsp;user: User
+    &emsp;role: Role
+    }"]
+    userGroup["type UserGroupRelation {
+    &emsp;user: User
+    &emsp;group: Group
+    }"]
+    groupRole["type GroupRoleRelation {
+    &emsp;group: Group
+    &emsp;role: Role
+    }"]
+    user <-.-> userRole
+    role <-.-> userRole
+    user -- 定义 --> gp
+    role -- 定义 --> gp
+    group -- 定义 --> gp
+    gp -- 生成 --> userRole
+    user <-.-> userGroup
+    gp -- 生成 --> userGroup
+    gp -- 生成 --> groupRole
+    group <-.-> userGroup
+    role <-.-> groupRole
+    group <-.-> groupRole
+    style user text-align:left
+    style role text-align:left
+    style group text-align:left
+    style userRole text-align:left
+    style userGroup text-align:left
+    style groupRole text-align:left
 ```
 
 ### 代码生成
@@ -293,7 +320,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph Graphoenix
+    subgraph 后端
         schema["// types.graphql
         type Product {
         &emsp;id: ID!
@@ -311,17 +338,16 @@ flowchart LR
         &emsp;}
         &emsp;&quot;required&quot;: [ &quot;id&quot;, &quot;name&quot;, &quot;price&quot; ]
         }"]
-        func[后端接口]
-        http[http端口]
+        http
         java[validate.java]
         schema -- 转译 --> jsonSchema
         jsonSchema -. 加载校验规则 .-> java
         jsonSchema --> http
     end
+    java <-- 校验 --> form
+    http -. 加载校验规则 .-> js
     subgraph 前端
-        http -. 请求(缓存)校验规则 .-> js
-        form[前端表单] <-- 校验 --> js[validate.js]
-        js -- 提交 --> func <-- 校验 --> java
+        js[validate.js] <-- 校验 --> form[前端表单]
     end
     style schema text-align:left
     style jsonSchema text-align:left
@@ -365,58 +391,7 @@ flowchart LR
     c-schema --> c-service
 ```
 
-### 自适应事务
-
-Graphoenix 根据单体和分布式架构自动组织事务, 动态规划本地事务和事务补偿
-```mermaid
-flowchart LR
-    subgraph 编译时
-        pkg1([模块1])
-        pkg2([模块2])
-        pkg3([模块3])
-    end
-    pkg1 -.-> mono1
-    pkg2 -.-> mono2
-    pkg3 -.-> mono3
-    pkg1 -.-> micro1
-    pkg2 -.-> micro2
-    pkg3 -.-> micro3
-    subgraph 单体运行时
-        mono1{{jar1}}
-        mono2{{jar2}}
-        mono3{{jar3}}
-    end
-    subgraph 微服务运行时
-        micro1{{微服务1}}
-        micro2{{微服务2}}
-        micro3{{微服务3}}
-    end
-    subgraph 微服务数据库
-        db1[(MongoDB)]
-        db2[(Postgre)]
-        db3[(MySQL)]
-    end
-    success["成功"]
-    error["异常"]
-    db4[(MySQL)]
-    单体运行时 -- 提交 --> success
-    单体运行时 -. 回滚 .-> 异常
-    单体运行时 -- 提交 --> db4
-    单体运行时 -. 回滚 .-> db4
-    micro1 -- 提交 --> db3
-    micro1 -. 回滚 .-> db3
-    micro2 -- 提交 --> db2
-    micro2-. 回滚 .-> db2 
-    micro3 -- 提交 --> db1
-    micro3 -. 回滚 .-> db1
-
-    micro1 -- 调用 --> micro2
-    micro1 -- 调用 --> micro3
-    micro1 -. 事务补偿 .-> micro2
-    micro1 -. 事务补偿 .-> micro3
-```
-
-### 可伸缩
+### 可伸缩架构
 
 Graphoenix 架构可在项目的不同阶段按实际需求随意伸缩, 随着项目的扩张拆分为微服务, 也可随着项目的收缩合并为单体
 
@@ -458,6 +433,37 @@ flowchart LR
     micro3 --> db1
 ```
 
+### 自适应事务
+
+Graphoenix 根据单体和分布式架构自动组织事务, 动态规划本地事务和事务补偿
+```mermaid
+flowchart LR
+    micro1{{微服务1}}
+    micro2{{微服务2}}
+    micro3{{微服务3}}
+    success1(成功)
+    success2(成功)
+    success3(成功)
+    error1(异常)
+    error2(异常)
+    error3(异常)
+    db1[(MySQL)]
+    db2[(Postgre)]
+    db3[(MongoDB)]
+    error1 == 事务补偿 ==> micro2 & micro3
+    micro1 -- 调用 --> micro2 --> success2
+    micro2 -.-> error2 -. 回滚 .-> db2
+    error2 -.-> error1
+    
+    micro1 -.-> error1 -. 回滚 .-> db1
+    micro1 --> success1 -- 提交 --> db1
+    
+    success2 -- 调用 --> micro3 --> success3 -- 提交 --> db3
+    success2 -- 提交 --> db2
+    micro3 -.-> error3 -. 回滚 .-> db3
+    error3 -.-> error1
+```
+
 ### 去中心
 
 Graphoenix 基于[Gossip 协议](https://icyfenix.cn/distribution/consensus/gossip.html)实现服务发现, 无中心节点, 避免单点故障, 注册负载和熔断等机制以 Sidecar 模式提供服务, 无需复杂的微服务基础设施
@@ -488,35 +494,7 @@ Graphoenix 提供开箱即用, 端到端的订阅服务, 后台实时高效的�
 
 ```mermaid
 flowchart LR
-    request1 -.-> subscription -. 订阅 .-> http
-    http -. 推送(SSE) .-> response .-> request1
-    request2 --> mutation -- 提交 --> http
-    subgraph Graphoenix
-        mq[(Message Queue)]
-        schema["// types.graphql
-        type Product {
-        &emsp;id: ID!
-        &emsp;name: String!
-        &emsp;price: Float!
-        }"]
-        graphql["// schema.graphql
-        schema {
-        &emsp;query: Query
-        &emsp;mutation: Mutation
-        &emsp;subscription: Subscription
-        }
-        type Subscription {
-        &emsp;product: Product
-        &emsp;productList: [Product]
-        &emsp;productConnection: ProductConnection
-        }"]
-        http["http://sample.gp.com/graphql"]
-        schema -- 构建Schema --> graphql -- 构建服务 --> http
-        http -- 记录变更 --> mq
-        mq -- 推送(MQ) --> merge{{变更检测}} -. 推送更新 .-> http
-    end
-    subgraph 前端
-        request1[订阅请求]
+    subgraph 变更
         request2[变更请求]
         mutation["// mutation.graphql
         mutation {
@@ -524,6 +502,31 @@ flowchart LR
         &emsp;&emsp;id
         &emsp;}
         }"]
+        request2 --> mutation
+    end
+    mutation -- 提交 --> http
+    subgraph Graphoenix
+        mq[(Message Queue)]
+        types["// types.graphql
+        type Product {
+        &emsp;id: ID!
+        &emsp;name: String!
+        &emsp;price: Float!
+        }"]
+        schema["// schema.graphql
+        schema {
+        &emsp;subscription: Subscription
+        }
+        type Subscription {
+        &emsp;product: Product
+        &emsp;productList: [Product]
+        &emsp;productConnection: ProductConnection
+        }"]
+        types -- 构建Schema --> schema -- 构建服务 --> http --> mq --> sse
+    end
+    sse -- 推送 --> response
+    subgraph 订阅
+        request1[订阅请求]
         subscription["// subscription.graphql
         subscription {
         &emsp;product {
@@ -538,9 +541,11 @@ flowchart LR
         &emsp;&emsp;&quot;price&quot;: 1000.00
         &emsp;}
         }"]
+        response --> request1 --> subscription
     end
+    subscription -- 注册订阅 --> http
+    style types text-align:left
     style schema text-align:left
-    style graphql text-align:left
     style subscription text-align:left
     style mutation text-align:left
     style response text-align:left
