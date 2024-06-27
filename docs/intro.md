@@ -144,7 +144,7 @@ flowchart LR
 
 ### 接口和参数构建
 
-GraphQL协议本身只定义类型和类型之间的关系, Graphoenix在GraphQL类型定义的基础上自动构建查询, 变更和订阅接口, 同时构建好全部所需的参数
+GraphQL 协议本身只定义类型和类型之间的关系, Graphoenix 在 GraphQL 类型定义的基础上自动构建查询, 变更和订阅接口, 同时构建好全部所需的参数
 
 ```mermaid
 flowchart LR
@@ -363,6 +363,57 @@ flowchart LR
     a-schema --> a-service
     b-schema --> b-service
     c-schema --> c-service
+```
+
+### 自适应事务
+
+Graphoenix 根据单体和分布式架构自动组织事务, 动态规划本地事务和事务补偿
+```mermaid
+flowchart LR
+    subgraph 编译时
+        pkg1([模块1])
+        pkg2([模块2])
+        pkg3([模块3])
+    end
+    pkg1 -.-> mono1
+    pkg2 -.-> mono2
+    pkg3 -.-> mono3
+    pkg1 -.-> micro1
+    pkg2 -.-> micro2
+    pkg3 -.-> micro3
+    subgraph 单体运行时
+        mono1{{jar1}}
+        mono2{{jar2}}
+        mono3{{jar3}}
+    end
+    subgraph 微服务运行时
+        micro1{{微服务1}}
+        micro2{{微服务2}}
+        micro3{{微服务3}}
+    end
+    subgraph 微服务数据库
+        db1[(MongoDB)]
+        db2[(Postgre)]
+        db3[(MySQL)]
+    end
+    success["成功"]
+    error["异常"]
+    db4[(MySQL)]
+    单体运行时 -- 提交 --> success
+    单体运行时 -. 回滚 .-> 异常
+    单体运行时 -- 提交 --> db4
+    单体运行时 -. 回滚 .-> db4
+    micro1 -- 提交 --> db3
+    micro1 -. 回滚 .-> db3
+    micro2 -- 提交 --> db2
+    micro2-. 回滚 .-> db2 
+    micro3 -- 提交 --> db1
+    micro3 -. 回滚 .-> db1
+
+    micro1 -- 调用 --> micro2
+    micro1 -- 调用 --> micro3
+    micro1 -. 事务补偿 .-> micro2
+    micro1 -. 事务补偿 .-> micro3
 ```
 
 ### 可伸缩

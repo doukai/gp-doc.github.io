@@ -58,7 +58,7 @@ apply plugin: 'io.graphoenix'
                     // highlight-end
 ```
 
-## 定义 GraphQL Entities
+### 定义 GraphQL Entities
 
 有时候 API 接口可能需要自定义的 Java Entities 作为方法的参数或返回值, 这些类型可能并没有定义在 GrpahQL 类型定义中, 此时可以使用 [`@Type`](#类型注解) [`@Input`](#类型注解) [`@Interface`](#类型注解) [`@Enum`](#类型注解) 类型注解分别来定义类型, 输入类型, 接口和枚举, 定义好的 Entities 会自动编译并添加到 GrahpQL 类型中作为补充
 
