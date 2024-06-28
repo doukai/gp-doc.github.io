@@ -17,6 +17,8 @@ sidebar_position: 3
 
 ### 查询单条
 
+使用查询字段同名的参数, 参数中 [`opr`](#operator) 子参数为查询类型, [`val`](#scalarenumexpression-参数) 为查询内容, 如果查询内容为数组则使用 [`arr`](#scalarenumexpression-参数) 
+
 例: 查询名为 Bob 的用户
 
 ```graphql
@@ -42,6 +44,8 @@ sidebar_position: 3
 ```
 
 ### 查询列表
+
+在列表查询中可使用 [`first`](#查询参数) 查询前n条数据, [`last`](#查询参数) 查询后n条数据
 
 例: 查询前 5 个用户
 
@@ -206,6 +210,8 @@ sidebar_position: 3
 }
 ```
 
+如果需要查询关联对象的字段, 可以在对象字段同名的参数的子参数中配置查询条件
+
 2. 例: 查询购买了 Phone 的用户列表
 
 ```graphql
@@ -273,6 +279,8 @@ sidebar_position: 3
 ```
 
 ### 排序
+
+使用 [`orderBy`](#查询参数) 参数可以在字段同名参数的子参数中配置排序方式
 
 例: 查询产品列表, 价格由高到低
 
@@ -350,6 +358,8 @@ Graphoenix 会为所有的 Scalar 类型的字段生成统计字段
 }
 ```
 
+可以使用 [`groupBy`](#查询参数) 参数选择统计字段
+
 2. 例: 分组查询普通用户和会员用户的数量
 
 ```graphql
@@ -424,7 +434,7 @@ Graphoenix 会自动为所有 Object 类型生成对应的[Edge](https://relay.d
 
 ### 基本分页
 
-1. 查询用户第 1 页, 每页 5 条
+1. 例: 查询用户第 1 页, 每页 5 条
 
 ```graphql
 {
@@ -488,7 +498,9 @@ Graphoenix 会自动为所有 Object 类型生成对应的[Edge](https://relay.d
 }
 ```
 
-2. 查询用户第 2 页, 每页 5 条
+可以使用 [`offset`](#查询参数) 参数来设置偏移数
+
+2. 例: 查询用户第 2 页, 每页 5 条
 
 ```graphql
 {
@@ -556,14 +568,14 @@ Graphoenix 会自动为所有 Object 类型生成对应的[Edge](https://relay.d
 
 [游标分页简介](https://github.com/x1ah/Blog/issues/15)
 
-1. 查询用户第 3 页, 每页 5 条, 游标分页
+1. 例: 查询用户第 3 页, 每页 5 条, 游标分页
 
 ```json
 { id: "10", name: "Jane", email: "jane@example.com", userType: REGULAR },
 { id: "11", name: "Kyle", email: "kyle@example.com", userType: VIP },
 ```
 
-查询 Jane 之后的 5 条, 游标字段默认为 ID 字段, 也可使用@cursor 指定游标字段, 此处取 Jane 的 id: 10
+查询 Jane 之后的 5 条, 游标字段默认为 ID 字段, 也可使用 `@cursor` 指定游标字段, 此处取 Jane 的 id: 10
 
 ```graphql
 {
@@ -639,7 +651,7 @@ Graphoenix 会自动为所有 Object 类型生成对应的[Edge](https://relay.d
 }
 ```
 
-2. 查询用户第 4 页, 每页 5 条, 游标分页
+2. 例: 查询用户第 4 页, 每页 5 条, 游标分页
 
 ```graphql
 {

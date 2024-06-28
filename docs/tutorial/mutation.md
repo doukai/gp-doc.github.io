@@ -17,15 +17,17 @@ sidebar_position: 4
 
 #### **变更逻辑**
 
-变更包含新增和更新两种操作, 根据 ID 字段区分, 逻辑如下
+变更包含新增和更新两种操作, 根据 `ID` 字段区分, 逻辑如下
 
-| 变更参数是否存在 ID 字段 | 数据库是否存在 ID 字段 | 数据库操作 | ID 字段操作   |
+| 变更参数是否存在 `ID` 字段 | 数据库是否存在 `ID` 字段 | 数据库操作 | `ID` 字段操作   |
 | ------------------------ | ---------------------- | ---------- | ------------- |
 | 是                       | 是                     | 更新       | --            |
 | 是                       | 否                     | 新增       | 数据库保存 ID |
 | 否                       | --                     | 新增       | 数据库生成 ID |
 
 ### 变更单条
+
+使用参数中需要变更字段同名的参数设置变更内容
 
 例: 新增用户 Uma
 
@@ -65,6 +67,8 @@ mutation {
 ```
 
 ### 变更列表
+
+使用 [`list`](#变更参数) 参数可以同时变更多个对象
 
 例: 新增用户 Victor 和 Wendy
 
@@ -126,6 +130,8 @@ Victor 的 id 由数据库生成, Wendy 的 id 是变更时指定
 ```
 
 ### 关联变更
+
+使用关联对象字段同名的参数来变更关联对象, 如果关联对象不存在 `ID` 字段则视为新增关联对象, 同时建立与新对象的关联关系
 
 例: 新增用户 Xander, 同时在订单中新增产品 Mouse
 
@@ -237,9 +243,9 @@ mutation {
 
 ## 更新
 
-### 使用 ID 字段更新
+### 使用 `ID` 字段更新
 
-例: 通过 ID 类型字段更新 Uma 的用户类型
+例: 通过 `ID` 类型字段更新 Uma 的用户类型
 
 ```graphql
 mutation {
@@ -265,11 +271,11 @@ mutation {
 }
 ```
 
-### 使用 where 参数更新
+### 使用 `where` 参数更新
 
-有些时候 Object 中存在非空字段, 例如 User 的 name 字段, 需要在更新时额外输入, 此时可以使用 [where](#变更参数) 字段进行更新
+有些时候 Object 中存在非空字段, 例如 User 的 name 字段, 需要在更新时额外输入, 此时可以使用 [`where`](#变更参数) 字段进行更新
 
-例: 通过 where 字段更新 Uma 的用户类型
+例: 通过 `where` 字段更新 Uma 的用户类型
 
 ```graphql
 mutation {
@@ -392,7 +398,7 @@ mutation {
 
 使用 `where: {id: {opr: EQ, val: "4"}}` 来选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "5"}}` 来选择 Keyboard
 
-where 除了作为更新条件之外, 还可用于通过 ID 字段选择对象
+`where` 除了作为更新条件之外, 还可用于通过 `ID` 字段选择对象
 
 ```graphql
 mutation {
@@ -515,18 +521,18 @@ mutation {
 
 ## **变更参数**
 
-| 参数名       | 类型                                                              | 默认值 | 说明                                                        | SQL 示例 (x=10 y=5)                                                                                                                          |
-| ------------ | ----------------------------------------------------------------- | ------ | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| (field)      | Scalar/Enum/[(Object)Input](#objectinput-参数)                    | 无     | 变更字段                                                    | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field )                 |
-| input        | [(Object)Input](#objectinput-参数)                                | 无     | 变更对象(把所有字段封装在对象内变更, 常用于 `$变量` 的使用) | 同上                                                                                                                                         |
-| list         | [[(Object)Input](#objectinput-参数)]                              | 无     | 变更对象列表                                                | INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; |
+| 参数名       | 类型                                                             | 默认值 | 说明                                                        | SQL 示例 (x=10 y=5)                                                                                                                          |
+| ------------ | ---------------------------------------------------------------- | ------ | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| (field)      | Scalar/Enum/[(Object)Input](#objectinput-参数)                   | 无     | 变更字段                                                    | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field )                 |
+| input        | [(Object)Input](#objectinput-参数)                               | 无     | 变更对象(把所有字段封装在对象内变更, 常用于 `$变量` 的使用) | 同上                                                                                                                                         |
+| list         | [[(Object)Input](#objectinput-参数)]                             | 无     | 变更对象列表                                                | INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; |
 | where        | [(Object)Expression](/docs/tutorial/query#objectexpression-参数) | 无     | 更新条件                                                    | UPDATE t SET field = 'z' WHERE id = 'x'                                                                                                      |
-| isDeprecated | Boolean                                                           | false  | 删除标记( `@merge` 指令存在时表示从数组中移除)              |                                                                                                                                              |
+| isDeprecated | Boolean                                                          | false  | 删除标记( `@merge` 指令存在时表示从数组中移除)              |                                                                                                                                              |
 
 #### (Object)Input 参数
 
-| 参数名       | 类型                                                              | 默认值 | 说明                                           | SQL 示例                                                                                                                     |
-| ------------ | ----------------------------------------------------------------- | ------ | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| (field)      | Scalar/Enum/[(Object)Input](#objectinput-参数)                    | 无     | 变更字段                                       | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field ) |
+| 参数名       | 类型                                                             | 默认值 | 说明                                           | SQL 示例                                                                                                                     |
+| ------------ | ---------------------------------------------------------------- | ------ | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| (field)      | Scalar/Enum/[(Object)Input](#objectinput-参数)                   | 无     | 变更字段                                       | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field ) |
 | where        | [(Object)Expression](/docs/tutorial/query#objectexpression-参数) | 无     | 更新条件                                       | UPDATE t SET field = 'z' WHERE id = 'x'                                                                                      |
-| isDeprecated | Boolean                                                           | false  | 删除标记( `@merge` 指令存在时表示从数组中移除) |                                                                                                                              |
+| isDeprecated | Boolean                                                          | false  | 删除标记( `@merge` 指令存在时表示从数组中移除) |                                                                                                                              |

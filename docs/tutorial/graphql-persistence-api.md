@@ -122,8 +122,6 @@ flowchart LR
     &emsp;ProductExpression where() default @ProductExpression;
     }"]
     types -- 编译 --> schema -- 生成 --> query & mutation & queryArguments & mutationArguments
-    queryArguments -. 引用 .-> query
-    mutationArguments -. 引用 .-> mutation
     style types text-align:left
     style schema text-align:left
     style query text-align:left
@@ -156,8 +154,6 @@ flowchart LR
 
 ## 定义 GPA 接口
 
-使用 `@GraphQLOperation` 注解来定义 GPA 接口
-
 1. 新建 GPA 接口
 
 ```txt
@@ -181,6 +177,8 @@ flowchart LR
 
 2. 定义接口类
 
+使用 [`@GraphQLOperation`](#接口注解) 注解来定义 GPA 接口
+
 ```java
 package demo.gp.order.repository;
 
@@ -199,11 +197,13 @@ public interface UserRepository {
 
 使用 [`@Query`](#接口注解) 注解来定义查询接口, 接口会添加到查询类型中
 
+默认使用Mono类型来操作[返回结果](#返回值说明)
+
 ### 普通查询
 
 例: 查询所有 VIP 用户
 
-定义 queryVIPUserList 方法, 使用 [`@Query`](#接口注解) 注解标记接口方法, 请注意, 此处的 `@Query` 注解是在之前生成的的[GPA 注解](/docs/tutorial/graphql-api#生成-graphql-entities), **并非 org.eclipse.microprofile.graphql.Query**
+定义 queryVIPUserList 方法, 使用 [`@Query`](#接口注解) 注解标记接口方法, 请注意此处的 `@Query` 注解是在之前生成的的[GPA 注解](/docs/tutorial/graphql-api#生成-graphql-entities), **并非 org.eclipse.microprofile.graphql.Query**
 
 ```java
 package demo.gp.order.repository;
@@ -546,7 +546,7 @@ public class ProductRepositoryTest {
 
 ## 变更接口
 
-使用 [`@Mutation`](#接口注解) 注解标记接口方法, 请注意, 此处的 `@Mutation` 注解是在之前生成的的[GPA 注解](/docs/tutorial/graphql-api#生成-graphql-entities), **并非 org.eclipse.microprofile.graphql.Mutation**
+使用 [`@Mutation`](#接口注解) 注解标记接口方法, 请注意此处的 `@Mutation` 注解是在之前生成的的[GPA 注解](/docs/tutorial/graphql-api#生成-graphql-entities), **并非 org.eclipse.microprofile.graphql.Mutation**
 
 ### 新增
 
@@ -693,8 +693,16 @@ public class UserRepositoryTest {
 
 ### 接口注解
 
-| 注解          | 说明         | 示例                                                                                                                                                                                               | GraphQL 操作                                                                                                                                                              |
-| ------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| @Query        | 定义查询接口 | **@Query(userList = @UserListQueryArguments(userType = @UserTypeExpression(opr = Operator.EQ, val = UserType.VIP)))**<br/>Mono\<List\<User\>\> queryVIPUserList();                                 | query queryVIPUserList \{<br/>&emsp;userList(userType: \{ opr: EQ, val: VIP \}) \{<br/>&emsp;&emsp;id<br/>&emsp;&emsp;name<br/>&emsp;&emsp;userType<br/>&emsp;\}<br/>\}   |
-| @Mutation     | 定义变更接口 | **@Mutation(user = @UserMutationArguments($input = "userInput"))**<br/>Mono\<User\> mutationUser(UserInput userInput);                                                                             | mutation mutationUser($userInput: UserInput) \{<br/>&emsp;user(input: $userInput) \{<br/>&emsp;&emsp;id<br/>&emsp;&emsp;name<br/>&emsp;&emsp;userType<br/>&emsp;\}<br/>\} |
-| @SelectionSet | 定义查询字段 | @Query(userList = @UserListQueryArguments(userType = @UserTypeExpression(opr = Operator.EQ, val = UserType.VIP)))<br/>**@SelectionSet("\{ name \}")**<br/>Mono\<List\<User\>\> queryVIPUserList(); | query queryVIPUserList \{<br/>&emsp;userList(userType: \{ opr: EQ, val: VIP \}) \{<br/>&emsp;&emsp;**name**<br/>&emsp;\}<br/>\}                                           |
+| 注解              | 说明         | 示例                                                                                                                                                                                               | GraphQL 操作                                                                                                                                                              |
+| ----------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| @GraphQLOperation | 定义GPA接口  |                                                                                                                                                                                                    |                                                                                                                                                                           |
+| @Query            | 定义查询接口 | **@Query(userList = @UserListQueryArguments(userType = @UserTypeExpression(opr = Operator.EQ, val = UserType.VIP)))**<br/>Mono\<List\<User\>\> queryVIPUserList();                                 | query queryVIPUserList \{<br/>&emsp;userList(userType: \{ opr: EQ, val: VIP \}) \{<br/>&emsp;&emsp;id<br/>&emsp;&emsp;name<br/>&emsp;&emsp;userType<br/>&emsp;\}<br/>\}   |
+| @Mutation         | 定义变更接口 | **@Mutation(user = @UserMutationArguments($input = "userInput"))**<br/>Mono\<User\> mutationUser(UserInput userInput);                                                                             | mutation mutationUser($userInput: UserInput) \{<br/>&emsp;user(input: $userInput) \{<br/>&emsp;&emsp;id<br/>&emsp;&emsp;name<br/>&emsp;&emsp;userType<br/>&emsp;\}<br/>\} |
+| @SelectionSet     | 定义查询字段 | @Query(userList = @UserListQueryArguments(userType = @UserTypeExpression(opr = Operator.EQ, val = UserType.VIP)))<br/>**@SelectionSet("\{ name \}")**<br/>Mono\<List\<User\>\> queryVIPUserList(); | query queryVIPUserList \{<br/>&emsp;userList(userType: \{ opr: EQ, val: VIP \}) \{<br/>&emsp;&emsp;**name**<br/>&emsp;\}<br/>\}                                           |
+
+## **返回值说明**
+
+| 方法返回类型   | 适用范围                                      | 说明                                                          | 示例(Type=User)                                                                                                         |
+| -------------- | --------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Mono\<(Type)\> | 所有类                                        | 默认异步返回结果, 通过Mono类型操作返回结果                    | @Mutation(user = @UserMutationArguments($input = "userInput"))<br />**Mono\<User\>** mutationUser(UserInput userInput); |
+| (Type)         | [GraphQL API](/docs/tutorial/graphql-api)类中 | 在GPI类中编译器可以同步返回结果, 原理参考[同步与异步]中的内容 | @Mutation(user = @UserMutationArguments($input = "userInput"))<br />**User** mutationUser(UserInput userInput);         |

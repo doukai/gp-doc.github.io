@@ -171,7 +171,6 @@ graphql {
   buildIntrospection = true // 生成内省文档
 }
 package {
-  packageName = "demo.gp.order"                       // 包名
   localPackageNames = ["io.graphoenix.introspection"] // 引入内省模块
 }
 r2dbc {
