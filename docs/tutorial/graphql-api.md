@@ -60,7 +60,7 @@ apply plugin: 'io.graphoenix'
 
 ### 定义 GraphQL Entities
 
-有时候 API 接口可能需要自定义的 Java Entities 作为方法的参数或返回值, 这些类型可能并没有定义在 GrpahQL 类型定义中, 此时可以使用 [`@Type`](#类型注解) [`@Input`](#类型注解) [`@Interface`](#类型注解) [`@Enum`](#类型注解) 类型注解分别来定义类型, 输入类型, 接口和枚举, 定义好的 Entities 会自动编译并添加到 GrahpQL 类型中作为补充
+有时候 API 接口可能需要自定义的 Java Entities 作为方法的参数或返回值, 这些类型可能并没有定义在 GrpahQL 类型定义中, 此时可以使用 [`@Type`](#类注解) [`@Input`](#类注解) [`@Interface`](#类注解) [`@Enum`](#类注解) 类型注解分别来定义类型, 输入类型, 接口和枚举, 定义好的 Entities 会自动编译并添加到 GrahpQL 类型中作为补充
 
 ```mermaid
 flowchart LR
@@ -379,7 +379,7 @@ Flux 的元素会聚合成数组后返回
 
 在有些场景下, 需要在数据库返回后对结果进行加工, 并产生新的字段, 如数学计算和调用规则引擎等
 
-使用 [`@Source`](#接口注解) 注解在方法参数中标记带有 [`@Type`](#类型注解) 注解的 Entity, 每一次对接口字段的请求都会调用对应的方法来获取返回值
+使用 [`@Source`](#接口注解) 注解在方法参数中标记带有 [`@Type`](#类注解) 注解的 Entity, 每一次对接口字段的请求都会调用对应的方法来获取返回值
 
 ```mermaid
 flowchart LR
@@ -520,7 +520,7 @@ type Order implements Meta {
 
 在有些场景下, 需要在数据库查询和变更前对查询条件或提交内容进行加工, 如校验, 鉴权或修改等
 
-使用 [`@Source`](#接口注解) 注解在接口参数中标记带有 [`@Input`](#类型注解) 注解的 Bean, 接口的返回值将会覆盖原始参数
+使用 [`@Source`](#接口注解) 注解在接口参数中标记带有 [`@Input`](#类注解) 注解的 Bean, 接口的返回值将会覆盖原始参数
 
 ```mermaid
 flowchart LR

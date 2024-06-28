@@ -281,7 +281,7 @@ flowchart LR
     code["// ProductRepository.java
     @GraphQLOperation
     public interface ProductRepository {
-    &emsp;@Query(name = @StringExpression(opr = Operator.EQ, $val = &quot;name&quot;))
+    &emsp;@Query(product = @ProductQueryArguments(name = @StringExpression(opr = Operator.EQ, $val = &quot;name&quot;)))
     &emsp;Product queryProductByName(String name);
     }"]
     query["// query.graphql
@@ -436,6 +436,7 @@ flowchart LR
 ### 自适应事务
 
 Graphoenix 根据单体和分布式架构自动组织事务, 动态规划本地事务和事务补偿
+
 ```mermaid
 flowchart LR
     micro1{{微服务1}}
@@ -454,10 +455,10 @@ flowchart LR
     micro1 -- 调用 --> micro2 --> success2
     micro2 -.-> error2 -. 回滚 .-> db2
     error2 -.-> error1
-    
+
     micro1 -.-> error1 -. 回滚 .-> db1
     micro1 --> success1 -- 提交 --> db1
-    
+
     success2 -- 调用 --> micro3 --> success3 -- 提交 --> db3
     success2 -- 提交 --> db2
     micro3 -.-> error3 -. 回滚 .-> db3
@@ -553,7 +554,7 @@ flowchart LR
 
 ### gRPC
 
-对于跨系统或跨语言远程调用的场景, Graphoenix 编译器根据类型定义, 自动生成[protobuf](https://protobuf.dev/), 提供开箱即用 gRPC 接口
+对于跨系统或跨语言远程调用的场景, Graphoenix 编译器根据类型定义, 自动生成[protobuf](https://protobuf.dev/), 提供开箱即用 gRPC 服务
 
 ```mermaid
 flowchart LR
