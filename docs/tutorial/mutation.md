@@ -27,7 +27,7 @@ sidebar_position: 4
 
 ### 变更单条
 
-使用参数中需要变更字段同名的参数设置变更内容
+使用字段同名参数变更内容
 
 例: 新增用户 Uma
 
@@ -68,7 +68,7 @@ mutation {
 
 ### 变更列表
 
-使用 [`list`](#变更参数) 参数可以同时变更多个对象
+使用 [`list`](#变更参数) 参数变更多个对象
 
 例: 新增用户 Victor 和 Wendy
 
@@ -131,7 +131,7 @@ Victor 的 id 由数据库生成, Wendy 的 id 是变更时指定
 
 ### 关联变更
 
-使用关联对象字段同名的参数来变更关联对象, 如果关联对象不存在 `ID` 字段则视为新增关联对象, 同时建立与新对象的关联关系
+使用字段同名参数变更关联对象, 关联对象不存在 `ID` 字段时新增对象
 
 例: 新增用户 Xander, 同时在订单中新增产品 Mouse
 
@@ -243,9 +243,9 @@ mutation {
 
 ## 更新
 
-### 使用 `ID` 字段更新
+### 使用 `ID` 字段参数更新
 
-例: 通过 `ID` 类型字段更新 Uma 的用户类型
+例: 通过 `ID` 字段参数更新 Uma 的用户类型
 
 ```graphql
 mutation {
@@ -273,9 +273,9 @@ mutation {
 
 ### 使用 `where` 参数更新
 
-有些时候 Object 中存在非空字段, 例如 User 的 name 字段, 需要在更新时额外输入, 此时可以使用 [`where`](#变更参数) 字段进行更新
+有时 Object 中存在非空字段, 例如 User 的 name 字段, 需在更新时额外输入, 此时可使用 [`where`](#变更参数) 参数更新
 
-例: 通过 `where` 字段更新 Uma 的用户类型
+例: 通过 `where` 参数更新 Uma 的用户类型
 
 ```graphql
 mutation {
@@ -305,7 +305,7 @@ mutation {
 
 ## 删除
 
-使用 `isDeprecated: true` 表示要删除对象
+使用 `isDeprecated: true` 删除对象
 
 例: 删除用户 Wendy
 
@@ -330,7 +330,7 @@ mutation {
 
 ## 合并对象数组
 
-对于对象数组[Object], 除了全量变更之外, 有时需要添加或移除元素, 此时需要使用 `@merge` 指令进行元素合并
+对象数组[Object]除全量变更外, 有时需要添加或移除元素, 使用 `@merge` 指令进行元素数组合并
 
 例: 查询 Diana 的订单
 
@@ -396,9 +396,9 @@ mutation {
 
 例: Diana 的订单增加 2 个 Keyboard
 
-使用 `where: {id: {opr: EQ, val: "4"}}` 来选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "5"}}` 来选择 Keyboard
+使用 `where: {id: {opr: EQ, val: "4"}}` 选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "5"}}` 选择 Keyboard
 
-`where` 除了作为更新条件之外, 还可用于通过 `ID` 字段选择对象
+`where` 参数除了作为更新条件之外, 还可通过 `ID` 字段参数选择对象
 
 ```graphql
 mutation {
@@ -464,7 +464,7 @@ mutation {
 
 例: 移除 Diana 的订单中的 Tablet
 
-使用 `where: {id: {opr: EQ, val: "4"}}` 来选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "8"}}` 来选择 Tablet 所在的订单项, 使用 `isDeprecated: true` 标记要移除的元素
+使用 `where: {id: {opr: EQ, val: "4"}}` 选择 Diana 的订单, 使用 `where: {id: {opr: EQ, val: "8"}}` 选择 Tablet 所在的订单项, 使用 `isDeprecated: true` 移除元素
 
 ```graphql
 mutation {

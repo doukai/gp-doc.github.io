@@ -17,12 +17,13 @@ sidebar_position: 3
 
 ### 查询单条
 
-使用查询字段同名的参数, 参数中 [`opr`](#operator) 子参数为查询类型, [`val`](#scalarenumexpression-参数) 为查询内容, 如果查询内容为数组则使用 [`arr`](#scalarenumexpression-参数) 
+使用与字段同名的参数构造查询条件, [`opr`](#operator) 作为查询符号, [`val`](#scalarenumexpression-参数) 作为查询内容, 如果查询内容为数组则使用 [`arr`](#scalarenumexpression-参数) 
 
 例: 查询名为 Bob 的用户
 
 ```graphql
 {
+  # WHERE name = 'Bob'
   user(name: { opr: EQ, val: "Bob" }) {
     name
     email
@@ -45,12 +46,13 @@ sidebar_position: 3
 
 ### 查询列表
 
-在列表查询中可使用 [`first`](#查询参数) 查询前n条数据, [`last`](#查询参数) 查询后n条数据
+使用 [`first`](#查询参数) 查询前n条数据, [`last`](#查询参数) 查询后n条数据
 
 例: 查询前 5 个用户
 
 ```graphql
 {
+  # LIMIT 5
   userList(first: 5) {
     name
     email
@@ -99,9 +101,11 @@ sidebar_position: 3
 
 ```graphql
 {
+  # WHERE userType = 'VIP'
   vip: userList(userType: { opr: EQ, val: VIP }) {
     name
   }
+  # WHERE price > 200
   greaterThan200: productList(price: { opr: GT, val: 200 }) {
     name
     price
@@ -168,6 +172,7 @@ sidebar_position: 3
 
 ```graphql
 {
+  # WHERE name = 'Alice'
   user(name: { opr: EQ, val: "Alice" }) {
     name
     orders {
@@ -210,12 +215,11 @@ sidebar_position: 3
 }
 ```
 
-如果需要查询关联对象的字段, 可以在对象字段同名的参数的子参数中配置查询条件
-
 2. 例: 查询购买了 Phone 的用户列表
 
 ```graphql
 {
+  # WHERE EXISTS (SELECT 1 FROM order_item oi WHERE EXISTS (SELECT 1 FROM product p WHERE id = oi.product_id AND p.name = 'Phone'))
   userList(
     orders: { items: { product: { name: { opr: EQ, val: "Phone" } } } }
   ) {
@@ -280,12 +284,13 @@ sidebar_position: 3
 
 ### 排序
 
-使用 [`orderBy`](#查询参数) 参数可以在字段同名参数的子参数中配置排序方式
+使用 [`orderBy`](#查询参数) 进行排序
 
 例: 查询产品列表, 价格由高到低
 
 ```graphql
 {
+  # ORDER BY price DESC
   productList(orderBy: { price: DESC }) {
     name
     price
@@ -358,12 +363,13 @@ Graphoenix 会为所有的 Scalar 类型的字段生成统计字段
 }
 ```
 
-可以使用 [`groupBy`](#查询参数) 参数选择统计字段
+使用 [`groupBy`](#查询参数) 进行统计
 
 2. 例: 分组查询普通用户和会员用户的数量
 
 ```graphql
 {
+  # GROUP BY userType
   userList(groupBy: ["userType"]) {
     userType
     idCount
