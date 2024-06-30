@@ -19,15 +19,15 @@ sidebar_position: 4
 
 变更包含新增和更新两种操作, 根据 `ID` 字段区分, 逻辑如下
 
-| 变更参数是否存在 `ID` 字段 | 数据库是否存在 `ID` 字段 | 数据库操作 | `ID` 字段操作   |
-| ------------------------ | ---------------------- | ---------- | ------------- |
-| 是                       | 是                     | 更新       | --            |
-| 是                       | 否                     | 新增       | 数据库保存 ID |
-| 否                       | --                     | 新增       | 数据库生成 ID |
+| 变更参数是否存在 `ID` 字段 | 数据库是否存在 `ID` 字段 | 数据库操作 | `ID` 字段操作 |
+| -------------------------- | ------------------------ | ---------- | ------------- |
+| 是                         | 是                       | 更新       | --            |
+| 是                         | 否                       | 新增       | 数据库保存 ID |
+| 否                         | --                       | 新增       | 数据库生成 ID |
 
 ### 变更单条
 
-使用字段同名参数变更内容
+使用字段同名参数保存变更内容
 
 例: 新增用户 Uma
 
@@ -521,18 +521,10 @@ mutation {
 
 ## **变更参数**
 
-| 参数名       | 类型                                                             | 默认值 | 说明                                                        | SQL 示例 (x=10 y=5)                                                                                                                          |
-| ------------ | ---------------------------------------------------------------- | ------ | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| (field)      | Scalar/Enum/[(Object)Input](#objectinput-参数)                   | 无     | 变更字段                                                    | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field )                 |
-| input        | [(Object)Input](#objectinput-参数)                               | 无     | 变更对象(把所有字段封装在对象内变更, 常用于 `$变量` 的使用) | 同上                                                                                                                                         |
-| list         | [[(Object)Input](#objectinput-参数)]                             | 无     | 变更对象列表                                                | INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; |
-| where        | [(Object)Expression](/docs/tutorial/query#objectexpression-参数) | 无     | 更新条件                                                    | UPDATE t SET field = 'z' WHERE id = 'x'                                                                                                      |
-| isDeprecated | Boolean                                                          | false  | 删除标记( `@merge` 指令存在时表示从数组中移除)              |                                                                                                                                              |
-
-#### (Object)Input 参数
-
-| 参数名       | 类型                                                             | 默认值 | 说明                                           | SQL 示例                                                                                                                     |
-| ------------ | ---------------------------------------------------------------- | ------ | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| (field)      | Scalar/Enum/[(Object)Input](#objectinput-参数)                   | 无     | 变更字段                                       | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field ) |
-| where        | [(Object)Expression](/docs/tutorial/query#objectexpression-参数) | 无     | 更新条件                                       | UPDATE t SET field = 'z' WHERE id = 'x'                                                                                      |
-| isDeprecated | Boolean                                                          | false  | 删除标记( `@merge` 指令存在时表示从数组中移除) |                                                                                                                              |
+| 参数名       | 类型                                                       | 默认值 | 说明                                                        | SQL 示例 (x=10 y=5)                                                                                                                          |
+| ------------ | ---------------------------------------------------------- | ------ | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| (field)      | Scalar/Enum/[(Object)Input](/docs/guide/types#objectinput) | 无     | 变更字段                                                    | INSERT INTO t ( id, field ) VALUES ( 'x', 'y' ) ON DUPLICATE KEY UPDATE t.id = VALUES ( t.id ), t.field = VALUES ( t.field )                 |
+| input        | [(Object)Input](/docs/guide/types#objectinput)             | 无     | 变更对象(把所有字段封装在对象内变更, 常用于 `$变量` 的使用) | 同上                                                                                                                                         |
+| list         | [[(Object)Input](/docs/guide/types#objectinput)]           | 无     | 变更对象列表                                                | INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; INSERT INTO t ... ON DUPLICATE KEY UPDATE ...; |
+| where        | [(Object)Expression](/docs/guide/types#objectexpression)   | 无     | 更新条件                                                    | UPDATE t SET field = 'z' WHERE id = 'x'                                                                                                      |
+| isDeprecated | Boolean                                                    | false  | 删除标记( `@merge` 指令存在时表示从数组中移除)              |                                                                                                                                              |  |

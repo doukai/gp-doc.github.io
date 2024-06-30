@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 快速开始
 
-初始化项目, 定义类型, 启动服务
+初始化项目 -> 定义类型 -> 启动服务
 
 ## 系统要求
 
@@ -59,7 +59,7 @@ docker-compose up -d
 
 我们首先创建一个名为**order**的项目, 包名为**demo.gp.order**
 
-使用官方脚手架快速初始化项目 **[Graphoenix Server Initializer](https://gp-init.github.io?name=order&packageName=demo.gp.order)**.
+使用官方脚手架快速初始化项目 **[Graphoenix Server Initializer](https://gp-init.github.io?name=order&packageName=demo.gp.order)** 或参照[手动安装](/docs/guide/Install).
 
 <details>
 <summary>项目结构</summary>
@@ -106,7 +106,7 @@ docker-compose up -d
 
 设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)
 
-_关于 GraphQL 类型定义的详细内容, 可以参考GraphQL官方教程中的[类型系统](https://graphql.org/learn/schema/)([中文版](https://graphql.cn/learn/schema/))_
+_关于 GraphQL 类型定义的详细内容, 请参考GraphQL官网的[类型系统](https://graphql.org/learn/schema/)([中文版](https://graphql.cn/learn/schema/))和[Grphoenix扩展类型](/docs/guide/types)_
 
 ```graphql title="order-package/src/main/resources/graphql/order.gql"
 "用户"
