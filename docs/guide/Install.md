@@ -73,7 +73,7 @@ classes.dependsOn {
 repositories {
     mavenCentral()
     // highlight-start
-    jcenter() // Graphoenix的反编译器jd-core依赖jcenter, 后续将会替换
+    jcenter()
     // highlight-end
 }
 
