@@ -51,7 +51,7 @@ dependencies {
 
 #### 单例
 
-使用 `@Singleton` 或 `@ApplicationScoped`
+使用 [`@Singleton`](#生命周期) 或 [`@ApplicationScoped`](#生命周期)
 
 ```java title="Engine.java"
 import jakarta.enterprise.context.ApplicationScoped;
@@ -69,7 +69,7 @@ public class Engine {
 
 #### 多例
 
-使用 `@Dependent`
+使用 [`@Dependent`](#生命周期)
 
 ```java title="Driver.java"
 import jakarta.enterprise.context.Dependent;
@@ -95,9 +95,9 @@ public class Driver {
 
 #### 特定生命周期
 
-1. 请求: `@RequestScoped`
-2. 会话: `@SessionScoped`
-3. 事务: `@TransactionScoped`
+1. 请求: [`@RequestScoped`](#生命周期)
+2. 会话: [`@SessionScoped`](#生命周期)
+3. 事务: [`@TransactionScoped`](#生命周期)
 
 ```java title="Broadcast.java"
 import jakarta.enterprise.context.RequestScoped;
@@ -115,7 +115,7 @@ public class Broadcast {
 
 ### 工厂方法(Produces)
 
-在引用第三方类库中的 Bean 时, 无法通过注解方式定义生命周期, 可以使用工厂方法来提供 Bean 实例, 使用 `@Produces` 标记方法, 同时配合其他注解定义生命周期
+在引用第三方类库中的 Bean 时, 无法通过注解方式定义生命周期, 可以使用工厂方法来提供 Bean 实例, 使用 [`@Produces`](#cdi) 标记方法, 同时配合其他注解定义生命周期
 
 ```java title="Broadcast.java"
 import jakarta.enterprise.context.ApplicationScoped;
@@ -151,11 +151,91 @@ public class AutoParts {
 }
 ```
 
+### 指定名称
+
+使用 [`@Named`](#cdi) 为 Bean 指定名称, 依赖注入时可根据名称注入对应的 Bean
+
+```java title="V12Engine.java"
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+
+@ApplicationScoped
+// highlight-start
+@Named("v12")
+// highlight-end
+public class V12Engine implements IEngine {
+
+    public String getName() {
+        return "V12 Engine";
+    }
+}
+```
+
+### 默认实现
+
+使用 [`@Default`](#cdi) 指定 Bean 为默认实现
+
+```java title="Engine.java"
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
+
+@ApplicationScoped
+// highlight-start
+@Default
+// highlight-end
+public class Engine implements IEngine {
+
+    public String getName() {
+        return "V8 Engine";
+    }
+}
+```
+
+### 指定顺序
+
+使用 [`@Priority`](#cdi) 指定 Bean 在集合中的顺序, 在集合注入时会按照指定顺序排序
+
+```java title="Engine.java"
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
+
+@ApplicationScoped
+@Default
+// highlight-start
+@Priority(1)
+// highlight-end
+public class Engine implements IEngine {
+
+    public String getName() {
+        return "V8 Engine";
+    }
+}
+```
+
+```java title="V12Engine.java"
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+
+@ApplicationScoped
+@Named("v12")
+// highlight-start
+@Priority(2)
+// highlight-end
+public class V12Engine implements IEngine {
+
+    public String getName() {
+        return "V12 Engine";
+    }
+}
+```
+
 ## 依赖注入(Inject)
 
 ### 构造方法注入
 
-推荐使用构造方法进行依赖注入, 在构造方法上使用 `@Inject` 注解
+推荐使用构造方法进行依赖注入, 在构造方法上使用 [`@Inject`](#cdi) 注解
 
 例: 把发动机(单例)添加到汽车中
 
@@ -203,7 +283,7 @@ public class InjectTest {
 
 ### Setter 方法注入
 
-使用 Setter 方式注入, 在字段或 Setter 方法上使用 `@Inject` 注解
+使用 Setter 方式注入, 在字段或 Setter 方法上使用 [`@Inject`](#cdi) 注解
 
 例: 把变速箱(单例)和车主(单例)添加到汽车中
 
@@ -290,7 +370,7 @@ public class InjectTest {
 
 ### 提供者注入(Provider)
 
-被注入的 Bean 如果是 `@Dependent` (多例)或 `@RequestScoped` (请求范围) 等其他非单例 Bean 时需要使用 Provider 进行包装, 使用时调用 `get()` 方法
+被注入的 Bean 如果是 [`@Dependent`](#cdi) (多例)等其他非单例 Bean 时需要使用 Provider 方式注入, 使用时调用 `get()` 方法
 
 例: 把司机(多例)添加到汽车中
 
@@ -390,7 +470,231 @@ public class InjectTest {
 }
 ```
 
+### 集合注入(Instance)
+
+使用 [`Instance`](#cdi) 可以注入 Bean 集合, 通过 `iterator()` 和 `stream()` 方法获取集合
+
+例: 把发动机集合添加到汽修厂
+
+```java title="RepairShop.java"
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@ApplicationScoped
+public class RepairShop {
+
+    private final List<IEngine> engineList;
+
+    @Inject
+    public RepairShop(Instance<IEngine> engineInstance) {
+        this.engineList = engineInstance.stream().collect(Collectors.toList());
+    }
+
+    public List<IEngine> getEngineList() {
+        return engineList;
+    }
+}
+```
+
+```java title="IEngine.java"
+public interface IEngine {
+    String getName();
+}
+```
+
+```java title="Engine.java"
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+@Priority(1)
+public class Engine implements IEngine {
+
+    public String getName() {
+        return "V8 Engine";
+    }
+}
+```
+
+```java title="V12Engine.java"
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+@Priority(2)
+public class V12Engine implements IEngine {
+
+    public String getName() {
+        return "V12 Engine";
+    }
+}
+```
+
+测试结果
+
+```java title="InjectTest.java"
+import io.nozdormu.inject.test.beans.RepairShop;
+import io.nozdormu.spi.context.BeanContext;
+import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class InjectTest {
+
+    @Test
+    void testCar() {
+        RepairShop repairShop = BeanContext.get(RepairShop.class);
+
+        assertAll(
+                () -> assertEquals(repairShop.getEngineList().get(0).getName(), "V8 Engine"),
+                () -> assertEquals(repairShop.getEngineList().get(1).getName(), "V12 Engine")
+        );
+    }
+}
+```
+
+### 名称注入(Named)
+
+使用 [`@Named`](#cdi) 可以根据 Bean 名称注入
+
+例: 把 v12 发动机添加到汽修厂
+
+```java title="RepairShop.java"
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+import jakarta.inject.Inject;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@ApplicationScoped
+public class RepairShop {
+
+    private final IEngine v12Engine;
+
+    @Inject
+    public RepairShop(@Named("v12") IEngine v12Engine) {
+        this.v12Engine = v12Engine;
+    }
+
+    public IEngine getV12Engine() {
+        return v12Engine;
+    }
+}
+```
+
+测试结果
+
+```java title="InjectTest.java"
+import io.nozdormu.inject.test.beans.RepairShop;
+import io.nozdormu.spi.context.BeanContext;
+import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class InjectTest {
+
+    @Test
+    void testCar() {
+        RepairShop repairShop = BeanContext.get(RepairShop.class);
+        assertEquals(repairShop.getV12Engine().getName(), "V12 Engine");
+    }
+}
+```
+
+### 默认实现注入(Default)
+
+使用 [`@Default`](#cdi) 可以根据注入 Bean 默认实现
+
+例: 把 v12 发动机添加到汽修厂
+
+```java title="RepairShop.java"
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Default;
+import jakarta.inject.Inject;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@ApplicationScoped
+public class RepairShop {
+
+    private final IEngine defaultEngine;
+
+    @Inject
+    public RepairShop(@Default IEngine defaultEngine) {
+        this.defaultEngine = defaultEngine;
+    }
+
+    public IEngine getDefaultEngine() {
+        return defaultEngine;
+    }
+}
+```
+
+测试结果
+
+```java title="InjectTest.java"
+import io.nozdormu.inject.test.beans.RepairShop;
+import io.nozdormu.spi.context.BeanContext;
+import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class InjectTest {
+
+    @Test
+    void testCar() {
+        RepairShop repairShop = BeanContext.get(RepairShop.class);
+        assertEquals(repairShop.getDefaultEngine().getName(), "V8 Engine");
+    }
+}
+```
+
+## 依赖注入 API
+
+### BeanContext
+
+使用 BeanContext 下的静态方法以代码形式获取 Bean
+
+| 注解                                                                            | 参数                    | 返回值                | 说明                                 |
+| ------------------------------------------------------------------------------- | ----------------------- | --------------------- | ------------------------------------ |
+| static T get(Class\<T\> beanClass)                                              | 目标类型                | T                     | 根据类型获取实例                     |
+| static T get(Class\<T\> beanClass, String name)                                 | 目标类型, bean 名称     | T                     | 根据名成获取实例                     |
+| static Provider\<T\> getProvider(Class\<T\> beanClass)                          | 目标类型                | Provider\<T\>         | 根据类型获取实例提供者               |
+| static Provider\<T\> getProvider(Class\<T\> beanClass, String name)             | 目标类型, bean 名称     | Provider\<T\>         | 根据名称获取实例提供者               |
+| static Provider\<Mono\<T\>\> getMonoProvider(Class\<T\> beanClass)              | 目标类型                | Provider\<Mono\<T\>\> | 根据类型获取实例异步提供者           |
+| static Provider\<Mono\<T\>\> getMonoProvider(Class\<T\> beanClass, String name) | 目标类型, bean 名称     | Provider\<Mono\<T\>\> | 根据名称获取实例异步提供者           |
+| static Instance\<T\> getInstance(Class\<T\> beanClass, String... names)         | 目标类型, bean 名称数组 | Instance\<T\>         | 根据类型获取实例集合, 可根据名称过滤 |
+
+### CDI(Jakarta CDI 标准)
+
+使用 CDI 下的方法以代码形式获取 Bean
+
+| 注解                                                                  | 参数                   | 返回值        | 说明                  |
+| --------------------------------------------------------------------- | ---------------------- | ------------- | --------------------- |
+| static current()                                                      | 无                     | CDI           | 获取 CDI 实例         |
+| Instance\<T\> select(Class\<T\> beanClass, Annotation... annotations) | 目标类型, 注解筛选列表 | Instance\<T\> | 根据注解列表筛选 Bean |
+
 ## **注解说明**
+
+### CDI
+
+| 注解                               | 目标             | 说明                     |
+| ---------------------------------- | ---------------- | ------------------------ |
+| jakarta.inject.Inject              | 方法,字段,构造器 | 标记注入目标             |
+| jakarta.inject.Provider            | 字段             | 提供者                   |
+| jakarta.enterprise.inject.Produces | 方法             | 标记实例工厂方法         |
+| jakarta.inject.Named               | 类,参数          | 配置 Bean 名称           |
+| jakarta.enterprise.inject.Default  | 类,参数          | 设置 Bean 为默认实现     |
+| jakarta.annotation.Priority        | 类,参数          | 配置 Bean 在集合中的顺序 |
 
 ### 生命周期
 
@@ -402,10 +706,3 @@ public class InjectTest {
 | jakarta.enterprise.context.RequestScoped     | 请求     | 异步提供者注入(Provider\<Mono\>) | 单个请求内共享实例   |
 | jakarta.enterprise.context.SessionScoped     | 会话     | 异步提供者注入(Provider\<Mono\>) | 单个会话内共享实例   |
 | jakarta.transaction.TransactionScoped        | 事务     | 异步提供者注入(Provider\<Mono\>) | 单个事务内共享实例   |
-
-### 其他
-
-| 注解                               | 生命周期 | 目标       | 说明                   |
-| ---------------------------------- | -------- | ---------- | ---------------------- |
-| jakarta.inject.Provider            | 提供者   | 字段       | 提供者                 |
-| jakarta.enterprise.inject.Produces | 实例工厂 | 方法或字段 | 表示提供实例的工厂方法 |
