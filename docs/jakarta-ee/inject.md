@@ -193,7 +193,7 @@ public class Engine implements IEngine {
 
 ### 指定顺序
 
-使用 [`@Priority`](#cdi) 指定 Bean 在集合中的顺序, 在集合注入时会按照指定顺序排序
+使用 [`@Priority`](#cdi) 指定 Bean 在集合中的顺序, 在[集合注入](#集合注入instance)时会按照指定顺序排序
 
 ```java title="Engine.java"
 import jakarta.annotation.Priority;
@@ -662,7 +662,7 @@ public class InjectTest {
 
 ### BeanContext
 
-使用 BeanContext 下的静态方法以代码形式获取 Bean
+使用 BeanContext 中的静态方法以代码形式获取 Bean
 
 | 注解                                                                            | 参数                    | 返回值                | 说明                                 |
 | ------------------------------------------------------------------------------- | ----------------------- | --------------------- | ------------------------------------ |
@@ -676,7 +676,7 @@ public class InjectTest {
 
 ### CDI(Jakarta CDI 标准)
 
-使用 CDI 下的方法以代码形式获取 Bean
+使用 CDI 中的方法以代码形式获取 Bean
 
 | 注解                                                                  | 参数                   | 返回值        | 说明                  |
 | --------------------------------------------------------------------- | ---------------------- | ------------- | --------------------- |
@@ -687,14 +687,15 @@ public class InjectTest {
 
 ### CDI
 
-| 注解                               | 目标             | 说明                     |
-| ---------------------------------- | ---------------- | ------------------------ |
-| jakarta.inject.Inject              | 方法,字段,构造器 | 标记注入目标             |
-| jakarta.inject.Provider            | 字段             | 提供者                   |
-| jakarta.enterprise.inject.Produces | 方法             | 标记实例工厂方法         |
-| jakarta.inject.Named               | 类,参数          | 配置 Bean 名称           |
-| jakarta.enterprise.inject.Default  | 类,参数          | 设置 Bean 为默认实现     |
-| jakarta.annotation.Priority        | 类,参数          | 配置 Bean 在集合中的顺序 |
+| 注解                               | 目标             | 说明                                              |
+| ---------------------------------- | ---------------- | ------------------------------------------------- |
+| jakarta.inject.Inject              | 方法,字段,构造器 | 标记注入目标                                      |
+| jakarta.inject.Provider            | 字段,参数        | 实例提供者 `get()` 方法获得实例                   |
+| jakarta.enterprise.inject.Instance | 字段,参数        | 实例集合 `iterator()` `stream()` 方法获得实例集合 |
+| jakarta.enterprise.inject.Produces | 方法             | 标记实例工厂方法                                  |
+| jakarta.inject.Named               | 类,参数          | 配置 Bean 名称                                    |
+| jakarta.enterprise.inject.Default  | 类,参数          | 设置 Bean 为默认实现                              |
+| jakarta.annotation.Priority        | 类,参数          | 配置 Bean 在集合中的顺序                          |
 
 ### 生命周期
 
