@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# 依赖注入
+# 依赖注入(inject)
 
 依赖注入作为实现关系解偶和控制反转的一种设计模式已经成为 Java 开发的核心特性
 
@@ -261,7 +261,7 @@ public class Car {
 }
 ```
 
-测试结果
+测试
 
 ```java title="InjectTest.java"
 import io.nozdormu.inject.test.beans.Car;
@@ -346,7 +346,7 @@ public class Owner {
 }
 ```
 
-测试结果
+测试
 
 ```java title="InjectTest.java"
 import io.nozdormu.inject.test.beans.Car;
@@ -396,7 +396,7 @@ public class Car {
 }
 ```
 
-测试结果
+测试
 
 ```java title="InjectTest.java"
 import io.nozdormu.inject.test.beans.Car;
@@ -446,7 +446,7 @@ public class Car {
 }
 ```
 
-测试结果
+测试
 
 ```java title="InjectTest.java"
 import io.nozdormu.inject.test.beans.Car;
@@ -534,7 +534,7 @@ public class V12Engine implements IEngine {
 }
 ```
 
-测试结果
+测试
 
 ```java title="InjectTest.java"
 import io.nozdormu.inject.test.beans.RepairShop;
@@ -588,7 +588,7 @@ public class RepairShop {
 }
 ```
 
-测试结果
+测试
 
 ```java title="InjectTest.java"
 import io.nozdormu.inject.test.beans.RepairShop;
@@ -638,7 +638,7 @@ public class RepairShop {
 }
 ```
 
-测试结果
+测试
 
 ```java title="InjectTest.java"
 import io.nozdormu.inject.test.beans.RepairShop;
@@ -658,7 +658,7 @@ public class InjectTest {
 }
 ```
 
-## 依赖注入 API
+## **依赖注入 API**
 
 ### BeanContext
 
@@ -695,7 +695,7 @@ public class InjectTest {
 | jakarta.enterprise.inject.Produces | 方法             | 标记实例工厂方法                                  |
 | jakarta.inject.Named               | 类,参数          | 配置 Bean 名称                                    |
 | jakarta.enterprise.inject.Default  | 类,参数          | 设置 Bean 为默认实现                              |
-| jakarta.annotation.Priority        | 类,参数          | 配置 Bean 在集合中的顺序                          |
+| jakarta.annotation.Priority        | 类               | 配置 Bean 在集合中的顺序                          |
 
 ### 生命周期
 
