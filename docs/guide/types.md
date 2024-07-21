@@ -2,15 +2,15 @@
 sidebar_position: 2
 ---
 
-# 类型系统
+# 类型
 
-类型系统及拓展
+GraphQL 类型系统及 Graphoenix 拓展
 
 ## GraphQL类型
 
 关于 GraphQL 类型定义的详细内容, 请参考GraphQL官网的[类型系统](https://graphql.org/learn/schema/)([中文版](https://graphql.cn/learn/schema/))
 
-## 标量类型（Scalar Types）
+## 内置标量类型（Scalar Types）
 
 Grpahoenix在[GraphQL标量](https://graphql.org/learn/schema/#scalar-types)的基础之上, 根据[Microprofile GraphQL 协议](https://download.eclipse.org/microprofile/microprofile-graphql-2.0/microprofile-graphql-spec-2.0.html#scalars)的规定进行拓展
 
@@ -30,7 +30,7 @@ Grpahoenix在[GraphQL标量](https://graphql.org/learn/schema/#scalar-types)的�
 
 
 
-## 枚举类型（Enumeration Types）
+## 内置枚举类型（Enumeration Types）
 
 Graphoenix内置枚举类如下
 
@@ -86,7 +86,7 @@ Graphoenix内置枚举类如下
 | HTTP    | http     |                     |
 | RSOCKET | RSocket  | https://rsocket.io/ |
 
-## 对象类型和字段（Object Types and Fields）
+## 内置对象类型和字段（Object Types and Fields）
 
 ### (Object)Connection
 
@@ -116,7 +116,7 @@ Graphoenix 会自动为所有 Object 类型生成对应的[Edge](https://relay.d
 | startCursor     | String  | 开始游标       |
 | endCursor       | String  | 结束游标       |
 
-## 输入类型（Input Types）
+## 内置输入类型（Input Types）
 
 ### (Scalar/Enum)Expression
 
@@ -158,7 +158,7 @@ Graphoenix为每个Object类型生成Expression输入类型用于变更
 | where        | [(Object)Expression](#objectexpression)   | 无     | 更新条件                                       | UPDATE t SET field = 'z' WHERE id = 'x'                                                                                      |
 | isDeprecated | Boolean                                   | false  | 删除标记( `@merge` 指令存在时表示从数组中移除) |
 
-## 接口（Interfaces）
+## 内置接口（Interfaces）
 
 ### Meta
 
