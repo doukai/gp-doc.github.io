@@ -20,7 +20,7 @@ flowchart TB
     java["public class Satellite {
     &emsp;@Launch;
     &emsp;public String startup(String name) {
-    &emsp;&emsp;// ...;
+    &emsp;&emsp;// ...
     &emsp;}
     }"]
     interceptor1["@Interceptor
@@ -42,11 +42,16 @@ flowchart TB
     &emsp;};
     }"]
     proxy["public class Satellite_Proxy extends Satellite {
+    &emsp;private final FirstLaunchInterceptor firstLaunchInterceptor;
+    &emsp;private final SecondLaunchInterceptor secondLaunchInterceptor;
+    &emsp;
     &emsp;@Override();
     &emsp;public String startup(String name) {
-    &emsp;&emsp;InvocationContext secondContext = new InvocationContextProxy();
-    &emsp;&emsp;InvocationContext firstContext = new InvocationContextProxy().setNextProceed(BeanContext.get(SecondLaunchInterceptor.class)::aroundInvoke).setNextInvocationContext(secondContext);
-    &emsp;&emsp;return (String) BeanContext.get(FirstLaunchInterceptor.class).aroundInvoke(firstContext);
+    &emsp;&emsp;InvocationContext secondContext = new InvocationContext().setNextProceed(this::startup);
+    &emsp;&emsp;InvocationContext firstContext = new InvocationContext()
+    &emsp;&emsp;&emsp;.setNextProceed(secondLaunchInterceptor::aroundInvoke)
+    &emsp;&emsp;&emsp;.setNextInvocationContext(secondContext);
+    &emsp;&emsp;return (String) firstLaunchInterceptor.aroundInvoke(firstContext);
     &emsp;}
     }"]
     java & interceptor1 & interceptor2 --> 代码分析 --> JSR-269 --> proxy
@@ -369,32 +374,6 @@ public class InterceptorTest {
         assertEquals(satellite.startup("nozdormu"), "first stage fired -> second stage fired -> hello nozdormu I am NASA");
     }
 }
-```
-
-## 注册切面
-
-在使用第三方类库中的注解时, 由于注解中没有 `@InterceptorBinding` 需要对注解进行切面注册
-
-在 `META-INF/interceptor` 目录下以注解名为文件名, 文件中的每一行代表一个该注解的实现类
-
-例:
-
-```
-|-- your-project
-    |-- build.gradle
-    |-- src
-        |-- main
-            |-- resources
-                |-- META-INF
-                    |-- interceptor                                         注册目录
-                        |-- io.nozdormu.interceptor.test.annotation.Launch  以注解名作为文件名
-```
-
-将所有切面实现的类名逐行注册
-
-```txt title="io.nozdormu.interceptor.test.annotation.Launch"
-io.nozdormu.interceptor.test.interceptor.FirstLaunchInterceptor
-io.nozdormu.interceptor.test.interceptor.SecondLaunchInterceptor
 ```
 
 ## **切面 API**
