@@ -29,7 +29,7 @@ flowchart TB
     public class FirstLaunchInterceptor {
     &emsp;@AroundInvoke
     &emsp;public Object aroundInvoke(InvocationContext invocationContext) {
-    &emsp;// ...
+    &emsp;&emsp;// ...
     &emsp;};
     }"]
     interceptor2["@Interceptor
@@ -38,20 +38,15 @@ flowchart TB
     public class SecondLaunchInterceptor {
     &emsp;@AroundInvoke
     &emsp;public Object aroundInvoke(InvocationContext invocationContext) {
-    &emsp;// ...
+    &emsp;&emsp;// ...
     &emsp;};
     }"]
     proxy["public class Satellite_Proxy extends Satellite {
-    &emsp;private final FirstLaunchInterceptor firstLaunchInterceptor;
-    &emsp;private final SecondLaunchInterceptor secondLaunchInterceptor;
-    &emsp;
     &emsp;@Override();
     &emsp;public String startup(String name) {
-    &emsp;&emsp;InvocationContext secondContext = new InvocationContext().setNextProceed(this::startup);
-    &emsp;&emsp;InvocationContext firstContext = new InvocationContext()
-    &emsp;&emsp;&emsp;.setNextProceed(secondLaunchInterceptor::aroundInvoke)
-    &emsp;&emsp;&emsp;.setNextInvocationContext(secondContext);
-    &emsp;&emsp;return (String) firstLaunchInterceptor.aroundInvoke(firstContext);
+    &emsp;&emsp;// firstLaunchInterceptor.aroundInvoke(...)
+    &emsp;&emsp;// secondLaunchInterceptor.aroundInvoke(...)
+    &emsp;&emsp;// ...
     &emsp;}
     }"]
     java & interceptor1 & interceptor2 --> 代码分析 --> JSR-269 --> proxy

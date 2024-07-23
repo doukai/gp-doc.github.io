@@ -17,12 +17,11 @@ Nozdormu 的设计目标:
 1. 保持轻量级: 只实现必要的企业级 Java 特性, 不做过多的拓展, 保持简洁和低依赖
 2. 运行时无反射: 把运行时的动态逻辑前移到编译阶段, 通过 Annotation Processing 在编译阶段完成 IOC 和 AOP
 
-虽然十分推荐使用 Nozdormu 作为 Graphoeix 的 CDI, 但这并不是强制的, 任何基于[Jakarta Inject](https://github.com/jakartaee/inject) 和 [Jakarta CDI](https://jakarta.ee/specifications/cdi/4.1/jakarta-cdi-spec-4.1) 规范的实现都可作为选择，以下是其他 Jakarta CDI 实现
+使用 Nozdormu 作为 Graphoeix 的 CDI 并非强制, 任何基于[Jakarta Inject](https://github.com/jakartaee/inject) 和 [Jakarta CDI](https://jakarta.ee/specifications/cdi/4.1/jakarta-cdi-spec-4.1) 规范的 CDI 实现都可作为选择
 
 1. [Weld](https://weld.cdi-spec.org/)
-2. [Quarkus DI](https://quarkus.io/guides/cdi-reference/)
-3. [Open Liberty](https://openliberty.io/guides/cdi-intro.html/)
-4. [Apache OpenWebBeans](https://openwebbeans.apache.org/)
+2. [Quarkus DI](https://quarkus.io/guides/cdi-reference)
+3. [Open Liberty](https://openliberty.io/guides/cdi-intro.html)
 
 ## 安装
 
@@ -664,7 +663,7 @@ public class InjectTest {
 
 使用 BeanContext 中的静态方法以代码形式获取 Bean
 
-| 注解                                                                            | 参数                    | 返回值                | 说明                                 |
+| 方法                                                                            | 参数                    | 返回值                | 说明                                 |
 | ------------------------------------------------------------------------------- | ----------------------- | --------------------- | ------------------------------------ |
 | static T get(Class\<T\> beanClass)                                              | 目标类型                | T                     | 根据类型获取实例                     |
 | static T get(Class\<T\> beanClass, String name)                                 | 目标类型, bean 名称     | T                     | 根据名成获取实例                     |
@@ -678,7 +677,7 @@ public class InjectTest {
 
 使用 CDI 中的方法以代码形式获取 Bean
 
-| 注解                                                                  | 参数                   | 返回值        | 说明                  |
+| 方法                                                                  | 参数                   | 返回值        | 说明                  |
 | --------------------------------------------------------------------- | ---------------------- | ------------- | --------------------- |
 | static current()                                                      | 无                     | CDI           | 获取 CDI 实例         |
 | Instance\<T\> select(Class\<T\> beanClass, Annotation... annotations) | 目标类型, 注解筛选列表 | Instance\<T\> | 根据注解列表筛选 Bean |
