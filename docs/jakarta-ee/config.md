@@ -218,4 +218,4 @@ public class QueryDAO {
 | ------------------------------------------------------- | --------- | ------------------------------------ |
 | org.eclipse.microprofile.config.inject.ConfigProperties | 类        | 标记配置类, 使用 prefix 字段配置前缀 |
 | org.eclipse.microprofile.config.inject.ConfigProperty   | 字段,方法 | 标记需要注入的配置                   |
-| com.typesafe.config.Optional                            | 字段      | 标记需要可为 null 的配置字段         |
+| com.typesafe.config.Optional                            | 字段      | 标记可为 null 的配置字段             |
