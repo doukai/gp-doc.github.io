@@ -21,7 +21,6 @@ Nozdormu 的设计目标:
 
 1. [Weld](https://weld.cdi-spec.org/)
 2. [Quarkus DI](https://quarkus.io/guides/cdi-reference)
-3. [Open Liberty](https://openliberty.io/guides/cdi-intro.html)
 
 ## 安装
 

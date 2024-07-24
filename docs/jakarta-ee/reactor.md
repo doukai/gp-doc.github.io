@@ -11,7 +11,7 @@ sidebar_position: 4
 1. 异步思维: 需要适应异步操作链, 理解如何在不阻塞主线程的情况下处理数据流
 2. 声明式编程: 响应式编程强调使用声明式方式定义数据流, 而不是命令式地逐步构建逻辑. 这要求开发者改变思维方式, 从描述"如何做"转变为描述"要做什么"
 
-`async` 和 `await` 提供了一种处理异步操作的强大工具, 简化了异步代码的编写和维护, 广泛应用于 JavaScript, C# 等现代编程语言中. [**Nozdormu**](https://github.com/doukai/nozdormu) 通过代码静态分析, 转译同步代码为异步代码, 通过简单的接口和 API 对 Java 提供 `async` 和 `await` 特性, 降低异步编程的心智负担
+`async` 和 `await` 提供了一种处理异步操作的强大工具, 简化了异步代码的编写和维护, 广泛应用于 JavaScript, C# 等现代编程语言中. [**Nozdormu**](https://github.com/doukai/nozdormu) 通过代码静态分析, 转译同步代码为异步代码, 通过简单的接口和 API 提供 `async` 和 `await` 特性, 降低异步编程的心智负担
 
 ## 安装
 

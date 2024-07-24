@@ -6,56 +6,14 @@ sidebar_position: 2
 
 切面编程（Aspect-Oriented Programming, AOP）是一种编程范式, 它通过将横切关注点（cross-cutting concerns）与业务逻辑分离, 来增强代码的模块化. 在企业级 Java 开发中, AOP 通常用于日志记录, 安全性, 事务管理等方面
 
-以下是几种主流的 AOP 技术及其实现形式:
+主流的 AOP 技术与实现:
 
 | 框架       | 类型                 | 原理                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 缺点                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | ---------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Spring AOP | 运行时               | **JDK 动态代理**: 适用于接口代理. 通过创建实现了目标接口的代理对象来拦截方法调用<br />**CGLIB 代理**: 适用于类代理. 通过创建目标类的子类来拦截方法调用                                                                                                                                                                                                                                                                                                                                                                             | **性能开销**: Spring AOP 基于代理机制, 这意味着每次方法调用都会有额外的代理开销, 可能会影响性能, 尤其是在大量频繁调用的场景下<br />**受限于 Spring 容器**: Spring AOP 仅在 Spring 容器管理的 Bean 上有效, 对于非 Spring 管理的对象无法应用                                                                                                                                                                                                                                                |
 | AspectJ    | 编译时/加载时/运行时 | **编译时织入**(Compile-Time Weaving): 在源代码编译为字节码时, 直接将切面代码织入到字节码中. 这需要使用 AspectJ 提供的编译器 ajc, 或者通过将 AspectJ 集成到构建工具(如 Maven 或 Gradle)中<br />**后编译时织入**(Post-Compile Weaving): 也称为二进制织入(Binary Weaving), 是在已经编译好的字节码文件中进行织入. 这种方式适用于需要在编译后的字节码上进行切面增强的场景<br />**加载时织入**(Load-Time Weaving): 在类加载时, 将切面代码动态织入到目标类的字节码中. 这通常需要一个特殊的类加载器, 使用 Java 的 Instrumentation API 实现 | **学习曲线陡峭**: AspectJ 具有强大的功能, 但其语法和概念（如切点表达式, 通知类型, 织入方式等）可能对初学者来说比较复杂, 需要一定的学习成本<br />**编译和构建复杂性**: 使用 AspectJ 编译器(ajc)可能需要额外的构建配置, 尤其是在大型项目中集成 AspectJ 时, 可能会增加构建过程的复杂性<br />**运行时性能开销**: 虽然 AspectJ 的编译时织入性能较好, 但加载时织入可能会带来一定的性能开销<br />**调试困难**: 由于 AspectJ 修改了字节码, 调试切面代码可能会变得困难, 特别是在问题定位和排查方面 |
 
-[**Nozdormu**](https://github.com/doukai/nozdormu) 基于[Jakarta Interceptors](https://jakarta.ee/specifications/interceptors/2.2/jakarta-interceptors-spec-2.2) 规范, 使用比动态代理和字节码增强技术更透明高效的 Annotation Processing(JSR-269) 技术, 通过对切片代码的静态分析, 在编译前阶段将切面织入到源码中, 更易于调试的同时也能充分发挥编译器和 IDE 的检查功能
-
-```mermaid
-flowchart TB
-    java["public class Satellite {
-    &emsp;@Launch;
-    &emsp;public String startup(String name) {
-    &emsp;&emsp;// ...
-    &emsp;}
-    }"]
-    interceptor1["@Interceptor
-    @Launch
-    @Priority(0)
-    public class FirstLaunchInterceptor {
-    &emsp;@AroundInvoke
-    &emsp;public Object aroundInvoke(InvocationContext invocationContext) {
-    &emsp;&emsp;// ...
-    &emsp;};
-    }"]
-    interceptor2["@Interceptor
-    @Launch
-    @Priority(1)
-    public class SecondLaunchInterceptor {
-    &emsp;@AroundInvoke
-    &emsp;public Object aroundInvoke(InvocationContext invocationContext) {
-    &emsp;&emsp;// ...
-    &emsp;};
-    }"]
-    proxy["public class Satellite_Proxy extends Satellite {
-    &emsp;@Override();
-    &emsp;public String startup(String name) {
-    &emsp;&emsp;// firstLaunchInterceptor.aroundInvoke(...)
-    &emsp;&emsp;// secondLaunchInterceptor.aroundInvoke(...)
-    &emsp;&emsp;// ...
-    &emsp;}
-    }"]
-    java & interceptor1 & interceptor2 --> 代码分析 --> JSR-269 --> proxy
-
-    style java text-align:left
-    style interceptor1 text-align:left
-    style interceptor2 text-align:left
-    style proxy text-align:left
-```
+[**Nozdormu**](https://github.com/doukai/nozdormu) 基于[Jakarta Interceptors](https://jakarta.ee/specifications/interceptors/2.2/jakarta-interceptors-spec-2.2) 规范, 使用透明高效的 Annotation Processing(JSR-269) 技术, 通过对切片代码的静态分析, 在编译前阶段将切面织入到源码中, 易于调试, 充分发挥编译器和 IDE 的检查能力
 
 ## 安装
 
