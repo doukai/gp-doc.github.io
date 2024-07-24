@@ -18,8 +18,8 @@ flowchart LR
 
 接下来可以根据实际需要选择特性进行了解
 
-1. [依赖注入(IOC) / 切面(AOP) / 配置(Config)](/docs/category/企业级java): 企业级 Java(Jakarta EE)
-2. 同步和异步: 基于 Reactor 的 Async 和 Await
+1. [依赖注入(IOC)](/docs/jakarta-ee/inject) / [切面(AOP)](/docs/jakarta-ee/interceptor) / [配置(Config)](/docs/jakarta-ee/config): 企业级 Java(Jakarta EE)
+2. [异步和同步](/docs/jakarta-ee/reactor): 基于 Reactor 的 Async 和 Await
 3. 微服务和 gRPC: 单体和微服务可切换的集装箱架构
 4. 订阅: 基于消息队列的和 SSE 的 GraphQL 订阅
 5. 验证: 基于 JSON Schema 协议的验证

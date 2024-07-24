@@ -663,19 +663,23 @@ public class InjectTest {
 
 使用 BeanContext 中的静态方法以代码形式获取 Bean
 
-| 方法                                                                            | 参数                    | 返回值                | 说明                                 |
-| ------------------------------------------------------------------------------- | ----------------------- | --------------------- | ------------------------------------ |
-| static T get(Class\<T\> beanClass)                                              | 目标类型                | T                     | 根据类型获取实例                     |
-| static T get(Class\<T\> beanClass, String name)                                 | 目标类型, bean 名称     | T                     | 根据名成获取实例                     |
-| static Provider\<T\> getProvider(Class\<T\> beanClass)                          | 目标类型                | Provider\<T\>         | 根据类型获取实例提供者               |
-| static Provider\<T\> getProvider(Class\<T\> beanClass, String name)             | 目标类型, bean 名称     | Provider\<T\>         | 根据名称获取实例提供者               |
-| static Provider\<Mono\<T\>\> getMonoProvider(Class\<T\> beanClass)              | 目标类型                | Provider\<Mono\<T\>\> | 根据类型获取实例异步提供者           |
-| static Provider\<Mono\<T\>\> getMonoProvider(Class\<T\> beanClass, String name) | 目标类型, bean 名称     | Provider\<Mono\<T\>\> | 根据名称获取实例异步提供者           |
-| static Instance\<T\> getInstance(Class\<T\> beanClass, String... names)         | 目标类型, bean 名称数组 | Instance\<T\>         | 根据类型获取实例集合, 可根据名称过滤 |
+例: `Engine engine = BeanContext.get(Engine.class);`
+
+| 方法                                                                            | 参数                   | 返回值                | 说明                                 |
+| ------------------------------------------------------------------------------- | ---------------------- | --------------------- | ------------------------------------ |
+| static T get(Class\<T\> beanClass)                                              | 目标类型               | T                     | 根据类型获取实例                     |
+| static T get(Class\<T\> beanClass, String name)                                 | 目标类型,bean 名称     | T                     | 根据名成获取实例                     |
+| static Provider\<T\> getProvider(Class\<T\> beanClass)                          | 目标类型               | Provider\<T\>         | 根据类型获取实例提供者               |
+| static Provider\<T\> getProvider(Class\<T\> beanClass, String name)             | 目标类型,bean 名称     | Provider\<T\>         | 根据名称获取实例提供者               |
+| static Provider\<Mono\<T\>\> getMonoProvider(Class\<T\> beanClass)              | 目标类型               | Provider\<Mono\<T\>\> | 根据类型获取实例异步提供者           |
+| static Provider\<Mono\<T\>\> getMonoProvider(Class\<T\> beanClass, String name) | 目标类型,bean 名称     | Provider\<Mono\<T\>\> | 根据名称获取实例异步提供者           |
+| static Instance\<T\> getInstance(Class\<T\> beanClass, String... names)         | 目标类型,bean 名称数组 | Instance\<T\>         | 根据类型获取实例集合, 可根据名称过滤 |
 
 ### CDI(Jakarta CDI 标准)
 
 使用 CDI 中的方法以代码形式获取 Bean
+
+例: `Engine engine = CDI.current().select(Engine.class);`
 
 | 方法                                                                  | 参数                   | 返回值        | 说明                  |
 | --------------------------------------------------------------------- | ---------------------- | ------------- | --------------------- |
