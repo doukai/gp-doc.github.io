@@ -50,6 +50,8 @@ flowchart LR
 
 我们将[快速开始](/docs/tutorial/quick-start)中的[订单系统](/docs/tutorial/quick-start#1-定义-graphql)拆分为订单(demo.gp.order), 用户(demo.gp.user), 评论(demo.gp.review)三个子系统
 
+### 项目结构
+
 <details>
 <summary>项目结构</summary>
 
@@ -118,6 +120,8 @@ flowchart LR
 ```
 
 </details>
+
+### 依赖关系
 
 1. 用户模块中定义用户(User)和用户类型(UserType)
 2. 评论模块中定义评论(Review), 评论的评论人字段(user)引用用户模块的用户(User)
@@ -198,3 +202,717 @@ flowchart LR
     style review text-align:left
     style user text-align:left
 ```
+
+## 安装
+
+### protobuf 插件
+
+模块之间默认使用 gRPC 进行通讯, 需要引用插件生成 protobuf 文件
+
+<details>
+<summary>user-package</summary>
+
+```gradle title="build.gradle"
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        gradlePluginPortal()
+    }
+    dependencies {
+        // highlight-start
+        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
+        // highlight-end
+    }
+}
+
+plugins {
+    id 'java'
+    // highlight-start
+    id 'com.google.protobuf' version '0.9.1'
+    // highlight-end
+}
+apply plugin: 'io.graphoenix'
+classes.dependsOn {
+    generateGraphQLSource
+    // highlight-start
+    generateProtobufV3
+    // highlight-end
+}
+```
+
+生成 dto 和 protobuf
+
+```bash
+./gradlew :user-package:build
+```
+
+</details>
+
+<details>
+<summary>review-package</summary>
+
+```gradle title="build.gradle"
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        gradlePluginPortal()
+    }
+    dependencies {
+        // highlight-start
+        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
+        // highlight-end
+    }
+}
+
+plugins {
+    id 'java'
+    // highlight-start
+    id 'com.google.protobuf' version '0.9.1'
+    // highlight-end
+}
+apply plugin: 'io.graphoenix'
+classes.dependsOn {
+    generateGraphQLSource
+    // highlight-start
+    generateProtobufV3
+    // highlight-end
+}
+```
+
+生成 dto 和 protobuf
+
+```bash
+./gradlew :review-package:build
+```
+
+</details>
+
+<details>
+<summary>order-package</summary>
+
+```gradle title="build.gradle"
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        gradlePluginPortal()
+    }
+    dependencies {
+        // highlight-start
+        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
+        // highlight-end
+    }
+}
+
+plugins {
+    id 'java'
+    // highlight-start
+    id 'com.google.protobuf' version '0.9.1'
+    // highlight-end
+}
+apply plugin: 'io.graphoenix'
+classes.dependsOn {
+    generateGraphQLSource
+    // highlight-start
+    generateProtobufV3
+    // highlight-end
+}
+```
+
+生成 dto 和 protobuf
+
+```bash
+./gradlew :order-package:build
+```
+
+</details>
+
+### 模块依赖
+
+安装和配置 gRPC, 引用其他模块
+
+<details>
+<summary>user-package</summary>
+
+```gradle title="build.gradle"
+// highlight-start
+// gRPC 配置
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.21.7'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.52.1'
+        }
+        reactor {
+            artifact = 'com.salesforce.servicelibs:reactor-grpc:1.2.3'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+            reactor {}
+        }
+    }
+}
+// highlight-end
+
+// highlight-start
+// gRPC 目录配置
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/java'
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/reactor'
+        }
+    }
+}
+// highlight-end
+
+dependencies {
+    // highlight-start
+    // 引用核心
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    // highlight-end
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    // highlight-start
+    // gRPC 依赖
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.52.1'
+    implementation 'io.grpc:grpc-protobuf:1.52.1'
+    implementation 'io.grpc:grpc-stub:1.52.1'
+    implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.3'
+
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+    // highlight-end
+
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    // highlight-start
+    // 引用核心
+    protobuf 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    // highlight-end
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+```
+
+</details>
+
+<details>
+<summary>review-package</summary>
+
+```gradle title="build.gradle"
+// highlight-start
+// gRPC 配置
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.21.7'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.52.1'
+        }
+        reactor {
+            artifact = 'com.salesforce.servicelibs:reactor-grpc:1.2.3'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+            reactor {}
+        }
+    }
+}
+// highlight-end
+
+// highlight-start
+// gRPC 目录配置
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/java'
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/reactor'
+        }
+    }
+}
+// highlight-end
+
+dependencies {
+    // highlight-start
+    // 引用核心
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    // 引用 User 模块
+    implementation project(':user-package')
+    // highlight-end
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    // highlight-start
+    // gRPC 依赖
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.52.1'
+    implementation 'io.grpc:grpc-protobuf:1.52.1'
+    implementation 'io.grpc:grpc-stub:1.52.1'
+    implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.3'
+
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+    // highlight-end
+
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    // highlight-start
+    // 引用 User 模块
+    annotationProcessor project(':user-package')
+    // highlight-end
+    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    // highlight-start
+    // 引用核心
+    protobuf 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    // 引用 User 模块
+    protobuf project(':user-package')
+    // highlight-end
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+```
+
+</details>
+
+<details>
+<summary>order-package</summary>
+
+```gradle title="build.gradle"
+// highlight-start
+// gRPC 配置
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.21.7'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.52.1'
+        }
+        reactor {
+            artifact = 'com.salesforce.servicelibs:reactor-grpc:1.2.3'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+            reactor {}
+        }
+    }
+}
+// highlight-end
+
+// highlight-start
+// gRPC 目录配置
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/java'
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/reactor'
+        }
+    }
+}
+// highlight-end
+
+dependencies {
+    // highlight-start
+    // 引用核心
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    // 引用 User 模块
+    implementation project(':user-package')
+    // 引用 Review 模块
+    implementation project(':review-package')
+    // highlight-end
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    // highlight-start
+    // gRPC 依赖
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.52.1'
+    implementation 'io.grpc:grpc-protobuf:1.52.1'
+    implementation 'io.grpc:grpc-stub:1.52.1'
+    implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.3'
+
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+    // highlight-end
+
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    // highlight-start
+    // 引用 User 模块
+    annotationProcessor project(':user-package')
+    // 引用 Review 模块
+    annotationProcessor project(':review-package')
+    // highlight-end
+    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    // highlight-start
+    // 引用核心
+    protobuf 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    // 引用 User 模块
+    protobuf project(':user-package')
+    // 引用 Review 模块
+    protobuf project(':review-package')
+    // highlight-end
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+```
+
+</details>
+
+### 服务依赖
+
+引用模块, 安装服务依赖
+
+<details>
+<summary>user-app</summary>
+
+```gradle title="build.gradle"
+dependencies {
+    // highlight-start
+    // User 模块
+    implementation project(':user-package')
+    // highlight-end
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    // highlight-start
+    // Http 服务
+    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    // gRPC 服务
+    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    // highlight-end
+
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+
+    // highlight-start
+    // User 模块
+    annotationProcessor project(':user-package')
+    // highlight-end
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    // highlight-start
+    // gRPC 服务
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    // highlight-end
+}
+```
+
+</details>
+
+<details>
+<summary>review-app</summary>
+
+```gradle title="build.gradle"
+dependencies {
+    // highlight-start
+    // Review 模块
+    implementation project(':review-package')
+    // highlight-end
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    // highlight-start
+    // Http 服务
+    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    // gRPC 服务
+    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    // gRPC 客户端, 调用其他模块
+    implementation 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    // highlight-end
+
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+
+    // highlight-start
+    // Review 模块
+    annotationProcessor project(':review-package')
+    // highlight-end
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    // highlight-start
+    // gRPC 服务
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    // gRPC 客户端, 调用其他模块
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    // highlight-end
+}
+```
+
+</details>
+
+<details>
+<summary>order-app</summary>
+
+```gradle title="build.gradle"
+dependencies {
+    // highlight-start
+    // Order 模块
+    implementation project(':order-package')
+    // highlight-end
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    // highlight-start
+    // Http 服务
+    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    // gRPC 服务
+    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    // gRPC 客户端, 调用其他模块
+    implementation 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    // highlight-end
+
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+
+    // highlight-start
+    // Order 模块
+    annotationProcessor project(':order-package')
+    // highlight-end
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    // highlight-start
+    // gRPC 服务
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    // gRPC 客户端, 调用其他模块
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    // highlight-end
+}
+```
+
+</details>
+
+## 配置
+
+### 配置数据库和服务
+
+```conf title="user-app/src/main/resources/application.conf"
+r2dbc {
+  driver = "mariadb"
+  database = "user"
+  user = "root"
+  password = "root"
+}
+http {
+  port = 8082   //Http 端口
+}
+grpc {
+  port = 50053  //gRPC 端口
+}
+```
+
+```conf title="review-app/src/main/resources/application.conf"
+r2dbc {
+  driver = "mariadb"
+  database = "review"
+  user = "root"
+  password = "root"
+}
+http {
+  port = 8081   //Http 端口
+}
+grpc {
+  port = 50052  //gRPC 端口
+}
+```
+
+```conf title="order-app/src/main/resources/application.conf"
+r2dbc {
+  driver = "mariadb"
+  database = "order"
+  user = "root"
+  password = "root"
+}
+```
+
+### 配置模块地址
+
+在 `package.members` 中配置每个模块的地址, 每个模块都可以提供多个服务作为冗余
+
+```conf title="review-app/src/main/resources/application.conf"
+package {
+  members: {"demo.gp.user": [{host: "127.0.0.1", port: 50053, protocol: "GRPC"}]}
+}
+```
+
+```conf title="order-app/src/main/resources/application.conf"
+package {
+  members: {"demo.gp.review": [{host: "127.0.0.1", port: 50052, protocol: "GRPC"}], "demo.gp.user": [{host: "127.0.0.1", port: 50053, protocol: "GRPC"}]}
+}
+```
+
+<details>
+<summary>测试数据</summary>
+
+```graphql
+mutation {
+  userList(
+    list: [
+      { id: "1", name: "Alice", email: "alice@example.com", userType: VIP }
+      { id: "2", name: "Bob", email: "bob@example.com", userType: REGULAR }
+      { id: "3", name: "Charlie", email: "charlie@example.com", userType: VIP }
+      { id: "4", name: "Diana", email: "diana@example.com", userType: REGULAR }
+      { id: "5", name: "Edward", email: "edward@example.com", userType: VIP }
+      { id: "6", name: "Fiona", email: "fiona@example.com", userType: REGULAR }
+      { id: "7", name: "George", email: "george@example.com", userType: VIP }
+      {
+        id: "8"
+        name: "Hannah"
+        email: "hannah@example.com"
+        userType: REGULAR
+      }
+      { id: "9", name: "Ian", email: "ian@example.com", userType: VIP }
+      { id: "10", name: "Jane", email: "jane@example.com", userType: REGULAR }
+      { id: "11", name: "Kyle", email: "kyle@example.com", userType: VIP }
+      { id: "12", name: "Laura", email: "laura@example.com", userType: REGULAR }
+      { id: "13", name: "Mike", email: "mike@example.com", userType: VIP }
+      { id: "14", name: "Nina", email: "nina@example.com", userType: REGULAR }
+      { id: "15", name: "Oliver", email: "oliver@example.com", userType: VIP }
+      { id: "16", name: "Paula", email: "paula@example.com", userType: REGULAR }
+      { id: "17", name: "Quentin", email: "quentin@example.com", userType: VIP }
+      {
+        id: "18"
+        name: "Rachel"
+        email: "rachel@example.com"
+        userType: REGULAR
+      }
+      { id: "19", name: "Steve", email: "steve@example.com", userType: VIP }
+      { id: "20", name: "Tina", email: "tina@example.com", userType: REGULAR }
+    ]
+  ) {
+    id
+  }
+  reviewList(
+    list: [
+      {
+        id: "1"
+        content: "Great laptop, very fast and reliable."
+        rating: 5
+        user: { where: { id: { val: "10" } } }
+      }
+      {
+        id: "2"
+        content: "Decent laptop but a bit expensive."
+        rating: 4
+        user: { where: { id: { val: "8" } } }
+      }
+      {
+        id: "3"
+        content: "The phone is amazing, camera quality is top-notch."
+        rating: 5
+        user: { where: { id: { val: "6" } } }
+      }
+      {
+        id: "4"
+        content: "Tablet is good for the price."
+        rating: 4
+        user: { where: { id: { val: "4" } } }
+      }
+    ]
+  ) {
+    id
+  }
+  productList(
+    list: [
+      {
+        id: "1"
+        name: "Laptop"
+        price: 999.99
+        reviews: [
+          { where: { id: { val: "1" } } }
+          { where: { id: { val: "2" } } }
+        ]
+      }
+      {
+        id: "2"
+        name: "Phone"
+        price: 499.99
+        reviews: [{ where: { id: { val: "3" } } }]
+      }
+      {
+        id: "3"
+        name: "Tablet"
+        price: 299.99
+        reviews: [{ where: { id: { val: "4" } } }]
+      }
+      { id: "4", name: "Monitor", price: 199.99 }
+      { id: "5", name: "Keyboard", price: 49.99 }
+    ]
+  ) {
+    id
+  }
+  orderList(
+    list: [
+      {
+        user: { where: { id: { val: "1" } } }
+        items: [
+          { product: { where: { id: { val: "1" } } }, quantity: 1 }
+          { product: { where: { id: { val: "3" } } }, quantity: 2 }
+        ]
+      }
+      {
+        user: { where: { id: { val: "2" } } }
+        items: [{ product: { where: { id: { val: "2" } } }, quantity: 1 }]
+      }
+      {
+        user: { where: { id: { val: "3" } } }
+        items: [
+          { product: { where: { id: { val: "4" } } }, quantity: 2 }
+          { product: { where: { id: { val: "5" } } }, quantity: 3 }
+        ]
+      }
+      {
+        user: { where: { id: { val: "4" } } }
+        items: [
+          { product: { where: { id: { val: "1" } } }, quantity: 1 }
+          { product: { where: { id: { val: "2" } } }, quantity: 1 }
+          { product: { where: { id: { val: "3" } } }, quantity: 1 }
+        ]
+      }
+    ]
+  ) {
+    id
+  }
+}
+```
+
+</details>
