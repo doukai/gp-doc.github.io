@@ -797,6 +797,158 @@ package {
 }
 ```
 
+## Gossip
+
+随着项目规模的发展, 微服务节点逐步增长, 需要引入一种自动注册机制来替代手动配置. Graphoenix 使用 [Gossip](https://icyfenix.cn/distribution/consensus/gossip.html) 协议进行服务发现. [Gossip](https://icyfenix.cn/distribution/consensus/gossip.html) 协议是一种用于分布式系统中信息传播和数据一致性的协议, 具有去中心化, 容错性强, 渐进一致性和易扩展等特性, 是确保节点间信息同步和一致性的关键技术
+
+### 安装Gossip依赖
+
+<details>
+<summary>user-app</summary>
+
+```gradle title="build.gradle"
+dependencies {
+    implementation project(':user-package')
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    // highlight-start
+    implementation 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    // highlight-end
+
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+
+    annotationProcessor project(':user-package')
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    // highlight-start
+    annotationProcessor 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    // highlight-end
+}
+```
+
+</details>
+
+<details>
+<summary>review-app</summary>
+
+```gradle title="build.gradle"
+dependencies {
+    implementation project(':review-package')
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    // highlight-start
+    implementation 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    // highlight-end
+
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+
+    annotationProcessor project(':review-package')
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    // highlight-start
+    annotationProcessor 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    // highlight-end
+}
+```
+
+</details>
+
+<details>
+<summary>order-app</summary>
+
+```gradle title="build.gradle"
+dependencies {
+    implementation project(':order-package')
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    implementation 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    // highlight-start
+    implementation 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    // highlight-end
+
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+
+    annotationProcessor project(':order-package')
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    // highlight-start
+    annotationProcessor 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    // highlight-end
+}
+```
+
+</details>
+
+### 配置Gossip端口
+
+```conf title="user-app/src/main/resources/application.conf"
+gossip {
+  port = 3000
+}
+```
+
+```conf title="review-app/src/main/resources/application.conf"
+gossip {
+  port = 3001
+}
+```
+
+```conf title="order-app/src/main/resources/application.conf"
+gossip {
+  port = 3002
+}
+```
+
+### 配置种子节点
+在 `package.members.seeds` 中配置种子节点, 所有节点都会从种子节点开始交换信息
+
+例: 使用用户模块(demo.gp.user)节点作为种子节点
+
+```conf title="review-app/src/main/resources/application.conf"
+package {
+  //  members: {"demo.gp.user": [{host: "127.0.0.1", port: 50053, protocol: "GRPC"}]}
+  // highlight-start
+  members: {seeds: [{host: "127.0.0.1", port: 3000}]}
+  // highlight-end
+}
+```
+
+```conf title="order-app/src/main/resources/application.conf"
+package {
+  //  members: {"demo.gp.review": [{host: "127.0.0.1", port: 50052, protocol: "GRPC"}], "demo.gp.user": [{host: "127.0.0.1", port: 50053, protocol: "GRPC"}]}
+  // highlight-start
+  members: {seeds: [{host: "127.0.0.1", port: 3000}]}
+  // highlight-end
+}
+```
+
 ## 启动
 
 1. Run/Debug user-app/src/main/java/demo/gp/user/App.java
