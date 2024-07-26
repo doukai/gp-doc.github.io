@@ -4,9 +4,9 @@ sidebar_position: 1
 
 # 微服务
 
-微服务架构（Microservices Architecture）是一种将单个应用程序分解为多个独立部署的小服务的架构模式, 每个服务专注于特定的业务功能, 具有高内聚和松耦合的特点. 它允许各个服务独立开发, 部署和扩展, 支持灵活的技术选型, 提高系统的弹性和扩展性, 然而微服务架构也带来了系统复杂性增加, 运维成本高, 通信开销大和数据一致性保障难等挑战. 它特别适用于需要高扩展性, 复杂业务逻辑和快速迭代的大规模应用. 选择微服务架构需要权衡其优缺点, 并根据具体的业务需求和技术能力进行决策
+微服务架构（Microservices Architecture）是一种将单个应用程序分解为多个独立部署的小服务的架构模式, 每个服务专注于特定的业务功能, 具有高内聚和松耦合的特点. 它允许各个服务独立开发, 部署和扩展, 支持灵活的技术选型, 提高系统的弹性和扩展性. 然而微服务架构也带来了系统复杂性增加, 运维成本高, 通信开销大和数据一致性保障难等挑战
 
-Graphoenix 通过不同的包名(Package Name)来区分模块, 每个模块可以独立提供服务, 通过 gRPC 等通讯协议构成微服务架构, 也可以与其他模块合并为后作为单体架构提供服务
+Graphoenix 全面支持微服务架构, 提供服务注册, 网关, 熔断, 负载均衡, 分布式事务等全套的微服务解决方案. 系统通过不同的包名(Package Name)来区分模块, 每个模块可以独立提供服务, 通过 gRPC 等通讯协议构成微服务矩阵, 也可以与其他模块合并为单体架构提供服务
 
 ```mermaid
 flowchart LR
@@ -48,9 +48,16 @@ flowchart LR
 
 ## 服务拆分
 
+微服务的拆分是将一个单体应用分解为多个独立部署的小服务, 每个服务专注于特定业务功能. 通过领域驱动设计(DDD), 业务功能划分, 独立数据库, 独立部署和服务通信, 实现更好的隔离和独立性
+
 我们将[快速开始](/docs/tutorial/quick-start)中的[订单系统](/docs/tutorial/quick-start#1-定义-graphql)拆分为订单(demo.gp.order), 用户(demo.gp.user), 评论(demo.gp.review)三个子系统
 
 ### 项目结构
+
+项目按照功能分为模块(package)和服务(app), 服务作为模块的载体, 按照不同的组合方式构建单体架构或微服务矩阵:
+
+1. app(package1 + package2 + package3) = monolithic
+2. app1(package1) + app2(package2) + app3(package3) = microservices
 
 <details>
 <summary>项目结构</summary>
@@ -122,6 +129,10 @@ flowchart LR
 </details>
 
 ### 依赖关系
+
+梳理微服务之间的依赖关系需明确业务边界, 定义服务契约, 并绘制依赖图. 注意避免循环依赖和最小化依赖, 采用松耦合设计, 确保健壮性和容错性
+
+例:
 
 1. 用户模块中定义用户(User)和用户类型(UserType)
 2. 评论模块中定义评论(Review), 评论的评论人字段(user)引用用户模块的用户(User)
@@ -335,7 +346,7 @@ classes.dependsOn {
 
 </details>
 
-### 模块依赖
+### 模块(package)依赖
 
 安装和配置 gRPC, 引用其他模块
 
@@ -595,7 +606,7 @@ dependencies {
 
 </details>
 
-### 服务依赖
+### 服务(app)依赖
 
 引用模块, 安装服务依赖
 
@@ -796,7 +807,7 @@ package {
 
 ## 查询和变更
 
-基于微服务架构下的查询和变更和单体架构完全一致, 系统通过底层技术让架构的切换不影响使用体验
+架构的切换不会改变查询和变更的使用, Graphoenix 通过底层技术屏蔽不同架构的差异, 让接口层的表现保持一致
 
 <details>
 <summary>测试数据</summary>
@@ -934,3 +945,153 @@ mutation {
 ```
 
 </details>
+
+1. 例: 查询用户 Alice 的订单
+
+```graphql
+{
+  orderList(user: { name: { val: "Alice" } }) {
+    items {
+      product {
+        name
+      }
+      quantity
+    }
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "orderList": [
+      {
+        "items": [
+          {
+            "product": {
+              "name": "Laptop"
+            },
+            "quantity": 1
+          },
+          {
+            "product": {
+              "name": "Tablet"
+            },
+            "quantity": 2
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+2. 例: 查询评价 4 分以上的产品
+
+```graphql
+{
+  productList(reviews: { rating: { opr: GT, val: 4 } }) {
+    name
+    price
+    reviews {
+      content
+      rating
+      user {
+        name
+      }
+    }
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "productList": [
+      {
+        "name": "Laptop",
+        "price": 999.99,
+        "reviews": [
+          {
+            "content": "Great laptop, very fast and reliable.",
+            "rating": 5,
+            "user": {
+              "name": "Jane"
+            }
+          },
+          {
+            "content": "Decent laptop but a bit expensive.",
+            "rating": 4,
+            "user": {
+              "name": "Hannah"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Phone",
+        "price": 499.99,
+        "reviews": [
+          {
+            "content": "The phone is amazing, camera quality is top-notch.",
+            "rating": 5,
+            "user": {
+              "name": "Fiona"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+3. 例: 同时新增产品, 评论和用户
+
+```graphql
+mutation {
+  product(
+    name: "Mouse"
+    price: 25.99
+    reviews: [
+      {
+        content: "Been using this mouse for quite some time with no concerns. "
+        rating: 4
+        user: { name: "Victor", userType: VIP }
+      }
+    ]
+  ) {
+    name
+    price
+    reviews {
+      content
+      rating
+      user {
+        name
+        userType
+      }
+    }
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "product": {
+      "name": "Mouse",
+      "price": 25.99,
+      "reviews": [
+        {
+          "content": "Been using this mouse for quite some time with no concerns. ",
+          "rating": 4,
+          "user": {
+            "name": "Victor",
+            "userType": "VIP"
+          }
+        }
+      ]
+    }
+  }
+}
+```
