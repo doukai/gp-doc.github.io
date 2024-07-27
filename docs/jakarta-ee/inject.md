@@ -656,6 +656,8 @@ public class InjectTest {
 }
 ```
 
+---
+
 ## **依赖注入 API**
 
 ### BeanContext

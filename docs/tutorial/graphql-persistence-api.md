@@ -689,6 +689,8 @@ public class UserRepositoryTest {
 }
 ```
 
+---
+
 ## **注解说明**
 
 ### 接口注解

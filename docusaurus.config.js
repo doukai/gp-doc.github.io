@@ -122,7 +122,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Graphoenix Project, Inc.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Graphoenix Project`,
       },
       prism: {
         theme: prismThemes.github,

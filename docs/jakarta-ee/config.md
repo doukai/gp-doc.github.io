@@ -192,6 +192,8 @@ public class QueryDAO {
 }
 ```
 
+---
+
 ## **配置 API**
 
 ### ConfigProviderResolver

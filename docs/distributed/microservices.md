@@ -50,7 +50,7 @@ flowchart LR
 
 微服务的拆分是将一个单体应用分解为多个独立部署的小服务, 每个服务专注于特定业务功能. 通过领域驱动设计(DDD), 业务功能划分, 独立数据库, 独立部署和服务通信, 实现更好的隔离和独立性
 
-我们将[快速开始](/docs/tutorial/quick-start)中的[订单系统](/docs/tutorial/quick-start#1-定义-graphql)拆分为订单(demo.gp.order), 用户(demo.gp.user), 评论(demo.gp.review)三个子系统
+例: 我们将[快速开始](/docs/tutorial/quick-start)中的[订单系统](/docs/tutorial/quick-start#1-定义-graphql)拆分为订单(demo.gp.order), 用户(demo.gp.user), 评论(demo.gp.review)三个子系统
 
 ### 项目结构
 
@@ -140,77 +140,83 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph demo.gp.order
-      order["// order.gql
-      &quot;产品&quot;
-      type Product {
-      &emsp;&quot;产品ID&quot;
-      &emsp;id: ID!
-      &emsp;&quot;产品名称&quot;
-      &emsp;name: String!
-      &emsp;&quot;定价&quot;
-      &emsp;price: Float!
-      &emsp;&quot;评论列表&quot;
-      &emsp;reviews: [Review!]
-      }
+    subgraph order-app
+      subgraph demo.gp.order
+        order["// order.gql
+        &quot;产品&quot;
+        type Product {
+        &emsp;&quot;产品ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;产品名称&quot;
+        &emsp;name: String!
+        &emsp;&quot;定价&quot;
+        &emsp;price: Float!
+        &emsp;&quot;评论列表&quot;
+        &emsp;reviews: [Review!]
+        }
 
-      &quot;订单&quot;
-      type Order {
-      &emsp;&quot;订单ID&quot;
-      &emsp;id: ID!
-      &emsp;&quot;购买用户&quot;
-      &emsp;user: User!
-      &emsp;&quot;产品列表&quot;
-      &emsp;items: [OrderItem!]!
-      }
+        &quot;订单&quot;
+        type Order {
+        &emsp;&quot;订单ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;购买用户&quot;
+        &emsp;user: User!
+        &emsp;&quot;产品列表&quot;
+        &emsp;items: [OrderItem!]!
+        }
 
-      &quot;订单项&quot;
-      type OrderItem {
-      &emsp;&quot;订单项ID&quot;
-      &emsp;id: ID!
-      &emsp;&quot;产品&quot;
-      &emsp;product: Product!
-      &emsp;&quot;购买数量&quot;
-      &emsp;quantity: Int!
-      }"]
+        &quot;订单项&quot;
+        type OrderItem {
+        &emsp;&quot;订单项ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;产品&quot;
+        &emsp;product: Product!
+        &emsp;&quot;购买数量&quot;
+        &emsp;quantity: Int!
+        }"]
+      end
     end
-    subgraph demo.gp.review
-      review["// review.gql
-      &quot;评论&quot;
-      type Review {
-      &emsp;&quot;评论ID&quot;
-      &emsp;id: ID!
-      &emsp;&quot;评论内容&quot;
-      &emsp;content: String
-      &emsp;&quot;评分&quot;
-      &emsp;rating: Float!
-      &emsp;&quot;评论人&quot;
-      &emsp;user: User!
-      }"]
+    subgraph review-app
+      subgraph demo.gp.review
+        review["// review.gql
+        &quot;评论&quot;
+        type Review {
+        &emsp;&quot;评论ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;评论内容&quot;
+        &emsp;content: String
+        &emsp;&quot;评分&quot;
+        &emsp;rating: Float!
+        &emsp;&quot;评论人&quot;
+        &emsp;user: User!
+        }"]
+      end
     end
-    subgraph demo.gp.user
-      user["// user.gql
-      &quot;用户&quot;
-      type User {
-      &emsp;&quot;用户ID&quot;
-      &emsp;id: ID!
-      &emsp;&quot;用户名&quot;
-      &emsp;name: String!
-      &emsp;&quot;电子邮箱&quot;
-      &emsp;email: String
-      &emsp;&quot;联系方式&quot;
-      &emsp;phoneNumbers: [String!]
-      &emsp;&quot;用户类型&quot;
-      &emsp;userType: UserType!
-      }
+    subgraph user-app
+      subgraph demo.gp.user
+        user["// user.gql
+        &quot;用户&quot;
+        type User {
+        &emsp;&quot;用户ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;用户名&quot;
+        &emsp;name: String!
+        &emsp;&quot;电子邮箱&quot;
+        &emsp;email: String
+        &emsp;&quot;联系方式&quot;
+        &emsp;phoneNumbers: [String!]
+        &emsp;&quot;用户类型&quot;
+        &emsp;userType: UserType!
+        }
 
-      &quot;用户类型&quot;
-      enum UserType {
-      &emsp;&quot;普通用户&quot;
-      &emsp;REGULAR
-      &emsp;&quot;会员&quot;
-      &emsp;VIP
-      }"]
+        &quot;用户类型&quot;
+        enum UserType {
+        &emsp;&quot;普通用户&quot;
+        &emsp;REGULAR
+        &emsp;&quot;会员&quot;
+        &emsp;VIP
+        }"]
+      end
     end
     user -. 引用 .-> review
     review -. 引用 .-> order
@@ -783,7 +789,7 @@ r2dbc {
 
 ### 配置模块地址
 
-在 `package.members` 中配置每个模块的地址, 每个模块都可以提供多个服务作为冗余
+使用 `package.members` 配置每个模块的地址, 每个模块都可以提供多个服务作为冗余
 
 ```conf title="review-app/src/main/resources/application.conf"
 package {
@@ -927,7 +933,7 @@ gossip {
 ```
 
 ### 配置种子节点
-在 `package.members.seeds` 中配置种子节点, 所有节点都会从种子节点开始交换信息
+使用 `package.members.seeds` 配置种子节点, 所有节点都会从种子节点开始交换信息
 
 例: 使用用户模块(demo.gp.user)节点作为种子节点
 
@@ -949,13 +955,128 @@ package {
 }
 ```
 
-## 启动
+## 微服务启动
 
 1. Run/Debug user-app/src/main/java/demo/gp/user/App.java
 2. Run/Debug review-app/src/main/java/demo/gp/review/App.java
 3. Run/Debug order-app/src/main/java/demo/gp/order/App.java
 
 ![start](./img/start.png "start")
+
+---
+
+
+## 服务合并
+
+在业务收缩阶段或是流量低谷时段, 多个模块可以合并为单一服务来降低通信和硬件等成本
+
+### 配置本地模块
+
+使用 `package.localPackageNames` 配置本地模块, 本地模块将和到主模块合并到同一服务中
+
+例: 订单模块(demo.gp.order)引入评论模块(demo.gp.review)和用户模块(demo.gp.user)
+
+```conf title="order-app/src/main/resources/application.conf"
+package {
+  //  members: {"demo.gp.review": [{host: "127.0.0.1", port: 50052, protocol: "GRPC"}], "demo.gp.user": [{host: "127.0.0.1", port: 50053, protocol: "GRPC"}]}
+  //  members: {seeds: [{host: "127.0.0.1", port: 3080}]}
+  // highlight-start
+  localPackageNames = ["demo.gp.review", "demo.gp.user"]
+  // highlight-end
+}
+```
+
+```mermaid
+flowchart TB
+    subgraph order-app
+      subgraph demo.gp.order
+        order["// order.gql
+        &quot;产品&quot;
+        type Product {
+        &emsp;&quot;产品ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;产品名称&quot;
+        &emsp;name: String!
+        &emsp;&quot;定价&quot;
+        &emsp;price: Float!
+        &emsp;&quot;评论列表&quot;
+        &emsp;reviews: [Review!]
+        }
+
+        &quot;订单&quot;
+        type Order {
+        &emsp;&quot;订单ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;购买用户&quot;
+        &emsp;user: User!
+        &emsp;&quot;产品列表&quot;
+        &emsp;items: [OrderItem!]!
+        }
+
+        &quot;订单项&quot;
+        type OrderItem {
+        &emsp;&quot;订单项ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;产品&quot;
+        &emsp;product: Product!
+        &emsp;&quot;购买数量&quot;
+        &emsp;quantity: Int!
+        }"]
+      end
+      subgraph demo.gp.review
+        review["// review.gql
+        &quot;评论&quot;
+        type Review {
+        &emsp;&quot;评论ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;评论内容&quot;
+        &emsp;content: String
+        &emsp;&quot;评分&quot;
+        &emsp;rating: Float!
+        &emsp;&quot;评论人&quot;
+        &emsp;user: User!
+        }"]
+      end
+      subgraph demo.gp.user
+        user["// user.gql
+        &quot;用户&quot;
+        type User {
+        &emsp;&quot;用户ID&quot;
+        &emsp;id: ID!
+        &emsp;&quot;用户名&quot;
+        &emsp;name: String!
+        &emsp;&quot;电子邮箱&quot;
+        &emsp;email: String
+        &emsp;&quot;联系方式&quot;
+        &emsp;phoneNumbers: [String!]
+        &emsp;&quot;用户类型&quot;
+        &emsp;userType: UserType!
+        }
+
+        &quot;用户类型&quot;
+        enum UserType {
+        &emsp;&quot;普通用户&quot;
+        &emsp;REGULAR
+        &emsp;&quot;会员&quot;
+        &emsp;VIP
+        }"]
+      end
+    end
+    user -. 引用 .-> review
+    review -. 引用 .-> order
+    user -. 引用 .-> order
+    style order text-align:left
+    style review text-align:left
+    style user text-align:left
+```
+
+## 单体服务启动
+
+Run/Debug order-app/src/main/java/demo/gp/order/App.java
+
+![start](./img/start.png "start")
+
+---
 
 ## 查询和变更
 
