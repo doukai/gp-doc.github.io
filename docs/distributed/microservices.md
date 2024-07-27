@@ -1080,7 +1080,7 @@ Run/Debug order-app/src/main/java/demo/gp/order/App.java
 
 ## 查询和变更
 
-架构的切换不会改变查询和变更的使用, Graphoenix 通过底层技术屏蔽不同架构的差异, 让接口层的表现保持一致
+架构的切换不会影响查询和变更的使用, Graphoenix 通过底层技术屏蔽不同架构的差异, 让接口层的表现保持一致
 
 <details>
 <summary>测试数据</summary>
