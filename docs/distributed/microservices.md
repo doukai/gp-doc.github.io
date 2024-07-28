@@ -785,6 +785,12 @@ r2dbc {
   user = "root"
   password = "root"
 }
+http {
+  port = 8080   //Http 端口
+}
+grpc {
+  port = 50051  //gRPC 端口
+}
 ```
 
 ### 配置模块地址
