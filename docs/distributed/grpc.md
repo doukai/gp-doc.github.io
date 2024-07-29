@@ -10,9 +10,7 @@ sidebar_position: 2
 
 安装 protobuf 插件, 模块会生成 gRPC 的 protobuf 定义和对应的 Stub 接口供[客户端(client)](#客户端client)使用
 
-### 安装 protobuf 插件
-
-引用插件生成 protobuf 文件
+### 安装 protobuf 插件和 gRPC 依赖
 
 ```gradle title="user-package/build.gradle"
 buildscript {
@@ -77,6 +75,35 @@ sourceSets {
     }
 }
 // highlight-end
+
+dependencies {
+    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    // highlight-start
+    // gRPC 依赖
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.52.1'
+    implementation 'io.grpc:grpc-protobuf:1.52.1'
+    implementation 'io.grpc:grpc-stub:1.52.1'
+    implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.3'
+
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+    // highlight-end
+
+    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
+    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+
+    protobuf 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
 ```
 
 ### 生成 dto 和 protobuf
@@ -149,7 +176,7 @@ flowchart LR
 
 ## 服务端(server)
 
-### 安装 gRPC 服务依赖
+### 安装 graphoenix-grpc-server 模块
 
 安装 graphoenix-grpc-server 模块, Graphoenix 将根据[模块(package)](#模块package)中的定义自动实现 gRPC 服务接口
 
