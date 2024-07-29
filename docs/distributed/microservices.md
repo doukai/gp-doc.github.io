@@ -813,7 +813,7 @@ package {
 
 随着项目规模的发展, 微服务节点逐步增长, 需要引入一种自动注册机制来替代手动配置. Graphoenix 使用 [Gossip](https://icyfenix.cn/distribution/consensus/gossip.html) 协议进行服务发现. [Gossip](https://icyfenix.cn/distribution/consensus/gossip.html) 协议是一种用于分布式系统中信息传播和数据一致性的协议, 具有去中心化, 容错性强, 渐进一致性和易扩展等特性, 是确保节点间信息同步和一致性的关键技术
 
-### 安装Gossip依赖
+### 安装 Gossip 依赖
 
 <details>
 <summary>user-app</summary>
@@ -918,7 +918,7 @@ dependencies {
 
 </details>
 
-### 配置Gossip端口
+### 配置 Gossip 端口
 
 ```conf title="user-app/src/main/resources/application.conf"
 gossip {
@@ -939,6 +939,7 @@ gossip {
 ```
 
 ### 配置种子节点
+
 使用 `package.members.seeds` 配置种子节点, 所有节点都会从种子节点开始交换信息
 
 例: 使用用户模块(demo.gp.user)节点作为种子节点
@@ -970,7 +971,6 @@ package {
 ![start](./img/start.png "start")
 
 ---
-
 
 ## 服务合并
 
