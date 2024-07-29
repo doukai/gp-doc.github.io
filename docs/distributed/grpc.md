@@ -6,13 +6,15 @@ sidebar_position: 2
 
 [gRPC](https://grpc.io/) 是一种高性能, 开源的远程过程调用（RPC）框架, 最初由 Google 开发. 它使用 HTTP/2 作为传输协议, 并采用 [Protocol Buffers](https://protobuf.dev/)（protobuf）作为接口描述语言和数据序列化格式. [gRPC](https://grpc.io/) 支持多种编程语言, 可以实现跨语言的服务调用. 其特点包括双向流, 负载均衡, 认证和超时控制等, 适用于微服务架构下的高效通信
 
-## 安装
+## 模块(package)
 
-### protobuf 插件
+安装 protobuf 插件, 模块会生成 gRPC 的 protobuf 定义和对应的 Stub 接口供[客户端(client)](#客户端client)使用
 
-1. 引用插件生成 protobuf 文件
+### 安装 protobuf 插件
 
-```gradle title="build.gradle"
+引用插件生成 protobuf 文件
+
+```gradle title="user-package/build.gradle"
 buildscript {
     repositories {
         mavenLocal()
@@ -39,9 +41,45 @@ classes.dependsOn {
     generateProtobufV3
     // highlight-end
 }
+
+// highlight-start
+// gRPC 配置
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.21.7'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.52.1'
+        }
+        reactor {
+            artifact = 'com.salesforce.servicelibs:reactor-grpc:1.2.3'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+            reactor {}
+        }
+    }
+}
+// highlight-end
+
+// highlight-start
+// gRPC 目录配置
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/java'
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/reactor'
+        }
+    }
+}
+// highlight-end
 ```
 
-2. 生成 dto 和 protobuf
+### 生成 dto 和 protobuf
 
 ```bash
 ./gradlew :user-package:build
@@ -107,11 +145,15 @@ flowchart LR
     service --> grpc
 ```
 
-### gRPC 依赖
+---
 
-安装 graphoenix-grpc-server 模块, Graphoenix 自动实现 gRPC 服务接口
+## 服务端(server)
 
-```gradle title="build.gradle"
+### 安装 gRPC 服务依赖
+
+安装 graphoenix-grpc-server 模块, Graphoenix 将根据[模块(package)](#模块package)中的定义自动实现 gRPC 服务接口
+
+```gradle title="user-app/build.gradle"
 dependencies {
     implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
     implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
@@ -134,11 +176,28 @@ dependencies {
 }
 ```
 
-## 查询和变更
+### 启动 gRPC 服务
+
+Run/Debug user-app/src/main/java/demo/gp/user/App.java
+
+---
+
+## 客户端(client)
+
+引用需要使用的 gRPC [模块(package)](#模块package)
+
+```gradle
+dependencies {
+    // highlight-start
+    implementation project(':user-package')
+    // highlight-end
+    // ...
+}
+```
 
 ### 查询
 
-使用与 Query 对象中同名的方法查询, 使用 `setSelectionSet` 方法来设置查询字段
+使用 `QueryServiceGrpc.QueryServiceBlockingStub` 接口中与 Query 对象中同名的方法查询, 使用 `setSelectionSet` 方法来设置查询字段
 
 ```java
 import demo.gp.user.dto.enumType.grpc.UserType;
@@ -197,7 +256,7 @@ query {
 
 ### 变更
 
-使用与 Mutation 对象中同名的方法变更, 使用 `setSelectionSet` 方法来设置查询字段
+使用 `MutationServiceGrpc.MutationServiceBlockingStub` 接口中与 Mutation 对象中同名的方法变更, 使用 `setSelectionSet` 方法来设置查询字段
 
 ```java
 import demo.gp.user.dto.enumType.grpc.UserType;
@@ -252,7 +311,7 @@ mutaion {
 }
 ```
 
-## 响应式
+### 响应式
 
 Graphoenix 支持 [Reactive gRPC](https://github.com/salesforce/reactive-grpc), 响应式 Stub 以 Reactor 开头命名
 
@@ -307,9 +366,9 @@ public class UserGrpcTest {
 }
 ```
 
-## 负载均衡
+### 负载均衡
 
-Graphoenix 提供 `PackageNameResolverProvider` 全面支持 gRPC 负载均衡, 使用 `package://package.name` 作为模块地址, 支持 `pick_first` 和 `round_robin` 两种模式
+Graphoenix 提供 `PackageNameResolverProvider` 支持 gRPC 负载均衡, 使用 `package://package.name` 作为模块地址, 提供 `pick_first` 和 `round_robin` 两种策略
 
 ```java
 import io.grpc.ManagedChannel;
@@ -317,7 +376,6 @@ import io.grpc.NameResolverRegistry;
 import io.graphoenix.grpc.client.resolver.PackageNameResolverProvider;
 
 public class UserGrpcTest {
-
 
     // private static final String userGrpcAddress = "localhost:50053";
     // private static final ManagedChannel userManagedChannel = ManagedChannelBuilder.forTarget(userGrpcAddress).usePlaintext().build();
