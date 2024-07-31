@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 微服务
 
-微服务架构（Microservices Architecture）是一种将单个应用程序分解为多个独立部署的小服务的架构模式, 每个服务专注于特定的业务功能, 具有高内聚和松耦合的特点. 它允许各个服务独立开发, 部署和扩展, 支持灵活的技术选型, 提高系统的弹性和扩展性. 然而微服务架构也带来了系统复杂性增加, 运维成本高, 通信开销大和数据一致性保障难等挑战
+微服务架构（[Microservices Architecture](https://microservices.io/)）是一种将单个应用程序分解为多个独立部署的小服务的架构模式, 每个服务专注于特定的业务功能, 具有高内聚和松耦合的特点. 它允许各个服务独立开发, 部署和扩展, 支持灵活的技术选型, 提高系统的弹性和扩展性. 然而微服务架构也带来了系统复杂性增加, 运维成本高, 通信开销大和数据一致性保障难等挑战
 
 Graphoenix 全面支持微服务架构, 提供服务注册, 网关, 熔断, 负载均衡, 分布式事务等全套的微服务解决方案. 系统通过不同的包名(Package Name)来区分模块, 每个模块可以独立提供服务, 通过 gRPC 等通讯协议构成微服务矩阵, 也可以与其他模块合并为单体架构提供服务
 
@@ -52,7 +52,7 @@ flowchart LR
 
 例: 我们将[快速开始](/docs/tutorial/quick-start)中的[订单系统](/docs/tutorial/quick-start#1-定义-graphql)拆分为订单(demo.gp.order), 用户(demo.gp.user), 评论(demo.gp.review)三个子系统
 
-### 项目结构
+### 模块和服务
 
 项目按照功能分为模块(package)和服务(app), 服务作为模块的载体, 按照不同的组合方式构建单体架构或微服务矩阵:
 
@@ -127,16 +127,6 @@ flowchart LR
 ```
 
 </details>
-
-### 依赖关系
-
-梳理微服务之间的依赖关系需明确业务边界, 定义服务契约, 并绘制依赖图. 注意避免循环依赖和最小化依赖, 采用松耦合设计, 确保健壮性和容错性
-
-例:
-
-1. 用户模块中定义用户(User)和用户类型(UserType)
-2. 评论模块中定义评论(Review), 评论的评论人字段(user)引用用户模块的用户(User)
-3. 订单模块中定义订单(Order)和产品(Product), 订单的购买用户字段(user)引用用户模块的用户(User), 产品的评论列表字段(reviews)引用评论模块的评论(Review)
 
 ```mermaid
 flowchart LR
@@ -226,6 +216,10 @@ flowchart LR
     style user text-align:left
 ```
 
+1. 用户模块中定义用户(User)和用户类型(UserType)
+2. 评论模块中定义评论(Review), 评论的评论人字段(user)引用用户模块的用户(User)
+3. 订单模块中定义订单(Order)和产品(Product), 订单的购买用户字段(user)引用用户模块的用户(User), 产品的评论列表字段(reviews)引用评论模块的评论(Review)
+
 ## 安装
 
 ### protobuf 插件
@@ -264,7 +258,7 @@ classes.dependsOn {
 }
 ```
 
-生成 dto 和 protobuf
+生成 DTO 和 protobuf
 
 ```bash
 ./gradlew :user-package:build
@@ -304,7 +298,7 @@ classes.dependsOn {
 }
 ```
 
-生成 dto 和 protobuf
+生成 DTO 和 protobuf
 
 ```bash
 ./gradlew :review-package:build
@@ -344,7 +338,7 @@ classes.dependsOn {
 }
 ```
 
-生成 dto 和 protobuf
+生成 DTO 和 protobuf
 
 ```bash
 ./gradlew :order-package:build

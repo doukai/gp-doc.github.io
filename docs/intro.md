@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 简介
 
-**Graphoenix**是基于 [GraphQL](https://graphql.org/) 和 [Reactor](https://projectreactor.io/) 的 Java 全栈开发平台
+**Graphoenix** 是基于 [GraphQL](https://graphql.org/) 和 [Reactor](https://projectreactor.io/) 的 Java 全栈开发平台
 
 ## 什么是 Graphoenix?
 

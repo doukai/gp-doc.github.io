@@ -6,6 +6,27 @@ sidebar_position: 2
 
 [gRPC](https://grpc.io/) 是一种高性能, 开源的远程过程调用（RPC）框架, 最初由 Google 开发. 它使用 HTTP/2 作为传输协议, 并采用 [Protocol Buffers](https://protobuf.dev/)（protobuf）作为接口描述语言和数据序列化格式. [gRPC](https://grpc.io/) 支持多种编程语言, 可以实现跨语言的服务调用. 其特点包括双向流, 负载均衡, 认证和超时控制等, 适用于微服务架构下的高效通信
 
+```mermaid
+flowchart LR
+    subgraph "客户端(client)"
+        config[配置gRPC地址]
+        invoke[调用Stub接口]
+    end
+    subgraph "服务端(server)"
+        server[gRPC服务]
+        impl[Stub接口实现]
+    end
+    subgraph "模块(package)"
+        protobuf[protobuf]
+        stub[Stub接口]
+    end
+    config --引用--> invoke
+    invoke <--通讯--> server
+    impl --实现--> stub
+    invoke <--调用--> stub
+    protobuf --生成--> stub
+```
+
 ## 模块(package)
 
 安装 protobuf 插件, 模块会生成 gRPC 的 protobuf 定义和对应的 Stub 接口供[客户端(client)](#客户端client)使用
@@ -106,7 +127,7 @@ dependencies {
 }
 ```
 
-### 生成 dto 和 protobuf
+### 生成 DTO 和 protobuf
 
 ```bash
 ./gradlew :user-package:build
@@ -211,9 +232,9 @@ Run/Debug user-app/src/main/java/demo/gp/user/App.java
 
 ## 客户端(client)
 
-引用需要使用的 gRPC [模块(package)](#模块package)
+引用需要调用的 [gRPC 模块(package)](#模块package)
 
-```gradle
+```gradle title="order-package/build.gradle"
 dependencies {
     // highlight-start
     implementation project(':user-package')
