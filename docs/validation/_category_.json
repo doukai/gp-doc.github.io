@@ -1,0 +1,8 @@
+{
+  "label": "校验",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "基于 JSON Schema 协议的校验"
+  }
+}

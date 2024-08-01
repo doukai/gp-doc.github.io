@@ -2,6 +2,7 @@
   "label": "企业级Java",
   "position": 3,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "description": "企业级 Java(Jakarta EE)"
   }
 }
