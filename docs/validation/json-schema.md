@@ -75,7 +75,7 @@ package {
 
 ## 定义 json-shcema
 
-使用 [`@jsonSchema`](#注解) 注解来定义验证规则
+使用 [`@jsonSchema`](#jsonschema-指令) 注解来定义验证规则
 
 1. 例: 规定用户名长度在 6 到 12 位之间
 
@@ -190,74 +190,74 @@ mutation {
 
 ## **指令说明**
 
-### @jsonSchema
+### @jsonSchema 指令
 
-| 字段              | 类型                        | 说明                                                                                                       |
-| ----------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| minLength         | Int                         | [字符串最小长度](https://json-schema.org/understanding-json-schema/reference/string#length)                |
-| maxLength         | Int                         | [字符串最大长度](https://json-schema.org/understanding-json-schema/reference/string#length)                |
-| pattern           | String                      | [正则表达式](https://json-schema.org/understanding-json-schema/reference/string#regexp)                    |
-| format            | String                      | [格式](https://json-schema.org/understanding-json-schema/reference/string#format)                          |
-| contentMediaType  | String                      | [内容媒体类型](https://json-schema.org/understanding-json-schema/reference/non_json_data#contentmediatype) |
-| contentEncoding   | String                      | [内容编码](https://json-schema.org/understanding-json-schema/reference/non_json_data#contentencoding)      |
-| minimum           | Float                       | [≥](https://json-schema.org/understanding-json-schema/reference/numeric#range)                             |
-| exclusiveMinimum  | Float                       | [\>](<(https://json-schema.org/understanding-json-schema/reference/numeric#range)>)                        |
-| maximum           | Float                       | [≤](<(https://json-schema.org/understanding-json-schema/reference/numeric#range)>)                         |
-| exclusiveMaximum  | Float                       | [\<](<(https://json-schema.org/understanding-json-schema/reference/numeric#range)>)                        |
-| multipleOf        | Float                       | [倍数](https://json-schema.org/understanding-json-schema/reference/numeric#multiples)                      |
-| const             | String                      | [常量值](https://json-schema.org/understanding-json-schema/reference/const#constant-values)                |
-| enum              | [String]                    | [枚举值](https://json-schema.org/understanding-json-schema/reference/enum#enumerated-values)               |
-| items             | [JsonSchema](#jsonschema-1) | [列表验证](https://json-schema.org/understanding-json-schema/reference/array#items)                        |
-| minItems          | Int                         | [列表最小元素数](https://json-schema.org/understanding-json-schema/reference/array#length)                 |
-| maxItems          | Int                         | [列表最大元素数](https://json-schema.org/understanding-json-schema/reference/array#length)                 |
-| uniqueItems       | Boolean                     | [列表元素唯一性](https://json-schema.org/understanding-json-schema/reference/array#uniqueItems)            |
-| allOf             | [JsonSchema]                | [AND](https://json-schema.org/understanding-json-schema/reference/combining#allOf)                         |
-| anyOf             | [JsonSchema]                | [OR](https://json-schema.org/understanding-json-schema/reference/combining#anyOf)                          |
-| oneOf             | [JsonSchema]                | [XOR](https://json-schema.org/understanding-json-schema/reference/combining#oneOf)                         |
-| not               | [JsonSchema](#jsonschema-1) | [NOT](https://json-schema.org/understanding-json-schema/reference/combining#not)                           |
-| properties        | [[Property](#property)]     | [定义验证字段](https://json-schema.org/understanding-json-schema/reference/object#properties)              |
-| if                | [JsonSchema](#jsonschema-1) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
-| then              | [JsonSchema](#jsonschema-1) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
-| else              | [JsonSchema](#jsonschema-1) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
-| dependentRequired | [[Property](#property)]     | [必要依赖](https://json-schema.org/understanding-json-schema/reference/conditionals#dependentRequired)     |
+| 字段              | 类型                      | 说明                                                                                                       |
+| ----------------- | ------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| minLength         | Int                       | [字符串最小长度](https://json-schema.org/understanding-json-schema/reference/string#length)                |
+| maxLength         | Int                       | [字符串最大长度](https://json-schema.org/understanding-json-schema/reference/string#length)                |
+| pattern           | String                    | [正则表达式](https://json-schema.org/understanding-json-schema/reference/string#regexp)                    |
+| format            | String                    | [格式](https://json-schema.org/understanding-json-schema/reference/string#format)                          |
+| contentMediaType  | String                    | [内容媒体类型](https://json-schema.org/understanding-json-schema/reference/non_json_data#contentmediatype) |
+| contentEncoding   | String                    | [内容编码](https://json-schema.org/understanding-json-schema/reference/non_json_data#contentencoding)      |
+| minimum           | Float                     | [≥](https://json-schema.org/understanding-json-schema/reference/numeric#range)                             |
+| exclusiveMinimum  | Float                     | [\>](https://json-schema.org/understanding-json-schema/reference/numeric#range)                            |
+| maximum           | Float                     | [≤](https://json-schema.org/understanding-json-schema/reference/numeric#range)                             |
+| exclusiveMaximum  | Float                     | [\<](https://json-schema.org/understanding-json-schema/reference/numeric#range)                            |
+| multipleOf        | Float                     | [倍数](https://json-schema.org/understanding-json-schema/reference/numeric#multiples)                      |
+| const             | String                    | [常量值](https://json-schema.org/understanding-json-schema/reference/const#constant-values)                |
+| enum              | [String]                  | [枚举值](https://json-schema.org/understanding-json-schema/reference/enum#enumerated-values)               |
+| items             | [JsonSchema](#jsonschema) | [列表验证](https://json-schema.org/understanding-json-schema/reference/array#items)                        |
+| minItems          | Int                       | [列表最小元素数](https://json-schema.org/understanding-json-schema/reference/array#length)                 |
+| maxItems          | Int                       | [列表最大元素数](https://json-schema.org/understanding-json-schema/reference/array#length)                 |
+| uniqueItems       | Boolean                   | [列表元素唯一性](https://json-schema.org/understanding-json-schema/reference/array#uniqueItems)            |
+| allOf             | [JsonSchema]              | [AND](https://json-schema.org/understanding-json-schema/reference/combining#allOf)                         |
+| anyOf             | [JsonSchema]              | [OR](https://json-schema.org/understanding-json-schema/reference/combining#anyOf)                          |
+| oneOf             | [JsonSchema]              | [XOR](https://json-schema.org/understanding-json-schema/reference/combining#oneOf)                         |
+| not               | [JsonSchema](#jsonschema) | [NOT](https://json-schema.org/understanding-json-schema/reference/combining#not)                           |
+| properties        | [[Property](#property)]   | [定义验证字段](https://json-schema.org/understanding-json-schema/reference/object#properties)              |
+| if                | [JsonSchema](#jsonschema) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
+| then              | [JsonSchema](#jsonschema) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
+| else              | [JsonSchema](#jsonschema) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
+| dependentRequired | [[Property](#property)]   | [必要依赖](https://json-schema.org/understanding-json-schema/reference/conditionals#dependentRequired)     |
 
 ## **输入类型说明**
 
 ### Property
 
-| 字段       | 类型                        | 说明                                                                                                |
-| ---------- | --------------------------- | --------------------------------------------------------------------------------------------------- |
-| name       | String!                     | [字段名称](https://json-schema.org/understanding-json-schema/reference/object#properties)           |
-| validation | [JsonSchema](#jsonschema-1) | [校验规则](https://json-schema.org/understanding-json-schema/reference/type#type-specific-keywords) |
-| required   | [String]                    | [必须属性](https://json-schema.org/understanding-json-schema/reference/object#required)             |
+| 字段       | 类型                      | 说明                                                                                                |
+| ---------- | ------------------------- | --------------------------------------------------------------------------------------------------- |
+| name       | String!                   | [字段名称](https://json-schema.org/understanding-json-schema/reference/object#properties)           |
+| validation | [JsonSchema](#jsonschema) | [校验规则](https://json-schema.org/understanding-json-schema/reference/type#type-specific-keywords) |
+| required   | [String]                  | [必须属性](https://json-schema.org/understanding-json-schema/reference/object#required)             |
 
 ### JsonSchema
 
-| 字段              | 类型                        | 说明                                                                                                       |
-| ----------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| minLength         | Int                         | [字符串最小长度](https://json-schema.org/understanding-json-schema/reference/string#length)                |
-| maxLength         | Int                         | [字符串最大长度](https://json-schema.org/understanding-json-schema/reference/string#length)                |
-| pattern           | String                      | [正则表达式](https://json-schema.org/understanding-json-schema/reference/string#regexp)                    |
-| format            | String                      | [格式](https://json-schema.org/understanding-json-schema/reference/string#format)                          |
-| contentMediaType  | String                      | [内容媒体类型](https://json-schema.org/understanding-json-schema/reference/non_json_data#contentmediatype) |
-| contentEncoding   | String                      | [内容编码](https://json-schema.org/understanding-json-schema/reference/non_json_data#contentencoding)      |
-| minimum           | Float                       | [≥](https://json-schema.org/understanding-json-schema/reference/numeric#range)                             |
-| exclusiveMinimum  | Float                       | [\>](<(https://json-schema.org/understanding-json-schema/reference/numeric#range)>)                        |
-| maximum           | Float                       | [≤](<(https://json-schema.org/understanding-json-schema/reference/numeric#range)>)                         |
-| exclusiveMaximum  | Float                       | [\<](<(https://json-schema.org/understanding-json-schema/reference/numeric#range)>)                        |
-| multipleOf        | Float                       | [倍数](https://json-schema.org/understanding-json-schema/reference/numeric#multiples)                      |
-| const             | String                      | [常量值](https://json-schema.org/understanding-json-schema/reference/const#constant-values)                |
-| enum              | [String]                    | [枚举值](https://json-schema.org/understanding-json-schema/reference/enum#enumerated-values)               |
-| items             | [JsonSchema](#jsonschema-1) | [列表验证](https://json-schema.org/understanding-json-schema/reference/array#items)                        |
-| minItems          | Int                         | [列表最小元素数](https://json-schema.org/understanding-json-schema/reference/array#length)                 |
-| maxItems          | Int                         | [列表最大元素数](https://json-schema.org/understanding-json-schema/reference/array#length)                 |
-| uniqueItems       | Boolean                     | [列表元素唯一性](https://json-schema.org/understanding-json-schema/reference/array#uniqueItems)            |
-| allOf             | [JsonSchema]                | [AND](https://json-schema.org/understanding-json-schema/reference/combining#allOf)                         |
-| anyOf             | [JsonSchema]                | [OR](https://json-schema.org/understanding-json-schema/reference/combining#anyOf)                          |
-| oneOf             | [JsonSchema]                | [XOR](https://json-schema.org/understanding-json-schema/reference/combining#oneOf)                         |
-| not               | [JsonSchema](#jsonschema-1) | [NOT](https://json-schema.org/understanding-json-schema/reference/combining#not)                           |
-| properties        | [[Property](#property)]     | [定义验证字段](https://json-schema.org/understanding-json-schema/reference/object#properties)              |
-| if                | [JsonSchema](#jsonschema-1) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
-| then              | [JsonSchema](#jsonschema-1) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
-| else              | [JsonSchema](#jsonschema-1) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
-| dependentRequired | [[Property](#property)]     | [必要依赖](https://json-schema.org/understanding-json-schema/reference/conditionals#dependentRequired)     |
+| 字段              | 类型                      | 说明                                                                                                       |
+| ----------------- | ------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| minLength         | Int                       | [字符串最小长度](https://json-schema.org/understanding-json-schema/reference/string#length)                |
+| maxLength         | Int                       | [字符串最大长度](https://json-schema.org/understanding-json-schema/reference/string#length)                |
+| pattern           | String                    | [正则表达式](https://json-schema.org/understanding-json-schema/reference/string#regexp)                    |
+| format            | String                    | [格式](https://json-schema.org/understanding-json-schema/reference/string#format)                          |
+| contentMediaType  | String                    | [内容媒体类型](https://json-schema.org/understanding-json-schema/reference/non_json_data#contentmediatype) |
+| contentEncoding   | String                    | [内容编码](https://json-schema.org/understanding-json-schema/reference/non_json_data#contentencoding)      |
+| minimum           | Float                     | [≥](https://json-schema.org/understanding-json-schema/reference/numeric#range)                             |
+| exclusiveMinimum  | Float                     | [\>](https://json-schema.org/understanding-json-schema/reference/numeric#range)                            |
+| maximum           | Float                     | [≤](https://json-schema.org/understanding-json-schema/reference/numeric#range)                             |
+| exclusiveMaximum  | Float                     | [\<](https://json-schema.org/understanding-json-schema/reference/numeric#range)                            |
+| multipleOf        | Float                     | [倍数](https://json-schema.org/understanding-json-schema/reference/numeric#multiples)                      |
+| const             | String                    | [常量值](https://json-schema.org/understanding-json-schema/reference/const#constant-values)                |
+| enum              | [String]                  | [枚举值](https://json-schema.org/understanding-json-schema/reference/enum#enumerated-values)               |
+| items             | [JsonSchema](#jsonschema) | [列表验证](https://json-schema.org/understanding-json-schema/reference/array#items)                        |
+| minItems          | Int                       | [列表最小元素数](https://json-schema.org/understanding-json-schema/reference/array#length)                 |
+| maxItems          | Int                       | [列表最大元素数](https://json-schema.org/understanding-json-schema/reference/array#length)                 |
+| uniqueItems       | Boolean                   | [列表元素唯一性](https://json-schema.org/understanding-json-schema/reference/array#uniqueItems)            |
+| allOf             | [JsonSchema]              | [AND](https://json-schema.org/understanding-json-schema/reference/combining#allOf)                         |
+| anyOf             | [JsonSchema]              | [OR](https://json-schema.org/understanding-json-schema/reference/combining#anyOf)                          |
+| oneOf             | [JsonSchema]              | [XOR](https://json-schema.org/understanding-json-schema/reference/combining#oneOf)                         |
+| not               | [JsonSchema](#jsonschema) | [NOT](https://json-schema.org/understanding-json-schema/reference/combining#not)                           |
+| properties        | [[Property](#property)]   | [定义验证字段](https://json-schema.org/understanding-json-schema/reference/object#properties)              |
+| if                | [JsonSchema](#jsonschema) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
+| then              | [JsonSchema](#jsonschema) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
+| else              | [JsonSchema](#jsonschema) | [条件语句](https://json-schema.org/understanding-json-schema/reference/conditionals#ifthenelse)            |
+| dependentRequired | [[Property](#property)]   | [必要依赖](https://json-schema.org/understanding-json-schema/reference/conditionals#dependentRequired)     |

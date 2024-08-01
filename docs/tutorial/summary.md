@@ -15,6 +15,6 @@ Graphoenix 隐藏了所有的细枝末节, 只需定义 GraphQL 类型, 平台�
 1. [依赖注入(IOC)](/docs/jakarta-ee/inject) / [切面(AOP)](/docs/jakarta-ee/interceptor) / [配置(Config)](/docs/jakarta-ee/config): 企业级 Java(Jakarta EE)
 2. [异步和同步](/docs/jakarta-ee/reactor): 基于 Reactor 的 Async 和 Await
 3. [微服务](/docs/distributed/microservices) 和 [gRPC](/docs/distributed/grpc): 单体和微服务可切换的集装箱架构
-4. [校验](/docs/category/校验): 基于 JSON Schema 协议的字段校验, 唯一性校验和乐观锁
+4. [校验](/docs/validation/json-schema): 基于 JSON Schema 协议的校验
 5. 鉴权和授权: 基于 JWT 的鉴权和基于 Casbin 的授权
 6. UI: 基于 Svelte 和 Tailwind CSS 的 UI 组件
