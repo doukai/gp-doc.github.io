@@ -656,6 +656,8 @@ dependencies {
 ```gradle title="build.gradle"
 dependencies {
     // highlight-start
+    // User 模块
+    implementation project(':user-package')
     // Review 模块
     implementation project(':review-package')
     // highlight-end
@@ -700,6 +702,10 @@ dependencies {
 ```gradle title="build.gradle"
 dependencies {
     // highlight-start
+    // User 模块
+    implementation project(':user-package')
+    // Review 模块
+    implementation project(':review-package')
     // Order 模块
     implementation project(':order-package')
     // highlight-end
