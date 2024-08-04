@@ -708,3 +708,6 @@ public class UserRepositoryTest {
 | -------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Mono\<(Type)\> | 所有类                                        | 默认异步返回结果, 通过 Mono 类型操作返回结果                                              | @Mutation(user = @UserMutationArguments($input = "userInput"))<br />**Mono\<User\>** mutationUser(UserInput userInput); |
 | (Type)         | [GraphQL API](/docs/tutorial/graphql-api)类中 | 在 GPI 类中编译器可以同步返回结果, 原理参考[同步与异步](/docs/jakarta-ee/reactor)中的内容 | @Mutation(user = @UserMutationArguments($input = "userInput"))<br />**User** mutationUser(UserInput userInput);         |
+
+## *本节示例*
+https://github.com/doukai/order/tree/main/order-app/src/test/java/demo/gp/order/test

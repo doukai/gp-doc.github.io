@@ -700,3 +700,7 @@ public class SystemApi {
 | (Type)         | (Type)       | 同步查询                   | User queryUser(String name) \{<br/>&emsp;return ... <br/>\}             | queryUser(name: String): User         |
 | Mono\<(Type)\> | (Type)       | 异步查询                   | Mono\<User\> queryUser(String name) \{<br/>&emsp;return ... <br/>\}     | queryUser(name: String): User         |
 | Flux\<(Type)\> | \[(Type)\]   | 异步查询, 聚合为数组后返回 | Flux\<User\> queryUserList(String name) \{<br/>&emsp;return ... <br/>\} | queryUserList(name: String): \[User\] |
+
+
+## *本节示例*
+https://github.com/doukai/order/tree/main/order-package/src/main/java/demo/gp/order/api

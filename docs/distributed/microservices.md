@@ -6,7 +6,7 @@ sidebar_position: 1
 
 微服务架构（[Microservices Architecture](https://microservices.io/)）是一种将单个应用程序分解为多个独立部署的小服务的架构模式, 每个服务专注于特定的业务功能, 具有高内聚和松耦合的特点. 它允许各个服务独立开发, 部署和扩展, 支持灵活的技术选型, 提高系统的弹性和扩展性. 然而微服务架构也带来了系统复杂性增加, 运维成本高, 通信开销大和数据一致性保障难等挑战
 
-Graphoenix 全面支持微服务架构, 提供服务注册, 网关, 熔断, 负载均衡, 分布式事务等全套的微服务解决方案. 系统通过不同的包名(Package Name)来区分模块, 每个模块可以独立提供服务, 通过 gRPC 等通讯协议构成微服务矩阵, 也可以与其他模块合并为单体架构提供服务
+Graphoenix 全面支持微服务架构, 提供服务注册, 网关, 熔断, 负载均衡, [事务补偿](#事务补偿)等全套的微服务解决方案. 系统通过不同的包名(Package Name)来区分模块, 每个模块可以独立提供服务, 通过 gRPC 等通讯协议构成微服务矩阵, 也可以与其他模块合并为单体架构提供服务
 
 ```mermaid
 flowchart LR
@@ -962,6 +962,16 @@ package {
 }
 ```
 
+## 事务补偿
+
+在微服务架构下, Graphoenix 通过事务补偿([TCC](https://www.thebyte.com.cn/distributed-system/TCC.html))保持数据一致性. 使用 `mutation.compensatingTransaction` 配置开启事务补偿
+
+```conf
+mutation {
+  compensatingTransaction = true
+}
+```
+
 ## 微服务启动
 
 1. Run/Debug user-app/src/main/java/demo/gp/user/App.java
@@ -1374,3 +1384,6 @@ mutation {
   }
 }
 ```
+
+## *本节示例*
+https://github.com/doukai/order-microservices
