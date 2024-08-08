@@ -964,7 +964,37 @@ package {
 
 ## 事务补偿
 
-在微服务架构下, Graphoenix 通过事务补偿([TCC](https://www.thebyte.com.cn/distributed-system/TCC.html))保持数据一致性. 使用 `mutation.compensatingTransaction` 配置开启事务补偿
+在微服务架构下, Graphoenix 通过事务补偿([TCC](https://www.thebyte.com.cn/distributed-system/TCC.html))保持数据一致性.
+
+```mermaid
+flowchart LR
+    micro1{{微服务1}}
+    micro2{{微服务2}}
+    micro3{{微服务3}}
+    success1(成功)
+    success2(成功)
+    success3(成功)
+    error1(异常)
+    error2(异常)
+    error3(异常)
+    db1[(MySQL)]
+    db2[(Postgre)]
+    db3[(MongoDB)]
+    error1 == 事务补偿 ==> micro2 & micro3
+    micro1 -- 调用 --> micro2 --> success2
+    micro2 -.-> error2 -. 回滚 .-> db2
+    error2 -.-> error1
+
+    micro1 -.-> error1 -. 回滚 .-> db1
+    micro1 --> success1 -- 提交 --> db1
+
+    success2 -- 调用 --> micro3 --> success3 -- 提交 --> db3
+    success2 -- 提交 --> db2
+    micro3 -.-> error3 -. 回滚 .-> db3
+    error3 -.-> error1
+```
+
+使用 `mutation.compensatingTransaction` 配置开启事务补偿
 
 ```conf
 mutation {
@@ -1385,5 +1415,6 @@ mutation {
 }
 ```
 
-## *本节示例*
+## _本节示例_
+
 https://github.com/doukai/order-microservices

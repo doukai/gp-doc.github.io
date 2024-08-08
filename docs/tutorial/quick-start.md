@@ -106,7 +106,7 @@ docker-compose up -d
 
 设计一个简单的订单系统, 包括用户(User)和订单(Order)和产品(Product), 每个订单包含多个订单项(OrderItem)
 
-_关于 GraphQL 类型定义的详细内容, 请参考GraphQL官网的[类型系统](https://graphql.org/learn/schema/)([中文版](https://graphql.cn/learn/schema/))和[Grphoenix扩展类型](/docs/guide/types)_
+_关于 GraphQL 类型定义的详细内容, 请参考 GraphQL 官网的[类型系统](https://graphql.org/learn/schema/)([中文版](https://graphql.cn/learn/schema/))和[Grphoenix 扩展类型](/docs/guide/types)_
 
 ```graphql title="order-package/src/main/resources/graphql/order.gql"
 "用户"

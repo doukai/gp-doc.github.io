@@ -712,5 +712,6 @@ public class InjectTest {
 | jakarta.enterprise.context.SessionScoped     | 会话     | 异步提供者注入(Provider\<Mono\>) | 单个会话内共享实例   |
 | jakarta.transaction.TransactionScoped        | 事务     | 异步提供者注入(Provider\<Mono\>) | 单个事务内共享实例   |
 
-## *本节示例*
+## _本节示例_
+
 https://github.com/doukai/nozdormu/tree/main/nozdormu-inject/src/test/java/io/nozdormu/inject/test

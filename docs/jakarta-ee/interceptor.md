@@ -359,5 +359,6 @@ public class InterceptorTest {
 | jakarta.interceptor.AroundConstruct    | 方法 | 标记构造器切面的实现方法 |
 | jakarta.annotation.Priority            | 类   | 配置切面的执行顺序       |
 
-## *本节示例*
+## _本节示例_
+
 https://github.com/doukai/nozdormu/tree/main/nozdormu-interceptor/src/test/java/io/nozdormu/interceptor/test

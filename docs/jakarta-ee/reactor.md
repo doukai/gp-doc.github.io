@@ -212,5 +212,6 @@ public class AsyncTest {
 | --------------------------- | ---- | ---------------------------------------------------------- |
 | io.nozdormu.spi.async.Async | 方法 | 标记方法为异步执行, 使用 defaultIfEmpty 字段配置默认返回值 |
 
-## *本节示例*
+## _本节示例_
+
 https://github.com/doukai/nozdormu/tree/main/nozdormu-async/src/test/java/io/nozdormu/async/test

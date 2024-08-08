@@ -6,15 +6,15 @@ sidebar_position: 2
 
 GraphQL 类型系统及 Graphoenix 拓展
 
-## GraphQL类型
+## GraphQL 类型
 
-关于 GraphQL 类型定义的详细内容, 请参考GraphQL官网的[类型系统](https://graphql.org/learn/schema/)([中文版](https://graphql.cn/learn/schema/))
+关于 GraphQL 类型定义的详细内容, 请参考 GraphQL 官网的[类型系统](https://graphql.org/learn/schema/)([中文版](https://graphql.cn/learn/schema/))
 
 ## 内置标量类型（Scalar Types）
 
-Grpahoenix在[GraphQL标量](https://graphql.org/learn/schema/#scalar-types)的基础之上, 根据[Microprofile GraphQL 协议](https://download.eclipse.org/microprofile/microprofile-graphql-2.0/microprofile-graphql-spec-2.0.html#scalars)的规定进行拓展
+Grpahoenix 在[GraphQL 标量](https://graphql.org/learn/schema/#scalar-types)的基础之上, 根据[Microprofile GraphQL 协议](https://download.eclipse.org/microprofile/microprofile-graphql-2.0/microprofile-graphql-spec-2.0.html#scalars)的规定进行拓展
 
-| 参数名     | 说明                                                                 | JSON类型   | Java类型                                    | MySQL类型   | protobuf类型              |
+| 参数名     | 说明                                                                 | JSON 类型  | Java 类型                                   | MySQL 类型  | protobuf 类型             |
 | ---------- | -------------------------------------------------------------------- | ---------- | ------------------------------------------- | ----------- | ------------------------- |
 | Int        | 有符号 32 位整数                                                     | number     | int/Integer<br />short/Short<br />byte/Byte | INT         | int32                     |
 | Float      | 有符号双精度浮点值                                                   | number     | float/Float<br />double/Double              | FLOAT       | float                     |
@@ -28,11 +28,9 @@ Grpahoenix在[GraphQL标量](https://graphql.org/learn/schema/#scalar-types)的�
 | DateTime   | 日期时间                                                             | string     | java.time.LocalDateTime                     | DATETIME    | google.type.DateTime      |
 | Timestamp  | 时间戳                                                               | string     | java.time.LocalDateTime                     | TIMESTAMP   | google.protobuf.Timestamp |
 
-
-
 ## 内置枚举类型（Enumeration Types）
 
-Graphoenix内置枚举类如下
+Graphoenix 内置枚举类如下
 
 ### Operator
 
@@ -120,7 +118,7 @@ Graphoenix 会自动为所有 Object 类型生成对应的[Edge](https://relay.d
 
 ### (Scalar/Enum)Expression
 
-Graphoenix为每个Scalar和Enum类型生成Expression输入类型用于查询
+Graphoenix 为每个 Scalar 和 Enum 类型生成 Expression 输入类型用于查询
 
 | 参数名   | 类型                  | 默认值 | 说明                   | SQL 示例                             |
 | -------- | --------------------- | ------ | ---------------------- | ------------------------------------ |
@@ -131,7 +129,7 @@ Graphoenix为每个Scalar和Enum类型生成Expression输入类型用于查询
 
 ### (Object)Expression
 
-Graphoenix为每个Object类型生成Expression输入类型用于查询
+Graphoenix 为每个 Object 类型生成 Expression 输入类型用于查询
 
 | 参数名  | 类型                                                    | 默认值 | 说明                                   | SQL 示例                                                 |
 | ------- | ------------------------------------------------------- | ------ | -------------------------------------- | -------------------------------------------------------- |
@@ -142,7 +140,7 @@ Graphoenix为每个Object类型生成Expression输入类型用于查询
 
 ### (Object)OrderBy
 
-Graphoenix为每个Object类型生成Expression输入类型用于排序
+Graphoenix 为每个 Object 类型生成 Expression 输入类型用于排序
 
 | 参数名  | 类型          | 默认值 | 说明     | SQL 示例                              |
 | ------- | ------------- | ------ | -------- | ------------------------------------- |
@@ -150,7 +148,7 @@ Graphoenix为每个Object类型生成Expression输入类型用于排序
 
 ### (Object)Input
 
-Graphoenix为每个Object类型生成Expression输入类型用于变更
+Graphoenix 为每个 Object 类型生成 Expression 输入类型用于变更
 
 | 参数名       | 类型                                      | 默认值 | 说明                                           | SQL 示例                                                                                                                     |
 | ------------ | ----------------------------------------- | ------ | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -162,7 +160,7 @@ Graphoenix为每个Object类型生成Expression输入类型用于变更
 
 ### Meta
 
-Graphoenix规定所有Object类型实现Meta接口, 用于保存元信息
+Graphoenix 规定所有 Object 类型实现 Meta 接口, 用于保存元信息
 
 | 参数名        | 类型      | 默认值 | 说明     |
 | ------------- | --------- | ------ | -------- |

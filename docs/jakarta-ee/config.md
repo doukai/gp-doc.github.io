@@ -226,5 +226,6 @@ public class QueryDAO {
 | org.eclipse.microprofile.config.inject.ConfigProperty   | 字段,方法 | 标记需要注入的配置                   |
 | com.typesafe.config.Optional                            | 字段      | 标记可为 null 的配置字段             |
 
-## *本节示例*
+## _本节示例_
+
 https://github.com/doukai/nozdormu/tree/main/nozdormu-config/src/test/java/io/nozdormu/config/test

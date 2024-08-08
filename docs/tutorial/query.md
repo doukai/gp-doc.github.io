@@ -17,7 +17,7 @@ sidebar_position: 3
 
 ### 查询单条
 
-使用与字段同名的参数构造查询条件, [`opr`](/docs/guide/types#operator) 作为查询符号, [`val`](/docs/guide/types#scalarenumexpression) 作为查询内容, 如果查询内容为数组则使用 [`arr`](/docs/guide/types#scalarenumexpression) 
+使用与字段同名的参数构造查询条件, [`opr`](/docs/guide/types#operator) 作为查询符号, [`val`](/docs/guide/types#scalarenumexpression) 作为查询内容, 如果查询内容为数组则使用 [`arr`](/docs/guide/types#scalarenumexpression)
 
 例: 查询名为 Bob 的用户
 
@@ -46,7 +46,7 @@ sidebar_position: 3
 
 ### 查询列表
 
-使用 [`first`](#查询参数) 参数查询前n条数据, [`last`](#查询参数) 参数查询后n条数据
+使用 [`first`](#查询参数) 参数查询前 n 条数据, [`last`](#查询参数) 参数查询后 n 条数据
 
 例: 查询前 5 个用户
 

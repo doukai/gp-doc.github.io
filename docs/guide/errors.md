@@ -2,11 +2,13 @@
 sidebar_position: 4
 ---
 
-# 异常
+# 错误处理
 
-GraphQL 协议中对于异常(Errors)的定义非常明确, 以确保客户端能够正确理解和处理服务器返回的错误信息
+GraphQL 的错误处理机制通过标准化的[错误对象(Errors)](https://spec.graphql.org/October2021/#sec-Errors)结构, 确保了客户端可以一致且可靠地解析和处理来自服务器的错误信息
 
-## **异常定义**
+## **错误对象定义**
+
+在 GraphQL 中, 所有的错误信息都会被包含在一个名为 errors 的字段中, 该字段是 GraphQL 响应的一部分
 
 ### Errors
 
@@ -34,6 +36,7 @@ GraphQL 协议中对于异常(Errors)的定义非常明确, 以确保客户端�
 | `details`        | Object | 包含具体错误的详细信息, 可以是任何自定义的键值对 |
 
 例:
+
 ```json
 {
   "data": null,
@@ -54,29 +57,47 @@ GraphQL 协议中对于异常(Errors)的定义非常明确, 以确保客户端�
     }
   ]
 }
-
 ```
 
-## **异常注册**
+## GraphQL Errors 注册
 
-在代码中抛出的异常(Exception)使用 `ErrorInfoLoader` 注册为 GraphQL Error 返回
+代码执行中抛出的异常(Exception)可以注册为 [GraphQL Errors](#异常定义) 返回
 
-例:
+1. 实现 `io.graphoenix.spi.error.ErrorInfoLoader` 接口
+2. 实现 `load()` 方法, 在方法中使用 `io.graphoenix.spi.error.ErrorInfo.put()` 静态方法注册异常对应的错误代码和错误信息
+3. 在 SPI 中注册 `io.graphoenix.spi.error.ErrorInfoLoader` 接口
+
 ```java
+package io.graphence.core.error;
+
 import com.google.auto.service.AutoService;
 import io.graphoenix.spi.error.ErrorInfo;
 import io.graphoenix.spi.error.ErrorInfoLoader;
 import io.jsonwebtoken.JwtException;
 
-@AutoService(ErrorInfo.class)
+// highlight-start
+// 使用 Google AutoService 注册 SPI
+@AutoService(ErrorInfoLoader.class)
+// highlight-end
 public class GraphenceErrorInfoLoader implements ErrorInfoLoader {
 
+    // highlight-start
     @Override
     public void load() {
         ErrorInfo.put(JwtException.class, -40101, "authentication failed");
+        // ...
     }
+    // highlight-end
 }
 ```
+
+手动注册 SPI
+
+```txt title="META-INF/services/io.graphoenix.spi.error.ErrorInfoLoader"
+io.graphence.core.error.GraphenceErrorInfoLoader
+```
+
+异常时返回:
 
 ```json
 {
@@ -89,29 +110,47 @@ public class GraphenceErrorInfoLoader implements ErrorInfoLoader {
     }
   ]
 }
-
 ```
 
-## **Http状态码注册**
+## HTTP 异常状态码注册
 
-在代码中抛出的异常(Exception)使用 `HttpErrorStatusLoader` 注册为 Http Response Status 返回
+代码执行中抛出的异常(Exception)可以注册为注册为 [HTTP response status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 返回
+
+1. 实现 `io.graphoenix.http.server.error.HttpErrorStatusLoader` 接口
+2. 实现 `load()` 方法, 在方法中使用 `iio.graphoenix.http.server.error.HttpErrorStatus.put()` 静态方法注册异常对应的错误状态码
+3. 在 SPI 中注册 `io.graphoenix.http.server.error.HttpErrorStatusLoader` 接口
 
 例:
+
 ```java
+package io.graphence.core.error;
+
 import com.google.auto.service.AutoService;
 import io.graphoenix.http.server.error.HttpErrorStatus;
 import io.graphoenix.http.server.error.HttpErrorStatusLoader;
 import io.jsonwebtoken.JwtException;
 
+// highlight-start
+// 使用 Google AutoService 注册 SPI
 @AutoService(HttpErrorStatusLoader.class)
+// highlight-end
 public class GraphenceHttpErrorStatusLoader implements HttpErrorStatusLoader {
 
     @Override
     public void load() {
         HttpErrorStatus.put(JwtException.class, 401);
+        // ...
     }
 }
 ```
+
+手动注册 SPI
+
+```txt title="META-INF/services/io.graphoenix.http.server.error.HttpErrorStatusLoader"
+io.graphence.core.error.GraphenceHttpErrorStatusLoader
+```
+
+异常时返回:
 
 ```http
 401 Unauthorized
