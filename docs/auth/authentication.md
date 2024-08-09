@@ -49,7 +49,7 @@ dependencies {
 }
 ```
 
-## 配置初始管理员(开发环境)
+## 初始化管理员(开发环境)
 
 开发环境下, 需要配置系统初始化管理员添加用户, 使用 `security.rootUser` 和 `security.rootPassword` 配置管理员账户和密码
 
@@ -62,7 +62,7 @@ security {
 
 ## 认证拦截
 
-任何没有令牌的请求都会被 Graphence 拦截
+任何没有 JWT 令牌的请求都会被 Graphence 拦截
 
 ```graphql
 {
@@ -109,6 +109,48 @@ mutation {
 }
 ```
 
-## 配置令牌
+## JWT 令牌
 
-在请求Head中加入令牌
+在请求 Headers 中加入 JWT 令牌: ``Authorization: Bearer YOUR-JWT-TOKEN``
+
+```json
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZ3JhcGhvZW5peC5pbyIsInN1YiI6IjEiLCJmdWxsX25hbWUiOiJyb290IiwiZmFtaWx5X25hbWUiOiIyIiwiZ3JvdXBzIjpbXSwicm9sZXMiOlsiMSIsIjIiXSwicGVybWlzc2lvbl90eXBlcyI6W10sImlzX3Jvb3QiOnRydWUsImlhdCI6MTcyMzIxMjA3NiwiZXhwIjoxNzIzMjE1Njc2fQ.P-Z9rt3NEpKDaPG_QG_n3Nah2sKedAEy35b2k62GW58"
+}
+```
+
+## JWT 配置
+
+使用配置 `jwt` 配置 JWT 生成选项
+
+```conf
+jwt {
+  issuer = "http://graphoenix.io" # 签发人
+  algorithm = "HS256"             # HS256 / HS384 / HS512
+  validityPeriod = 3600           # 有效期(秒)
+}
+```
+
+## Basic Authentication
+
+使用配置 `security.basicAuthentication` 配置开启 Basic Authentication
+
+```conf
+security {
+  basicAuthentication = true
+}
+```
+
+Basic Authentication 令牌使用账号和密码组成
+
+例: 
+1. 账号: `root`, 密码: `root`
+2. 令牌格式: `root:root`
+3. Base64 encoded: `cm9vdDpyb290`
+4. 在请求 Headers 中加入 Basic 令牌: ``Authorization: Basic YOUR-BASIC-TOKEN``
+
+```json
+{
+  "Authorization": "Basic cm9vdDpyb290"
+}
+```
