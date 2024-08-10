@@ -12,9 +12,9 @@ Graphoenix 隐藏了所有的细枝末节, 只需定义 GraphQL 类型, 平台�
 
 接下来可以根据实际需求选择其他的平台特性进行了解
 
-1. [依赖注入(IOC)](/docs/jakarta-ee/inject) / [切面(AOP)](/docs/jakarta-ee/interceptor) / [配置(Config)](/docs/jakarta-ee/config): 企业级 Java(Jakarta EE)
-2. [异步和同步](/docs/jakarta-ee/reactor): 基于 Reactor 的 Async 和 Await
-3. [微服务](/docs/distributed/microservices)和[gRPC](/docs/distributed/grpc): 单体和微服务可切换的集装箱架构
-4. [校验](/docs/validation/json-schema): 基于 JSON Schema 协议的校验
-5. 认证和授权: 基于 JWT 的认证和基于 Casbin 的授权
+1. [依赖注入(IOC)](/docs/jakarta-ee/inject) / [切面(AOP)](/docs/jakarta-ee/interceptor) / [配置(Config)](/docs/jakarta-ee/config): 企业级 Java([Jakarta EE](https://jakarta.ee/))
+2. [异步和同步](/docs/jakarta-ee/reactor): 基于 [Reactor](https://projectreactor.io/) 的 Async 和 Await
+3. [微服务](/docs/distributed/microservices)和[gRPC](/docs/distributed/grpc): 单体和[微服务](https://microservices.io/)可切换的集装箱架构
+4. [校验](/docs/validation/json-schema): 基于 [JSON Schema](https://json-schema.org/) 协议的校验
+5. [认证](/docs/auth/authentication)和[授权](/docs/auth/authorization): 基于 [JWT](https://jwt.io/) 的认证和基于 [Casbin](https://casbin.org/) 的授权
 6. UI: 基于 Svelte 和 Tailwind CSS 的 UI 组件

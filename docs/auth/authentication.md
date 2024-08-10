@@ -6,7 +6,7 @@ sidebar_position: 1
 
 认证（Authentication）是一个验证用户身份的过程, 用于确认用户是否为其声称的主体, 用以确保后续操作的安全性和合法性.
 
-Graphoenix 结合 GraphQL 特性, 基于 [JWT](https://github.com/jakartaee/inject) 和 [Casbin](https://casbin.org/) 对认证和授权等安全特性提供支持, 提供轻量级框架: [**Graphence**](https://github.com/doukai/graphence)
+Graphoenix 结合 GraphQL 特性对认证和授权等安全特性提供全面支持, 基于 [JWT](https://github.com/jakartaee/inject) 和 [Casbin](https://casbin.org/) 实现轻量级安全框架: [**Graphence**](https://github.com/doukai/graphence) 
 
 ## 安装
 
@@ -62,7 +62,7 @@ security {
 
 ## 认证拦截
 
-任何没有 JWT 令牌的请求都会被 Graphence 拦截
+没有 JWT 令牌的请求都会被 Graphence 拦截
 
 ```graphql
 {
@@ -109,9 +109,9 @@ mutation {
 }
 ```
 
-## JWT 令牌
+## JWT 认证
 
-在请求 Headers 中加入 JWT 令牌: ``Authorization: Bearer YOUR-JWT-TOKEN``
+在 Headers 中加入 JWT 令牌: ``Authorization: Bearer YOUR-JWT-TOKEN``
 
 ```json
 {
@@ -121,19 +121,17 @@ mutation {
 
 ## JWT 配置
 
-使用配置 `jwt` 配置 JWT 生成选项
-
 ```conf
 jwt {
-  issuer = "http://graphoenix.io" # 签发人
-  algorithm = "HS256"             # HS256 / HS384 / HS512
-  validityPeriod = 3600           # 有效期(秒)
+  issuer = "http://graphoenix.org"  # 签发人
+  algorithm = "HS256"               # HS256 / HS384 / HS512
+  validityPeriod = 3600             # 有效期(秒)
 }
 ```
 
-## Basic Authentication
+## Basic 认证
 
-使用配置 `security.basicAuthentication` 配置开启 Basic Authentication
+使用配置 `security.basicAuthentication` 开启 Basic 认证
 
 ```conf
 security {
@@ -141,13 +139,12 @@ security {
 }
 ```
 
-Basic Authentication 令牌使用账号和密码组成
+在 Headers 中加入 Basic 令牌: ``Authorization: Basic YOUR-BASIC-TOKEN``
 
 例: 
-1. 账号: `root`, 密码: `root`
+1. 账号: `root` 密码: `root`
 2. 令牌格式: `root:root`
-3. Base64 encoded: `cm9vdDpyb290`
-4. 在请求 Headers 中加入 Basic 令牌: ``Authorization: Basic YOUR-BASIC-TOKEN``
+3. Base64 编码: `cm9vdDpyb290`
 
 ```json
 {
