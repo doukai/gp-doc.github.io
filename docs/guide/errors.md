@@ -61,7 +61,7 @@ GraphQL 的错误处理机制通过标准化的[错误对象(Errors)](https://sp
 
 ## GraphQL Errors 注册
 
-代码执行中抛出的异常(Exception)可以注册为 [GraphQL Errors](#异常定义) 返回
+代码执行中抛出的异常(Exception)可以注册为 [GraphQL Errors](#错误对象定义) 返回
 
 1. 实现 `io.graphoenix.spi.error.ErrorInfoLoader` 接口
 2. 实现 `load()` 方法, 在方法中使用 `io.graphoenix.spi.error.ErrorInfo.put()` 静态方法注册异常对应的错误代码和错误信息
