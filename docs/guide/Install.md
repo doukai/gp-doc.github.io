@@ -80,8 +80,8 @@ repositories {
 dependencies {
     // highlight-start
     implementation 'org.graphoenix:graphoenix-core:0.1.0'                       // 核心
-    implementation 'org.graphoenix:nozdormu-inject:0.1.0'                         // 依赖注入
-    implementation 'org.graphoenix:nozdormu-config:0.1.0'                         // 配置
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'                       // 依赖注入
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'                       // 配置
 
     annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'  // 核心编译器
     // implementation依赖全部加入到annotationProcessor
@@ -117,14 +117,14 @@ repositories {
 dependencies {
     // highlight-start
     implementation 'org.graphoenix:graphoenix-core:0.1.0'                        // 核心
-    implementation 'org.graphoenix:nozdormu-inject:0.1.0'                          // 依赖注入
-    implementation 'org.graphoenix:nozdormu-config:0.1.0'                          // 配置
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'                        // 依赖注入
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'                        // 配置
     implementation 'org.graphoenix:graphoenix-http-server:0.1.1'                 // http服务器
     implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'                       // r2dbc数据库连接
     implementation 'org.graphoenix:graphoenix-introspection:0.1.0'               // 内省
     implementation 'org.graphoenix:graphoenix-admin:0.1.1'                       // 开发者工具, 提供GraphiQL和GraphQL Voyager
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'                            // mariadb驱动
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'                             // mariadb驱动
 //  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.81.Final', classifier: 'osx-aarch_64' // OSX需要引用
 
     annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'   // 核心编译器
