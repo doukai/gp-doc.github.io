@@ -51,20 +51,20 @@ sidebar_position: 1
 ```gradle title="order-package/build.gradle"
 buildscript {
     repositories {
-        gradlePluginPortal()
         // highlight-start
         jcenter()
         // highlight-end
     }
-    dependencies {
-        // highlight-start
-        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
-        // highlight-end
-    }
+}
+
+plugins {
+    id 'java-library'
+    // highlight-start
+    id "org.graphoenix" version "0.1.1"
+    // highlight-end
 }
 
 // highlight-start
-apply plugin: 'io.graphoenix'
 classes.dependsOn {
     generateGraphQLSource
 }
@@ -79,14 +79,14 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'                       // 核心
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'                         // 依赖注入
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'                         // 配置
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'                       // 核心
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'                         // 依赖注入
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'                         // 配置
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'  // 核心编译器
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'  // 核心编译器
     // implementation依赖全部加入到annotationProcessor
-    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
     // highlight-end
 }
 ```
@@ -116,24 +116,23 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'                       // 核心
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'                         // 依赖注入
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'                         // 配置
-    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'                // http服务器
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'                      // r2dbc数据库连接
-    implementation 'io.graphoenix:graphoenix-introspection:0.0.1-SNAPSHOT'              // 内省
-    implementation 'io.graphoenix:graphoenix-admin:0.0.1-SNAPSHOT'                      // 开发者工具, 提供GraphiQL和GraphQL Voyager
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'                        // 核心
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'                          // 依赖注入
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'                          // 配置
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.1'                 // http服务器
+    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'                       // r2dbc数据库连接
+    implementation 'org.graphoenix:graphoenix-introspection:0.1.0'               // 内省
+    implementation 'org.graphoenix:graphoenix-admin:0.1.1'                       // 开发者工具, 提供GraphiQL和GraphQL Voyager
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4' // mariadb驱动
-    // implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.81.Final', classifier: 'osx-aarch_64' // 使用苹果OSX需要引用
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'                            // mariadb驱动
+//  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.81.Final', classifier: 'osx-aarch_64' // OSX需要引用
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'  // 核心编译器
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'   // 核心编译器
     // implementation依赖全部加入到annotationProcessor
-    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-introspection:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-r2dbc:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-introspection:0.1.0'
     annotationProcessor 'org.mariadb:r2dbc-mariadb:1.1.4'
     // highlight-end
 }

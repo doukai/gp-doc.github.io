@@ -36,9 +36,9 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
 
-    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
     // highlight-end
 }
 ```

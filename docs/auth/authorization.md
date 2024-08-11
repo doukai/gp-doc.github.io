@@ -116,9 +116,9 @@ enum PermissionType {
 
 ## 模型配置
 
-[Casbin](https://casbin.org/) 支持多种访问控制模型 (如 ACL, RBAC, ABAC), 可以根据不同场景灵活配置[模型文件](https://casbin.org/zh/docs/supported-models)
+[授权模型](#授权模型)需要转换为 Casbin 的[模型配置(Model)](https://casbin.org/zh/docs/syntax-for-models)后生效. Casbin 支持多种访问控制模型 (如 ACL, RBAC, ABAC), 可以根据不同场景灵活配置[模型文件](https://casbin.org/zh/docs/supported-models)
 
-推荐基于租户架构的 RBAC 模型配置:
+基于租户架构的 RBAC 模型配置:
 
 ```conf title="model.conf"
 [request_definition]
@@ -137,7 +137,7 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act || r.sub == "U::1"
 ```
 
-_最后 `r.sub == "U::1"` 表示初始管理员(`U::` 为用户前缀, `1` 是用户 root 的 id)可以跳过授权拦截, 为开发环境提供便利_
+_最后 `|| r.sub == "U::1"` 表示初始管理员(`U::` 为用户前缀, `1` 是用户 root 的 id)可以跳过授权拦截, 为开发环境提供便利_
 
 ## 权限字符串
 

@@ -57,9 +57,9 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'io.graphoenix:graphoenix-json-schema:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-json-schema:0.1.0'
 
-    annotationProcessor 'io.graphoenix:graphoenix-json-schema:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-json-schema:0.1.0'
     // highlight-end
     // ...
 }

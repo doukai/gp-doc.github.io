@@ -232,14 +232,7 @@ flowchart LR
 ```gradle title="build.gradle"
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
-        gradlePluginPortal()
-    }
-    dependencies {
-        // highlight-start
-        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
-        // highlight-end
     }
 }
 
@@ -248,8 +241,9 @@ plugins {
     // highlight-start
     id 'com.google.protobuf' version '0.9.1'
     // highlight-end
+    id "org.graphoenix" version "0.1.1"
 }
-apply plugin: 'io.graphoenix'
+
 classes.dependsOn {
     generateGraphQLSource
     // highlight-start
@@ -272,14 +266,7 @@ classes.dependsOn {
 ```gradle title="build.gradle"
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
-        gradlePluginPortal()
-    }
-    dependencies {
-        // highlight-start
-        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
-        // highlight-end
     }
 }
 
@@ -288,8 +275,9 @@ plugins {
     // highlight-start
     id 'com.google.protobuf' version '0.9.1'
     // highlight-end
+    id "org.graphoenix" version "0.1.1"
 }
-apply plugin: 'io.graphoenix'
+
 classes.dependsOn {
     generateGraphQLSource
     // highlight-start
@@ -312,14 +300,7 @@ classes.dependsOn {
 ```gradle title="build.gradle"
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
-        gradlePluginPortal()
-    }
-    dependencies {
-        // highlight-start
-        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
-        // highlight-end
     }
 }
 
@@ -328,8 +309,9 @@ plugins {
     // highlight-start
     id 'com.google.protobuf' version '0.9.1'
     // highlight-end
+    id "org.graphoenix" version "0.1.1"
 }
-apply plugin: 'io.graphoenix'
+
 classes.dependsOn {
     generateGraphQLSource
     // highlight-start
@@ -393,12 +375,12 @@ sourceSets {
 dependencies {
     // highlight-start
     // 引用核心
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
     // highlight-end
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
     // highlight-start
     // gRPC 依赖
@@ -410,15 +392,15 @@ dependencies {
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
     // highlight-end
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-async:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
 
     // highlight-start
     // 引用核心
-    protobuf 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    protobuf 'org.graphoenix:graphoenix-core:0.1.0'
     // highlight-end
 
     testImplementation platform('org.junit:junit-bom:5.9.1')
@@ -471,14 +453,14 @@ sourceSets {
 dependencies {
     // highlight-start
     // 引用核心
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
     // 引用 User 模块
     implementation project(':user-package')
     // highlight-end
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
     // highlight-start
     // gRPC 依赖
@@ -490,19 +472,19 @@ dependencies {
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
     // highlight-end
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
     // highlight-start
     // 引用 User 模块
     annotationProcessor project(':user-package')
     // highlight-end
-    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-async:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
 
     // highlight-start
     // 引用核心
-    protobuf 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    protobuf 'org.graphoenix:graphoenix-core:0.1.0'
     // 引用 User 模块
     protobuf project(':user-package')
     // highlight-end
@@ -557,16 +539,16 @@ sourceSets {
 dependencies {
     // highlight-start
     // 引用核心
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
     // 引用 User 模块
     implementation project(':user-package')
     // 引用 Review 模块
     implementation project(':review-package')
     // highlight-end
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
     // highlight-start
     // gRPC 依赖
@@ -578,21 +560,21 @@ dependencies {
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
     // highlight-end
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
     // highlight-start
     // 引用 User 模块
     annotationProcessor project(':user-package')
     // 引用 Review 模块
     annotationProcessor project(':review-package')
     // highlight-end
-    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-async:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
 
     // highlight-start
     // 引用核心
-    protobuf 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    protobuf 'org.graphoenix:graphoenix-core:0.1.0'
     // 引用 User 模块
     protobuf project(':user-package')
     // 引用 Review 模块
@@ -619,19 +601,19 @@ dependencies {
     // User 模块
     implementation project(':user-package')
     // highlight-end
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
+    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
     // highlight-start
     // Http 服务
-    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.1'
     // gRPC 服务
-    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // highlight-end
 
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
     implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
 
@@ -639,11 +621,11 @@ dependencies {
     // User 模块
     annotationProcessor project(':user-package')
     // highlight-end
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
     // highlight-start
     // gRPC 服务
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // highlight-end
 }
 ```
@@ -661,21 +643,21 @@ dependencies {
     // Review 模块
     implementation project(':review-package')
     // highlight-end
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
+    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
     // highlight-start
     // Http 服务
-    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.1'
     // gRPC 服务
-    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // gRPC 客户端, 调用其他模块
-    implementation 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-grpc-client:0.1.0'
     // highlight-end
 
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
     implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
 
@@ -683,13 +665,13 @@ dependencies {
     // Review 模块
     annotationProcessor project(':review-package')
     // highlight-end
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
     // highlight-start
     // gRPC 服务
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // gRPC 客户端, 调用其他模块
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-client:0.1.0'
     // highlight-end
 }
 ```
@@ -709,21 +691,21 @@ dependencies {
     // Order 模块
     implementation project(':order-package')
     // highlight-end
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
+    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
     // highlight-start
     // Http 服务
-    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.1'
     // gRPC 服务
-    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // gRPC 客户端, 调用其他模块
-    implementation 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-grpc-client:0.1.0'
     // highlight-end
 
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
     implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
 
@@ -731,13 +713,13 @@ dependencies {
     // Order 模块
     annotationProcessor project(':order-package')
     // highlight-end
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
     // highlight-start
     // gRPC 服务
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // gRPC 客户端, 调用其他模块
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-client:0.1.0'
     // highlight-end
 }
 ```
@@ -821,27 +803,27 @@ package {
 ```gradle title="build.gradle"
 dependencies {
     implementation project(':user-package')
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
+    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.1'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.1'
 
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
     // highlight-start
-    implementation 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 
     implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     annotationProcessor project(':user-package')
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // highlight-start
-    annotationProcessor 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 }
 ```
@@ -854,29 +836,29 @@ dependencies {
 ```gradle title="build.gradle"
 dependencies {
     implementation project(':review-package')
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
+    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.1'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.1'
+    implementation 'org.graphoenix:graphoenix-grpc-client:0.1.0'
 
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
     // highlight-start
-    implementation 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 
     implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     annotationProcessor project(':review-package')
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.1'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-client:0.1.0'
     // highlight-start
-    annotationProcessor 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 }
 ```
@@ -889,29 +871,29 @@ dependencies {
 ```gradle title="build.gradle"
 dependencies {
     implementation project(':order-package')
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-http-server:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
+    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.1'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.1'
+    implementation 'org.graphoenix:graphoenix-grpc-client:0.1.0'
 
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
     // highlight-start
-    implementation 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 
     implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     annotationProcessor project(':order-package')
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-client:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.1'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-client:0.1.0'
     // highlight-start
-    annotationProcessor 'io.graphoenix:graphoenix-gossip:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 }
 ```

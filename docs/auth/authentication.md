@@ -22,8 +22,8 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'org.graphoenix:graphence-core:0.0.1-SNAPSHOT'
-    implementation 'org.graphoenix:graphence-security:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphence-core:0.1.0'
+    implementation 'org.graphoenix:graphence-security:0.1.0'
     // highlight-end
     implementation 'org.graphoenix:graphoenix-core:0.1.0'
     implementation 'org.graphoenix:graphoenix-http-server:0.1.1'
@@ -35,8 +35,8 @@ dependencies {
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     // highlight-start
-    annotationProcessor 'org.graphoenix:graphence-core:0.0.1-SNAPSHOT'
-    annotationProcessor 'org.graphoenix:graphence-security:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphence-core:0.1.0'
+    annotationProcessor 'org.graphoenix:graphence-security:0.1.0'
     // highlight-end
     annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
     annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'

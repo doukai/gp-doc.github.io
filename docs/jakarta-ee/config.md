@@ -19,14 +19,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
     // highlight-start
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
     // highlight-end
 
-    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
     // highlight-start
-    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
     // highlight-end
 }
 ```

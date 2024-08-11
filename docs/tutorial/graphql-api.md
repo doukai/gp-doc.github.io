@@ -17,21 +17,19 @@ GraphQL API 基于[Microprofile GraphQL 协议](https://github.com/eclipse/micro
 ```gradle title="order-package/build.gradle"
 buildscript {
     repositories {
-        gradlePluginPortal()
         // highlight-start
         jcenter()
         // highlight-end
     }
-    dependencies {
-        // highlight-start
-        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
-        // highlight-end
-    }
 }
 
-// highlight-start
-apply plugin: 'io.graphoenix'
-// highlight-end
+plugins {
+    id 'java-library'
+    // highlight-start
+    id "org.graphoenix" version "0.1.1"
+    // highlight-end
+}
+
 ```
 
 ### 使用 Gradle 插件生成 Java Entities

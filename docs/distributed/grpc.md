@@ -36,24 +36,18 @@ flowchart LR
 ```gradle title="user-package/build.gradle"
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
-        gradlePluginPortal()
-    }
-    dependencies {
-        // highlight-start
-        classpath 'io.graphoenix:graphoenix-gradle-plugin:0.0.1-SNAPSHOT'
-        // highlight-end
     }
 }
 
 plugins {
     id 'java'
+    id "org.graphoenix" version "0.1.1"
     // highlight-start
     id 'com.google.protobuf' version '0.9.1'
     // highlight-end
 }
-apply plugin: 'io.graphoenix'
+
 classes.dependsOn {
     generateGraphQLSource
     // highlight-start
@@ -98,11 +92,11 @@ sourceSets {
 // highlight-end
 
 dependencies {
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-async:0.1.0'
+    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
     // highlight-start
     // gRPC 依赖
@@ -114,13 +108,13 @@ dependencies {
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
     // highlight-end
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-async:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-interceptor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-async:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-interceptor:0.1.0'
+    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
 
-    protobuf 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
+    protobuf 'org.graphoenix:graphoenix-core:0.1.0'
 
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -203,23 +197,23 @@ flowchart LR
 
 ```gradle title="user-app/build.gradle"
 dependencies {
-    implementation 'io.graphoenix:graphoenix-core:0.0.1-SNAPSHOT'
-    implementation 'io.graphoenix:graphoenix-r2dbc:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-core:0.1.0'
+    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
     // highlight-start
     // gRPC 服务
-    implementation 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // highlight-end
 
-    implementation 'io.nozdormu:nozdormu-inject:0.0.1-SNAPSHOT'
-    implementation 'io.nozdormu:nozdormu-config:0.0.1-SNAPSHOT'
+    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
+    implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
     implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
 
-    annotationProcessor 'io.graphoenix:graphoenix-annotation-processor:0.0.1-SNAPSHOT'
-    annotationProcessor 'io.graphoenix:graphoenix-sql:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
+    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
     // highlight-start
     // gRPC 服务
-    annotationProcessor 'io.graphoenix:graphoenix-grpc-server:0.0.1-SNAPSHOT'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.1'
     // highlight-end
 }
 ```
