@@ -207,7 +207,7 @@ dependencies {
     implementation 'org.graphoenix:nozdormu-inject:0.1.0'
     implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
     annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'

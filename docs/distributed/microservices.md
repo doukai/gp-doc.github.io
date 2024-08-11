@@ -615,7 +615,7 @@ dependencies {
     implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
     implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     // highlight-start
     // User 模块
@@ -659,7 +659,7 @@ dependencies {
     implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
     implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     // highlight-start
     // Review 模块
@@ -707,7 +707,7 @@ dependencies {
     implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
     implementation 'org.graphoenix:nozdormu-config:0.1.0'
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     // highlight-start
     // Order 模块
@@ -816,7 +816,7 @@ dependencies {
     implementation 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     annotationProcessor project(':user-package')
     annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
@@ -850,7 +850,7 @@ dependencies {
     implementation 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     annotationProcessor project(':review-package')
     annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
@@ -885,7 +885,7 @@ dependencies {
     implementation 'org.graphoenix:graphoenix-gossip:0.1.0'
     // highlight-end
 
-    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     annotationProcessor project(':order-package')
     annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
