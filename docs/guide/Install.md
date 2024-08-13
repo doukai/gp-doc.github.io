@@ -65,8 +65,8 @@ plugins {
 }
 
 // highlight-start
-classes.dependsOn {
-    generateGraphQLSource
+classes {
+    dependsOn generateGraphQLSource
 }
 // highlight-end
 

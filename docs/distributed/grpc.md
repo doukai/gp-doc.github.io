@@ -48,10 +48,10 @@ plugins {
     // highlight-end
 }
 
-classes.dependsOn {
-    generateGraphQLSource
+classes {
+    dependsOn generateGraphQLSource
     // highlight-start
-    generateProtobufV3
+    dependsOn generateProtobufV3
     // highlight-end
 }
 

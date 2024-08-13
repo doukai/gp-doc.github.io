@@ -244,10 +244,10 @@ plugins {
     id "org.graphoenix" version "0.1.1"
 }
 
-classes.dependsOn {
-    generateGraphQLSource
+classes {
+    dependsOn generateGraphQLSource
     // highlight-start
-    generateProtobufV3
+    dependsOn generateProtobufV3
     // highlight-end
 }
 ```
@@ -278,10 +278,10 @@ plugins {
     id "org.graphoenix" version "0.1.1"
 }
 
-classes.dependsOn {
-    generateGraphQLSource
+classes {
+    dependsOn generateGraphQLSource
     // highlight-start
-    generateProtobufV3
+    dependsOn generateProtobufV3
     // highlight-end
 }
 ```
