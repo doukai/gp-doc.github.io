@@ -37,6 +37,8 @@ dependencies {
     // highlight-start
     annotationProcessor 'org.graphoenix:nozdormu-interceptor:0.1.0'
     // highlight-end
+
+    // ...
 }
 ```
 

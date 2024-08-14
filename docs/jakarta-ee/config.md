@@ -28,6 +28,8 @@ dependencies {
     // highlight-start
     annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
     // highlight-end
+
+    // ...
 }
 ```
 

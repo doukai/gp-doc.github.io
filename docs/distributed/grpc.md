@@ -92,32 +92,21 @@ sourceSets {
 // highlight-end
 
 dependencies {
-    implementation 'org.graphoenix:graphoenix-core:0.1.0'
-    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
-    implementation 'org.graphoenix:nozdormu-async:0.1.0'
-    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
-    implementation 'org.graphoenix:nozdormu-config:0.1.0'
-
     // highlight-start
     // gRPC 依赖
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.52.1'
     implementation 'io.grpc:grpc-protobuf:1.52.1'
     implementation 'io.grpc:grpc-stub:1.52.1'
     implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.3'
-
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
     // highlight-end
 
-    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
-    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
-    annotationProcessor 'org.graphoenix:nozdormu-async:0.1.0'
-    annotationProcessor 'org.graphoenix:nozdormu-interceptor:0.1.0'
-    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
+    // highlight-start
+    // protobuf 依赖
+    protobuf 'org.graphoenix:graphoenix-core:0.1.1'
+    // highlight-end
 
-    protobuf 'org.graphoenix:graphoenix-core:0.1.0'
-
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    // ...
 }
 ```
 
@@ -197,24 +186,14 @@ flowchart LR
 
 ```gradle title="user-app/build.gradle"
 dependencies {
-    implementation 'org.graphoenix:graphoenix-core:0.1.0'
-    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
     // highlight-start
     // gRPC 服务
-    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.1'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.2'
+
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.2'
     // highlight-end
 
-    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
-    implementation 'org.graphoenix:nozdormu-config:0.1.0'
-
-    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
-
-    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
-    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
-    // highlight-start
-    // gRPC 服务
-    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.1'
-    // highlight-end
+    // ...
 }
 ```
 
@@ -233,6 +212,7 @@ dependencies {
     // highlight-start
     implementation project(':user-package')
     // highlight-end
+
     // ...
 }
 ```

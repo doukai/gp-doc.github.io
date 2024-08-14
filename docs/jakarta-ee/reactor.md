@@ -32,6 +32,8 @@ dependencies {
     // highlight-start
     annotationProcessor 'org.graphoenix:nozdormu-async:0.1.0'
     // highlight-end
+
+    // ...
 }
 ```
 

@@ -20,8 +20,9 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'org.graphoenix:graphoenix-rabbitmq:0.1.0'
+    implementation 'org.graphoenix:graphoenix-rabbitmq:0.1.1'
     // highlight-end
+    
     // ...
 }
 ```

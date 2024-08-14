@@ -40,6 +40,8 @@ dependencies {
 
     annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
     // highlight-end
+
+    // ...
 }
 ```
 

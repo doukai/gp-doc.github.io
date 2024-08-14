@@ -6,7 +6,7 @@ sidebar_position: 1
 
 认证（Authentication）是一个验证用户身份的过程, 用于确认用户是否为其声称的主体, 用以确保后续操作的安全性和合法性.
 
-Graphoenix 结合 GraphQL 特性对认证和授权等安全特性提供全面支持, 基于 [JWT](https://github.com/jakartaee/inject) 和 [Casbin](https://casbin.org/) 实现轻量级安全框架: [**Graphence**](https://github.com/doukai/graphence) 
+Graphoenix 结合 GraphQL 特性对认证和授权等安全特性提供全面支持, 基于 [JWT](https://github.com/jakartaee/inject) 和 [Casbin](https://casbin.org/) 实现轻量级安全框架: [**Graphence**](https://github.com/doukai/graphence)
 
 ## 安装
 
@@ -22,30 +22,15 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'org.graphoenix:graphence-core:0.1.0'
-    implementation 'org.graphoenix:graphence-security:0.1.0'
+    implementation 'org.graphoenix:graphence-core:0.1.1'
+    implementation 'org.graphoenix:graphence-security:0.1.1'
     // highlight-end
-    implementation 'org.graphoenix:graphoenix-core:0.1.0'
-    implementation 'org.graphoenix:graphoenix-http-server:0.1.1'
-    implementation 'org.graphoenix:graphoenix-r2dbc:0.1.0'
-    implementation 'org.graphoenix:nozdormu-inject:0.1.0'
-    implementation 'org.graphoenix:nozdormu-interceptor:0.1.0'
-    implementation 'org.graphoenix:nozdormu-config:0.1.0'
-
-    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
 
     // highlight-start
-    annotationProcessor 'org.graphoenix:graphence-core:0.1.0'
-    annotationProcessor 'org.graphoenix:graphence-security:0.1.0'
+    annotationProcessor 'org.graphoenix:graphence-core:0.1.1'
     // highlight-end
-    annotationProcessor 'org.graphoenix:graphoenix-annotation-processor:0.1.0'
-    annotationProcessor 'org.graphoenix:graphoenix-sql:0.1.0'
-    annotationProcessor 'org.graphoenix:graphoenix-http-server:0.1.1'
-    annotationProcessor 'org.graphoenix:graphoenix-r2dbc:0.1.0'
-    annotationProcessor 'org.graphoenix:nozdormu-inject:0.1.0'
-    annotationProcessor 'org.graphoenix:nozdormu-interceptor:0.1.0'
-    annotationProcessor 'org.graphoenix:nozdormu-config:0.1.0'
 
+    // ...
 }
 ```
 
@@ -111,7 +96,7 @@ mutation {
 
 ## JWT 认证
 
-在 Headers 中加入 JWT 令牌: ``Authorization: Bearer YOUR-JWT-TOKEN``
+在 Headers 中加入 JWT 令牌: `Authorization: Bearer YOUR-JWT-TOKEN`
 
 ```json
 {
@@ -139,9 +124,10 @@ security {
 }
 ```
 
-在 Headers 中加入 Basic 令牌: ``Authorization: Basic YOUR-BASIC-TOKEN``
+在 Headers 中加入 Basic 令牌: `Authorization: Basic YOUR-BASIC-TOKEN`
 
-例: 
+例:
+
 1. 账号: `root` 密码: `root`
 2. 令牌格式: `root:root`
 3. Base64 编码: `cm9vdDpyb290`

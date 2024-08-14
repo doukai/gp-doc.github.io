@@ -14,7 +14,7 @@ GraphQL API 基于[Microprofile GraphQL 协议](https://github.com/eclipse/micro
 
 ### 引入 Gradle 插件
 
-```gradle title="order-package/build.gradle"
+```gradle
 buildscript {
     repositories {
         // highlight-start
