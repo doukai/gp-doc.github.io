@@ -22,12 +22,12 @@ repositories {
 
 dependencies {
     // highlight-start
-    implementation 'org.graphoenix:graphence-core:0.1.1'
-    implementation 'org.graphoenix:graphence-security:0.1.1'
+    implementation 'org.graphoenix:graphence-core:0.1.2'
+    implementation 'org.graphoenix:graphence-security:0.1.2'
     // highlight-end
 
     // highlight-start
-    annotationProcessor 'org.graphoenix:graphence-core:0.1.1'
+    annotationProcessor 'org.graphoenix:graphence-core:0.1.2'
     // highlight-end
 
     // ...
