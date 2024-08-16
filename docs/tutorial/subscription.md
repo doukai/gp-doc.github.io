@@ -22,7 +22,7 @@ dependencies {
     // highlight-start
     implementation 'org.graphoenix:graphoenix-rabbitmq:0.1.2'
     // highlight-end
-    
+
     // ...
 }
 ```

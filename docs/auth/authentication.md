@@ -36,7 +36,7 @@ dependencies {
 
 ## 初始化管理员(开发环境)
 
-开发环境下, 需要配置系统初始化管理员添加用户, 使用 `security.rootUser` 和 `security.rootPassword` 配置管理员账户和密码
+开发环境下需要管理员账号初始化角色和用户, 使用 `security.rootUser` 和 `security.rootPassword` 配置管理员账户和密码
 
 ```conf
 security {
@@ -129,8 +129,8 @@ security {
 例:
 
 1. 账号: `root` 密码: `root`
-2. 令牌格式: `root:root`
-3. Base64 编码: `cm9vdDpyb290`
+2. 令牌内容: `root:root`
+3. Base64 编码令牌内容: `cm9vdDpyb290`
 
 ```json
 {

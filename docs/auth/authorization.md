@@ -15,99 +15,105 @@ sidebar_position: 2
 ```graphql
 "用户"
 type User {
-    "姓名"
-    name: String!
-    "账号"
-    login: String!
-    "组"
-    groups: [Group]
-    "角色"
-    roles: [Role]
-    "租户"
-    realm: Realm
+  "姓名"
+  name: String!
+  "账号"
+  login: String!
+  "组"
+  groups: [Group]
+  "角色"
+  roles: [Role]
+  "租户"
+  realm: Realm
 }
 
 "角色"
 type Role {
-    "名称"
-    name: String!
-    "用户"
-    users: [User]
-    "组"
-    groups: [Group]
-    "组合"
-    composites: [Role]
-    "权限"
-    permissions: [Permission]
-    "租户"
-    realm: Realm
+  "名称"
+  name: String!
+  "用户"
+  users: [User]
+  "组"
+  groups: [Group]
+  "组合"
+  composites: [Role]
+  "权限"
+  permissions: [Permission]
+  "租户"
+  realm: Realm
 }
 
 "组"
 type Group {
-    "名称"
-    name: String!
-    "上级"
-    parent: Group
-    "下级"
-    subGroups: [Group]
-    "用户"
-    users: [User]
-    "角色"
-    roles: [Role]
-    "租户"
-    realm: Realm
+  "名称"
+  name: String!
+  "上级"
+  parent: Group
+  "下级"
+  subGroups: [Group]
+  "用户"
+  users: [User]
+  "角色"
+  roles: [Role]
+  "租户"
+  realm: Realm
 }
 
 "租户"
 type Realm {
-    "名称"
-    name: String!
+  "名称"
+  name: String!
 }
 
 "权限"
 type Permission {
-    "名称"
-    name: ID!
-    "字段"
-    field: String!
-    "实体"
-    type: String!
-    "权限类型"
-    permissionType: PermissionType!
-    "角色"
-    roles: [Role]
-    "租户"
-    realm: Realm
+  "名称"
+  name: ID!
+  "字段"
+  field: String!
+  "实体"
+  type: String!
+  "权限类型"
+  permissionType: PermissionType!
+  "角色"
+  roles: [Role]
+  "租户"
+  realm: Realm
 }
 
 "权限类型"
 enum PermissionType {
-    "读取"
-    READ
-    "写入"
-    WRITE
+  "读取"
+  READ
+  "写入"
+  WRITE
 }
 ```
 
 在 RBAC (Role-Based Access Control) 模型中, 用户, 角色, 资源, 权限和用户组是五个核心元素. 它们相互关联, 共同构成了访问控制的基础. 下面分别介绍它们的作用:
 
 ### 1. 用户 (User)
+
 **用户**是系统中的主体, 通常代表实际的个人, 服务账号或其他实体. 在 RBAC 模型中, 用户并不会直接被赋予权限, 而是通过被分配一个或多个角色来获得相应的权限. 用户的主要作用是执行系统中的操作, 并通过角色来确定其可以执行哪些操作或访问哪些资源
 
 ### 2. 角色 (Role)
+
 **角色**是权限的集合, 它代表系统中的某种功能或职责. 每个角色与一组特定的权限关联, 用户通过被赋予角色来获得这些权限. 角色的主要作用是简化权限管理, 通过角色的配置, 可以灵活调整和控制用户的权限, 而无需逐个管理用户与权限的关系
 
 ### 3. 资源 (Resource)
+
 **资源**是系统中的受保护对象, 用户可以访问或操作的 GraphQL 对象(Object)和字段(Field)
 
 ### 4. 权限 (Permission)
+
 **权限**是对资源的访问或操作权利, 与读取(READ), 写入(WRITE)操作相关联. 每个角色与一组权限关联, 角色决定了用户可以执行哪些操作或访问哪些资源. 权限的主要作用是控制用户对资源的访问, 确保系统的安全性和操作的合法性
 
 ### 5. 用户组 (Group)
+
 **用户组**是用户的集合, 代表具有相似访问需求的一组用户. 在某些 RBAC 实现中, 用户组可以简化用户的角色分配. 通过将角色赋予用户组, 而不是单独的用户, 系统管理员可以更有效地管理和调整大规模用户的权限配置. 用户组的主要作用是为具有相同职责或权限要求的用户群体提供统一的权限管理
 
 ### 作用关系
+
 - **用户**通过**用户组**或直接分配获得一个或多个**角色**
 - **角色**与一组**权限**关联, 定义了用户可以对哪些**资源**执行哪些操作
 - **资源**受到**权限**的保护, 确保只有特定角色的用户才能访问或操作
@@ -137,13 +143,18 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act || r.sub == "U::1"
 ```
 
-_最后 `|| r.sub == "U::1"` 表示初始管理员(`U::` 为用户前缀, `1` 是用户 root 的 id)可以跳过授权拦截, 为开发环境提供便利_
+_`[matchers]` 配置中 `|| r.sub == "U::1"` 表示初始管理员可以跳过授权拦截, 为开发环境提供便利_
+
+- `U::`(用户前缀): `U::1` 表示 `id = 1` 的用户
+- `R::`(角色前缀): `R::1` 表示 `id = 1` 的角色
+- `G::`(用户组前缀): `G::1` 表示 `id = 1` 的用户组
 
 ## 权限字符串
 
 [**Graphence**](https://github.com/doukai/graphence) 通过权限字符串控制对象和字段的访问, 权限字符串格式: `对象名::字段名::操作`
 
 例:
+
 1. 读取用户名: `User::name::READ`
 2. 写入角色名: `Role::name::WRITE`
 
@@ -157,33 +168,91 @@ security {
 
 ## 授权拦截
 
-没有对应权限字符串的查询和变更都会被 Graphence 自动屏蔽
+未授权的查询和变更都会被 Graphence 自动拦截和屏蔽
+
+例: 用户拥有 `Product` 对象的权限:
+
+- `Product::name::READ`,
+- `Product::price::READ`,
+- `Product::price::WRITE`
+
+查询时, 由于没有 `id` 字段的 `READ` 权限, `id` 字段将会被屏蔽
 
 ```graphql
 {
-  userList {
+  roductList {
+    // highlight-start
+    id
+    // highlight-end
     name
+    price
   }
 }
 ```
 
 ```json
 {
-  "data": {}
+  "data": {
+    "roductList": [
+      {
+        "name": "Laptop",
+        "price": 999.99
+      },
+      {
+        "name": "Phone",
+        "price": 499.99
+      },
+      {
+        "name": "Tablet",
+        "price": 299.99
+      }
+    ]
+  }
+}
+```
+
+变更时, 由于没有 `name` 字段的 `WRITE` 权限, `name` 参数将会被拦截
+
+```graphql
+{
+  roduct(
+    // highlight-start
+    name: "Notebook"
+    // highlight-end
+    price: 1000.00
+    where: { id: { name: { opr: EQ, val: "Laptop" } } }
+  ) {
+    id
+    name
+    price
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "roduct": {
+      // highlight-start
+      "name": "Laptop",
+      // highlight-end
+      "price": 1000.99
+    }
+  }
 }
 ```
 
 ## 配置权限
 
-通过对角色(Role)增加或删除权限(Permission)配置对资源的访问权限
+通过对角色(Role)增加或删除权限(Permission)控制对资源的访问
 
-例: 为角色 `r1` 添加对 `User` 对象 `name` 字段的 `READ` 权限
+例: 为角色(`id = 1`) 添加对 `User` 对象 `name` 字段的 `READ` 权限
 
 ```graphql
 mutation {
   role(
-    permissions: [{where: {name: {val: "User::name::READ"}}}]
-    where: {id: {val: "1"}}
+    permissions: [{ where: { name: { val: "User::name::READ" } } }]
+    where: { id: { val: "1" } }
   ) @merge {
     name
     permissions {
@@ -195,15 +264,36 @@ mutation {
 
 ## 配置角色
 
-通过对用户(User)或用户组(Group)增加或删除角色(Role)获得权限(Permission)
+通过对用户(User)或用户组(Group)增加或删除角色(Role)获得访问权限(Permission)
 
-例: 为用户 `u1` 添加角色 `r1` 获得对 `User` 对象 `name` 字段的 `READ` 权限
+例: 为用户(`id = 1`) 添加角色(`id = 1`) 获得对 `User` 对象 `name` 字段的 `READ` 权限
 
 ```graphql
 mutation {
-  user(roles: [{where: {name: {val: "1"}}}], where: {id: {val: "1"}}) @merge {
+  user(roles: [{ where: { id: { val: "1" } } }], where: { id: { val: "1" } })
+    @merge {
     name
     roles {
+      name
+    }
+  }
+}
+```
+
+## 角色组合
+
+通过对角色(Role)增加或删除其他角色(Role)组合角色权限
+
+例: 为角色(`id = 1`) 添加组合角色(`id = 2`), 角色(`id = 1`)将继承角色(`id = 2`)拥有的权限
+
+```graphql
+mutation {
+  role(
+    composites: [{ where: { id: { val: "2" } } }]
+    where: { id: { val: "1" } }
+  ) @merge {
+    name
+    composites {
       name
     }
   }

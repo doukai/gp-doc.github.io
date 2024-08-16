@@ -61,7 +61,7 @@ dependencies {
 
     annotationProcessor 'org.graphoenix:graphoenix-json-schema:0.1.2'
     // highlight-end
-    
+
     // ...
 }
 ```
