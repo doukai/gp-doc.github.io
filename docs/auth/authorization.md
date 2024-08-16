@@ -143,7 +143,7 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act || r.sub == "U::1"
 ```
 
-_`[matchers]` 配置中 `|| r.sub == "U::1"` 表示初始管理员可以跳过授权拦截, 为开发环境提供便利_
+_`[matchers]` 配置中 `|| r.sub == "U::1"` 表示 `id = 1` 的用户([初始管理员](/docs/auth/authentication#初始化管理员开发环境))可以跳过授权拦截, 为开发环境提供便利_
 
 - `U::`(用户前缀): `U::1` 表示 `id = 1` 的用户
 - `R::`(角色前缀): `R::1` 表示 `id = 1` 的角色
@@ -236,7 +236,7 @@ security {
       // highlight-start
       "name": "Laptop",
       // highlight-end
-      "price": 1000.99
+      "price": 1000.00
     }
   }
 }
