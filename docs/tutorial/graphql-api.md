@@ -40,7 +40,7 @@ plugins {
 
 插件会在对应目录生成枚举, 输入类型和对象类型
 
-```txt
+```text
 |-- order-package                             订单包
     |-- build.gradle
     |-- src
@@ -108,7 +108,7 @@ flowchart LR
 
 1. 新建接口类
 
-```txt
+```text
 |-- order-package                             订单包
     |-- build.gradle
     |-- src

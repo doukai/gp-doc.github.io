@@ -4,7 +4,7 @@ sidebar_position: 8
 
 # 小结
 
-> Controlling complexity is the essence of computer programming(编程的本质是控制复杂度).&emsp;-- Brian W. Kernighan
+> Controlling complexity is the essence of computer programming (编程的本质是控制复杂度)&emsp;-- Brian W. Kernighan
 
 目前为止, 从项目的初始化开始, 依次介绍了类型定义, 增删改查(CURD), 订阅, 控制层(GPI)和持久层(GPA), 已经可以满足系统开发的基本需求
 
@@ -17,4 +17,4 @@ Graphoenix 隐藏了所有的细枝末节, 只需定义 GraphQL 类型, 平台�
 3. [微服务](/docs/distributed/microservices)和[gRPC](/docs/distributed/grpc): 单体和[微服务](https://microservices.io/)可切换的集装箱架构
 4. [校验](/docs/validation/json-schema): 基于 [JSON Schema](https://json-schema.org/) 协议的校验
 5. [认证](/docs/auth/authentication)和[授权](/docs/auth/authorization): 基于 [JWT](https://jwt.io/) 的认证和基于 [Casbin](https://casbin.org/) 的授权
-6. UI: 基于 Svelte 和 Tailwind CSS 的 UI 组件
+6. [UI](/docs/ui/svelte): 基于 [Svelte](https://svelte.dev/) 和 [Tailwind CSS](https://tailwindcss.com/) 的 UI 组件

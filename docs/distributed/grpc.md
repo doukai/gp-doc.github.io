@@ -119,7 +119,7 @@ dependencies {
 <details>
 <summary>protobuf目录</summary>
 
-```txt
+```text
 |-- order-microservices
     |-- user-package                                用户模块
         |-- build.gradle

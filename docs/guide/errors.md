@@ -93,7 +93,7 @@ public class GraphenceErrorInfoLoader implements ErrorInfoLoader {
 
 手动注册 SPI
 
-```txt title="META-INF/services/io.graphoenix.spi.error.ErrorInfoLoader"
+```text title="META-INF/services/io.graphoenix.spi.error.ErrorInfoLoader"
 io.graphence.core.error.GraphenceErrorInfoLoader
 ```
 
@@ -146,7 +146,7 @@ public class GraphenceHttpErrorStatusLoader implements HttpErrorStatusLoader {
 
 手动注册 SPI
 
-```txt title="META-INF/services/io.graphoenix.http.server.error.HttpErrorStatusLoader"
+```text title="META-INF/services/io.graphoenix.http.server.error.HttpErrorStatusLoader"
 io.graphence.core.error.GraphenceHttpErrorStatusLoader
 ```
 

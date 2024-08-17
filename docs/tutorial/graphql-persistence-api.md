@@ -132,7 +132,7 @@ flowchart LR
 
 **请注意此处的 [`@Query`](#接口注解) 和 [`@Mutation`](#接口注解) 注解并不是 `org.eclipse.microprofile.graphql` 包下的 `@Query` 和 `@Mutation`**
 
-```txt
+```text
 |-- order-package                             订单包
     |-- build.gradle
     |-- src
@@ -156,7 +156,7 @@ flowchart LR
 
 1. 新建 GPA 接口
 
-```txt
+```text
 |-- order-package                             订单包
     |-- build.gradle
     |-- src
