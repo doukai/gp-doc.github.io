@@ -6,11 +6,11 @@ sidebar_position: 1
 
 [Svelte](https://svelte.dev/) 是一个编译时前端框架, 通过将组件直接编译为高效的原生 JavaScript, 提供了更小的打包体积和高性能的响应式编程体验. [SvelteKit](https://kit.svelte.dev/) 是基于 [Svelte](https://svelte.dev/) 的全栈框架, 支持服务端渲染(SSR), 静态生成(SSG), 文件系统路由和数据预加载等功能, 简化了现代 Web 应用的开发流程, 同时具备灵活的部署选项. 两者结合为开发者提供了高效简洁且性能卓越的开发体验
 
-Graphoenix 基于 GraphQL 特性, 提供基于 Svelte 框架的 UI 解决方案: [Graphence](https://github.com/doukai/graphace)
+Graphoenix 根据 GraphQL 特性, 提供开箱即用的 UI 解决方案: [Graphence](https://github.com/doukai/graphace)
 - 基于 [Svelte](https://svelte.dev/) 和 [SvelteKit](https://kit.svelte.dev/) 的全栈框架
-- 基于 [Melt UI](https://melt-ui.com/) 的 headless 组件库
-- 基于 [Tailwind CSS](https://tailwindcss.com/) 的 utility-first CSS框架
-- 基于 [daisyUI](https://daisyui.com/) 的样式库
+- 基于 [Melt UI](https://melt-ui.com/) 的 Headless 组件
+- 基于 [Tailwind CSS](https://tailwindcss.com/) 的 Utility-First CSS 框架
+- 基于 [daisyUI](https://daisyui.com/) 的 CSS 组件
 - 基于 [Houdini](https://houdinigraphql.com/) 的 GraphQL 客户端
 - 基于 [typesafe-i18n](https://typesafe-i18n.pages.dev/) 的 i18n 国际化
 
@@ -73,17 +73,17 @@ Graphoenix 基于 GraphQL 特性, 提供基于 Svelte 框架的 UI 解决方案:
 │  │      │  import.ts  // 多语言导入
 │  │      │
 │  │      ├─en
-│  │      │  ├─errors   // en 异常信息定义
+│  │      │  ├─errors           // en 异常定义
 │  │      │  │      index.ts
 │  │      │  │
-│  │      │  └─order    // en 信息定义
+│  │      │  └─(appName)        // en 文本定义
 │  │      │          index.ts
 │  │      │
 │  │      └─zh
-│  │          ├─errors   // zh 异常信息定义
+│  │          ├─errors          // zh 异常定义
 │  │          │      index.ts
 │  │          │
-│  │          └─order    // zh 信息定义
+│  │          └─(appName)       // zh 文本定义
 │  │                  index.ts
 │  │
 │  ├─routes // 页面路由
@@ -138,7 +138,7 @@ Graphoenix 基于 GraphQL 特性, 提供基于 Svelte 框架的 UI 解决方案:
 
 ## 配置
 
-```text
+```text title=".env"
 PUBLIC_GRAPHQL_URL=http://localhost:8080/graphql
 AUTH_SCHEME=Basic
 AUTH_TOKEN=root:root
@@ -199,29 +199,29 @@ pnpm run graphql:codegen
    ├─enums      // 枚举组件目录
    │  │  index.ts      
    │  │  
-   │  └─permission-type
+   │  └─(enum-name)
    │          index.ts
-   │          PermissionTypeInput.svelte    // 枚举选择器
-   │          PermissionTypeItem.svelte     // 枚举表单项
-   │          PermissionTypeTd.svelte       // 枚举列
-   │          PermissionTypeTh.svelte       // 枚举检索表头
+   │          (EnumName)Input.svelte    // 枚举选择器
+   │          (EnumName)Item.svelte     // 枚举表单项
+   │          (EnumName)Td.svelte       // 枚举表格单元
+   │          (EnumName)Th.svelte       // 枚举检索表头
    │
    └──objects
       │  index.ts
       │
-      └─user
+      └─(object-name)
              index.ts
-             UserConnectionTable.svelte         // 对象分页表格
-             UserCreateForm.svelte              // 对象创建表单
-             UserCreateTable.svelte             // 对象创建表格
-             UserForm.svelte                    // 对象表单
-             UserSelect.svelte                  // 对象选择器
-             UserSelectConnectionTable.svelte   // 对象选择分页表格
-             UserSelectItem.svelte              // 对象选择表单项
-             UserSelectTable.svelte             // 对象选择表格
-             UserSelectTd.svelte                // 对象选择列
-             UserTable.svelte                   // 对象表格
-             UserTh.svelte                      // 对象检索表头
+             (ObjectName)ConnectionTable.svelte         // 对象分页表格
+             (ObjectName)CreateForm.svelte              // 对象创建表单
+             (ObjectName)CreateTable.svelte             // 对象创建表格
+             (ObjectName)Form.svelte                    // 对象表单
+             (ObjectName)Select.svelte                  // 对象选择器
+             (ObjectName)SelectConnectionTable.svelte   // 对象选择分页表格
+             (ObjectName)SelectItem.svelte              // 对象选择表单项
+             (ObjectName)SelectTable.svelte             // 对象选择表格
+             (ObjectName)SelectTd.svelte                // 对象选择表格单元
+             (ObjectName)Table.svelte                   // 对象表格
+             (ObjectName)Th.svelte                      // 对象检索表头
 ```
 
 ## 构建应用
