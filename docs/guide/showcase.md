@@ -8,4 +8,4 @@ sidebar_position: 4
 
 - 用户: root
 - 密码: root
-- 地址: [http://demo.graphoenix.org](http://demo.graphoenix.org)
+- 地址: [http://123.56.245.97](http://123.56.245.97)
