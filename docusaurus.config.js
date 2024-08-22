@@ -106,6 +106,10 @@ const config = {
                 label: '脚手架',
                 href: 'https://gp-init.github.io/',
               },
+              {
+                label: 'Demo',
+                to: '/docs/guide/showcase',
+              }
             ],
           },
           {

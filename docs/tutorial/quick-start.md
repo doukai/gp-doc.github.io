@@ -22,11 +22,13 @@ services:
   gp-mariadb:
     container_name: gp-mariadb
     image: mariadb:10.6
+    command:
+      --group_concat_max_len=4294967295
     restart: unless-stopped
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: your-root-password
       MYSQL_DATABASE: order
       MYSQL_USER: your-username
       MYSQL_PASSWORD: your-password

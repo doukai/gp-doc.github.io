@@ -7,6 +7,7 @@ sidebar_position: 1
 [Svelte](https://svelte.dev/) 是一个编译时前端框架, 通过将组件直接编译为高效的原生 JavaScript, 提供了更小的打包体积和高性能的响应式编程体验. [SvelteKit](https://kit.svelte.dev/) 是基于 [Svelte](https://svelte.dev/) 的全栈框架, 支持服务端渲染(SSR), 静态生成(SSG), 文件系统路由和数据预加载等功能, 简化了现代 Web 应用的开发流程, 同时具备灵活的部署选项. 两者结合为开发者提供了高效简洁且性能卓越的开发体验
 
 Graphoenix 根据 GraphQL 特性, 提供开箱即用的 UI 解决方案: [Graphence](https://github.com/doukai/graphace)
+
 - 基于 [Svelte](https://svelte.dev/) 和 [SvelteKit](https://kit.svelte.dev/) 的全栈框架
 - 基于 [Melt UI](https://melt-ui.com/) 的 Headless 组件
 - 基于 [Tailwind CSS](https://tailwindcss.com/) 的 Utility-First CSS 框架
@@ -151,11 +152,13 @@ AUTH_TOKEN=root:root
 ## 安装
 
 - npm
+
 ```bash
 npm install
 ```
 
 - pnpm
+
 ```bash
 pnpm install
 ```
@@ -163,11 +166,13 @@ pnpm install
 ## 启动
 
 - npm
+
 ```bash
 npm run dev
 ```
 
 - pnpm
+
 ```bash
 pnpm run dev
 ```
@@ -181,11 +186,13 @@ pnpm run dev
 使用 `graphql:codegen` 根据 GraphQL 定义生成 UI 组件
 
 - npm
+
 ```bash
 npm run graphql:codegen
 ```
 
 - pnpm
+
 ```bash
 pnpm run graphql:codegen
 ```
@@ -195,10 +202,10 @@ pnpm run graphql:codegen
 ```text
 └─components    // 组件目录
    │  index.ts
-   │  
+   │
    ├─enums      // 枚举组件目录
-   │  │  index.ts      
-   │  │  
+   │  │  index.ts
+   │  │
    │  └─(enum-name)
    │          index.ts
    │          (EnumName)Input.svelte    // 枚举选择器
@@ -229,11 +236,13 @@ pnpm run graphql:codegen
 打包部署使用的 bundle 文件
 
 - npm
+
 ```bash
 npm run build
 ```
 
 - pnpm
+
 ```bash
 pnpm run build
 ```
@@ -243,11 +252,13 @@ pnpm run build
 打包发布使用的 npm 包
 
 - npm
+
 ```bash
 npm run build:package
 ```
 
 - pnpm
+
 ```bash
 pnpm run build:package
 ```

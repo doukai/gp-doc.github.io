@@ -103,7 +103,7 @@ dependencies {
 
     // highlight-start
     // protobuf 依赖
-    protobuf 'org.graphoenix:graphoenix-core:0.1.2'
+    protobuf 'org.graphoenix:graphoenix-core:0.1.3'
     // highlight-end
 
     // ...
@@ -188,9 +188,9 @@ flowchart LR
 dependencies {
     // highlight-start
     // gRPC 服务
-    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.3'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.4'
 
-    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.3'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.4'
     // highlight-end
 
     // ...

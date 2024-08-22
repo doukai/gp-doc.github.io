@@ -552,9 +552,9 @@ dependencies {
 
     // highlight-start
     // Http 服务
-    implementation 'org.graphoenix:graphoenix-http-server:0.1.3'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.4'
     // gRPC 服务
-    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.3'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.4'
     // highlight-end
 
     // highlight-start
@@ -564,7 +564,7 @@ dependencies {
 
     // highlight-start
     // gRPC 服务
-    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.3'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.4'
     // highlight-end
 
     // ...
@@ -587,11 +587,11 @@ dependencies {
 
     // highlight-start
     // Http 服务
-    implementation 'org.graphoenix:graphoenix-http-server:0.1.3'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.4'
     // gRPC 服务
-    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.3'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.4'
     // gRPC 客户端, 调用其他模块
-    implementation 'org.graphoenix:graphoenix-grpc-client:0.1.2'
+    implementation 'org.graphoenix:graphoenix-grpc-client:0.1.3'
     // highlight-end
 
     // highlight-start
@@ -603,9 +603,9 @@ dependencies {
 
     // highlight-start
     // gRPC 服务
-    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.3'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.4'
     // gRPC 客户端, 调用其他模块
-    annotationProcessor 'org.graphoenix:graphoenix-grpc-client:0.1.2'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-client:0.1.3'
     // highlight-end
 
     // ...
@@ -630,11 +630,11 @@ dependencies {
 
     // highlight-start
     // Http 服务
-    implementation 'org.graphoenix:graphoenix-http-server:0.1.3'
+    implementation 'org.graphoenix:graphoenix-http-server:0.1.4'
     // gRPC 服务
-    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.3'
+    implementation 'org.graphoenix:graphoenix-grpc-server:0.1.4'
     // gRPC 客户端, 调用其他模块
-    implementation 'org.graphoenix:graphoenix-grpc-client:0.1.2'
+    implementation 'org.graphoenix:graphoenix-grpc-client:0.1.3'
     // highlight-end
 
     // highlight-start
@@ -648,9 +648,9 @@ dependencies {
 
     // highlight-start
     // gRPC 服务
-    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.3'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-server:0.1.4'
     // gRPC 客户端, 调用其他模块
-    annotationProcessor 'org.graphoenix:graphoenix-grpc-client:0.1.2'
+    annotationProcessor 'org.graphoenix:graphoenix-grpc-client:0.1.3'
     // highlight-end
 
     // ...
@@ -733,11 +733,11 @@ package {
 ```gradle
 dependencies {
     // highlight-start
-    implementation 'org.graphoenix:graphoenix-gossip:0.1.2'
+    implementation 'org.graphoenix:graphoenix-gossip:0.1.3'
     // highlight-end
 
     // highlight-start
-    annotationProcessor 'org.graphoenix:graphoenix-gossip:0.1.2'
+    annotationProcessor 'org.graphoenix:graphoenix-gossip:0.1.3'
     // highlight-end
 
     // ...
